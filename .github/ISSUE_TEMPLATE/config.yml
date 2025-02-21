@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Wiki
+    url: https://github.com/ergiosko/rootine/wiki
+    about: Check our Wiki before creating an issue
+  - name: Security Policy
+    url: https://github.com/ergiosko/rootine/security/policy
+    about: Please report security vulnerabilities here
+  - name: Discussions
+    url: https://github.com/ergiosko/rootine/discussions
+    about: Ask questions and discuss with other community members

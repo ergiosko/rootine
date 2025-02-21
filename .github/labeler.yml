@@ -1,0 +1,78 @@
+# Default GitHub Labels - Applied based on content patterns
+
+# Bug label - for files that are likely bug fixes
+bug:
+  - '**/fix/**'
+  - '**/bugfix/**'
+  - '**/hotfix/**'
+  - '**/*fix*.sh'
+
+# Documentation label - for documentation changes
+documentation:
+  - '**/*.md'
+  - '**/*.txt'
+  - 'docs/**/*'
+  - '**/doc/**'
+  - '**/docs/**'
+  - 'README*'
+  - 'LICENSE*'
+
+# Enhancement label - for new features and improvements
+enhancement:
+  - '**/feature/**'
+  - '**/feat/**'
+  - '**/enhance/**'
+  - '**/improvement/**'
+
+# Custom Labels for Rootine-specific content
+
+# Shell scripts label - primary content type
+shell:
+  - '**/*.sh'
+  - '**/*.bash'
+  - '**/bin/*'
+
+# Ubuntu-specific content
+ubuntu:
+  - '**/apt/**'
+  - '**/dpkg/**'
+  - '**/ubuntu/**'
+  - '**/debian/**'
+
+# Configuration files
+configuration:
+  - '**/*.conf'
+  - '**/*.cfg'
+  - '**/*.yml'
+  - '**/*.yaml'
+  - '**/*.json'
+  - '**/*.ini'
+
+# CI/CD and workflow files
+workflow:
+  - '.github/workflows/**'
+  - '.github/actions/**'
+  - '.gitlab-ci.yml'
+  - '**/pipeline/**'
+
+# Dependencies and environment
+dependencies:
+  - 'requirements.txt'
+  - 'package.json'
+  - 'package-lock.json'
+  - 'Dockerfile'
+  - '**/deps/**'
+  - '**/vendor/**'
+
+# Root scripts - main functionality
+scripts:
+  - '*.sh'
+  - 'bin/*'
+  - 'scripts/*'
+
+# Security-related changes
+security:
+  - '**/security/**'
+  - '**/crypto/**'
+  - '**/auth/**'
+  - '**/ssl/**'

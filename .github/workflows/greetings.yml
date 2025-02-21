@@ -1,0 +1,45 @@
+name: Greetings Messages
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+    - uses: actions/first-interaction@v1.3.0
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: |
+          👋 Thanks for opening your first issue in Rootine repository!
+
+          We appreciate your contribution and will review it soon.
+          While you wait:
+          - Please make sure you've followed our issue template
+          - Check if this issue hasn't been reported before
+          - Feel free to join our discussions if you have questions
+
+          Happy contributing! 🌟
+        pr-message: |
+          🎉 Thanks for opening your first pull request!
+
+          We're excited to review your changes. To help things move smoothly:
+          - Make sure your PR description clearly explains the changes
+          - Verify all tests are passing
+          - Follow our contribution guidelines
+          - Feel free to respond to any comments or feedback
+
+          Thank you for helping make Rootine project better! 💪

@@ -1,0 +1,34 @@
+name: ShellCheck Validation
+
+on:
+  push:
+    paths:
+      - 'rootine'
+      - '**.sh'
+      - '.shellcheckrc'
+      - '.github/workflows/shellcheck.yml'
+  pull_request:
+    paths:
+      - 'rootine'
+      - '**.sh'
+      - '.shellcheckrc'
+      - '.github/workflows/shellcheck.yml'
+
+jobs:
+  shellcheck:
+    name: ShellCheck Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          version: v0.10.0
+          severity: error
+          format: json
+          check_together: 'yes'
+          scandir: '.'
+        env:
+          SHELLCHECK_OPTS: -e SC1090 -e SC1091 -e SC2034 -e SC2181 -e SC2310 -e SC2311 -e SC2312 -e SC2317

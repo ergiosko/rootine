@@ -1,38 +1,41 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
-
+name: Bug Report
+about: Create a bug report to help improve Rootine
+title: '[BUG] '
+labels: 'bug'
+assignees: 'noskov'
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Bug Description**
+A clear and concise description of the bug you encountered.
+
+**System Information**
+- Ubuntu Version: [e.g. 22.04 LTS]
+- Shell: [e.g. bash 5.1.16]
+- Rootine Version: [e.g. 1.0.0]
 
 **To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+Steps to reproduce this behavior:
+1. Run command '...'
+2. With arguments '...'
+3. In directory '...'
+4. Error occurs '...'
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**Expected Behavior**
+A clear description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Actual Behavior**
+What actually happened, including any error messages.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Command Output**
+```bash
+# Paste the command output here, including any error messages
+```
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Additional Context**
+- Were you running with sudo/root privileges?
+- Any relevant system configuration?
+- Any recent system changes?
 
-**Additional context**
-Add any other context about the problem here.
+**Possible Solution**
+If you have suggestions on how to fix this, please share them.
