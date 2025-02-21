@@ -92,7 +92,8 @@ declare -gAr ROOTINE_APT_COMMAND_OPTIONS=(
 )
 
 # --
-# @description      Apache2 server configuration paths
+# @description      Apache2 server configuration
 # @dependencies     apache2
 # --
 declare -gr ROOTINE_APACHE2_CLOUDFLARE_DIR="/etc/apache2/cloudflare"  # CloudFlare configuration directory
+declare -gr ROOTINE_APACHE2_USER_NAME="apache2_user_name"
