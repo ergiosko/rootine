@@ -51,13 +51,13 @@ declare -gir ROOTINE_SNAP_REFRESH_DELAY=5   # Delay between retries in seconds
 #                   - Disables insecure repositories
 #                   - Requires authentication
 # --
-declare -gr ROOTINE_APT_KEYRINGS_DIR="/etc/apt/keyrings"            # Repository keyrings directory
-declare -gr ROOTINE_APT_SOURCES_LIST_DIR="/etc/apt/sources.list.d"  # Repository sources directory
-declare -gr ROOTINE_APT_LOCK_FILE="/var/lib/dpkg/lock-frontend"     # APT lock file path
-declare -gir ROOTINE_APT_DPKG_LOCK_TIMEOUT=60                       # Maximum wait time for dpkg lock
-declare -gir ROOTINE_APT_UPDATE_RETRIES=3                           # Number of update retry attempts
-declare -gir ROOTINE_APT_COMMAND_TIMEOUT=300                        # Command execution timeout
-declare -gir ROOTINE_APT_QUIET_MODE=0                               # Quiet mode flag
+declare -gr ROOTINE_APT_KEYRINGS_DIR="/etc/apt/keyrings"                # Repository keyrings directory
+declare -gr ROOTINE_APT_SOURCES_LIST_DIR="/etc/apt/sources.list.d"      # Repository sources directory
+declare -gr ROOTINE_APT_LOCK_FILE="${ROOTINE_RUNTIME_DIR}/apt-get.lock" # Custom lock file path
+declare -gir ROOTINE_APT_DPKG_LOCK_TIMEOUT=60 # Maximum wait time for dpkg lock
+declare -gir ROOTINE_APT_UPDATE_RETRIES=3     # Number of update retry attempts
+declare -gir ROOTINE_APT_COMMAND_TIMEOUT=300  # Command execution timeout
+declare -gir ROOTINE_APT_QUIET_MODE=0         # Quiet mode flag
 
 # --
 # @description      APT command options with secure defaults

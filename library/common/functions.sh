@@ -486,6 +486,139 @@ check_script_permissions() {
 }
 
 # --
+# @description      Checks if a process is running by exact name
+# @param            $1 process_name Process name to check (required)
+# @stdout           None
+# @stderr           Log messages about process status
+# @exitstatus       0 Process is running
+#                   1 Process is not running
+#                   2 Invalid parameters or process name not provided
+# @dependencies     pgrep (procps package)
+# @example          is_process_running "nginx"
+#                   if is_process_running "apache2"; then
+#                     echo "Apache is running"
+#                   fi
+# @security         - Sanitizes process name input
+#                   - No root permissions required for basic usage
+#                   - Regular users can check:
+#                     - Their own processes
+#                     - Other users' visible processes
+#                   - Root users can check all processes
+# @note             Some system processes might only be visible to root
+# @public
+# --
+is_process_running() {
+  local -r process_name="${1:?Process name is required}"
+
+  # Validate process name format
+  if [[ ! "${process_name}" =~ ^[a-zA-Z0-9_.-]+$ ]]; then
+    log_error "Invalid process name format: ${process_name}"
+    return "${ROOTINE_STATUS_USAGE}"
+  fi
+
+  # Check for pgrep command
+  if ! command -v pgrep >/dev/null; then
+    log_error "Required command 'pgrep' not found"
+    log_info "Install using: sudo apt-get install procps"
+    return "${ROOTINE_STATUS_USAGE}"
+  fi
+
+  # Check if process is running
+  if pgrep -x "${process_name}" >/dev/null; then
+    local pids
+    pids=$(pgrep -x "${process_name}" | tr '\n' ' ')
+    log_debug "Process '${process_name}' is running with PID(s): ${pids}"
+    return 0
+  else
+    log_debug "Process '${process_name}' is not running"
+    return 1
+  fi
+}
+
+# --
+# @description      Checks if a lock file is actively held by any process
+# @param            $1 lock_file Full path to the lock file to check (required)
+# @stdout           None
+# @stderr           Log messages about lock file status
+# @exitstatus       0 Lock file is held by a process
+#                   1 Lock file is not held or doesn't exist
+#                   2 Invalid parameters or lock file path not provided
+#                   3 Permission denied or access error
+# @dependencies     - fuser (psmisc package)
+#                   - readlink (coreutils)
+# @example          # As regular user
+#                   is_lock_file_held "/var/run/myapp.lock"
+#
+#                   # As root (can check any lock file)
+#                   is_lock_file_held "/var/run/system.lock"
+# @security         - Works for both root and non-root users
+#                   - Root can check any lock file in the system
+#                   - Non-root users can check files they have read access to
+#                   - Validates lock file path
+#                   - Resolves symbolic links safely
+#                   - Safe handling of file paths with spaces
+# @note             - When run as root:
+#                     - Can check all lock files
+#                     - No permission restrictions
+#                     - Can see all processes holding the file
+#                   - When run as non-root:
+#                     - Limited to accessible files
+#                     - May not see some system processes
+# @public
+# --
+is_lock_file_held() {
+  local -r lock_file="${1:?Lock file path is required}"
+  local real_path
+
+  # Validate lock file path
+  if [[ ! "${lock_file}" =~ ^[a-zA-Z0-9/_.-]+$ ]]; then
+    log_error "Invalid lock file path format: ${lock_file}"
+    return "${ROOTINE_STATUS_USAGE}"
+  fi
+
+  # Resolve symbolic links safely
+  if ! real_path=$(readlink -f "${lock_file}" 2>/dev/null); then
+    log_error "Failed to resolve path: ${lock_file}"
+    return "${ROOTINE_STATUS_USAGE}"
+  fi
+
+  # Check if lock file exists
+  if [[ ! -e "${real_path}" ]]; then
+    log_debug "Lock file does not exist: ${real_path}"
+    return 1
+  fi
+
+  # Check if we have read access to the file
+  if [[ ! -r "${real_path}" ]]; then
+    if [[ "$(id -u)" == "0" ]]; then
+      log_warning "Even as root, cannot read ${real_path}. Check mount options or file attributes."
+    else
+      log_error "Permission denied: cannot read ${real_path}"
+    fi
+
+    return "${ROOTINE_STATUS_NOPERM}"
+  fi
+
+  # Check for fuser command
+  if ! command -v fuser >/dev/null; then
+    log_error "Required command 'fuser' not found"
+    log_info "Install using: sudo apt-get install psmisc"
+    return "${ROOTINE_STATUS_USAGE}"
+  fi
+
+  # Check if file is held by any process
+  if fuser "${real_path}" >/dev/null 2>&1; then
+    local holding_pids
+    holding_pids=$(fuser "${real_path}" 2>/dev/null)
+    log_debug "Lock file ${real_path} is held by PID(s): ${holding_pids}"
+    return 0
+  else
+    log_debug "No process is holding ${real_path}"
+    return 1
+  fi
+}
+
+# --
 # @description      Checks if a package is installed via dpkg
 # @param            $1 package Package name to check (required)
 # @stdout           None

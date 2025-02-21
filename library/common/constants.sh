@@ -27,7 +27,9 @@ declare -gar ROOTINE_VALID_FILE_PERMISSIONS=("700" "755") # Valid file permissio
 
 # System Paths
 declare -gr ROOTINE_BACKUPS_DIR="/srv/backups/rootine"  # Directory for backups
+declare -gr ROOTINE_CACHE_DIR="/var/cache/rootine"      # Directory for cache data
 declare -gr ROOTINE_LOGS_DIR="/var/log/rootine"         # Directory for logs
+declare -gr ROOTINE_RUNTIME_DIR="/var/run/rootine"      # Directory runtime files and locks
 declare -gr ROOTINE_TMP_DIR="/tmp/rootine"              # Directory for temporary files
 
 # Internet Connectivity Check Settings

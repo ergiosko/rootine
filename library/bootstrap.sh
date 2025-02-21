@@ -446,7 +446,9 @@ _validate_constants() {
 _create_utility_directories() {
   local -ar dirs=(
     "${ROOTINE_BACKUPS_DIR:?[ ERROR ] ROOTINE_BACKUPS_DIR not set}"
+    "${ROOTINE_CACHE_DIR:?[ ERROR ] ROOTINE_CACHE_DIR not set}"
     "${ROOTINE_LOGS_DIR:?[ ERROR ] ROOTINE_LOGS_DIR not set}"
+    "${ROOTINE_RUNTIME_DIR:?[ ERROR ] ROOTINE_RUNTIME_DIR not set}"
     "${ROOTINE_TMP_DIR:?[ ERROR ] ROOTINE_TMP_DIR not set}"
   )
 

@@ -64,6 +64,82 @@ _create_apt_directories() {
 }
 
 # --
+# @description      Checks if package management processes are running
+#                   and their lock files are held. Specifically checks
+#                   dpkg, apt-get, apt processes and their lock files.
+# @stdout           None
+# @stderr           Log messages about process and lock file status
+# @exitstatus       0 No processes running and no locks held
+#                   1 Process running or lock file held
+# @dependencies     - is_process_running()
+#                   - is_lock_file_held()
+#                   - log_messages.sh
+# @example          # Check if package manager is available
+#                   if check_package_manager_status; then
+#                     log_info "Package manager is available for use"
+#                     # Proceed with package operations
+#                   else
+#                     log_error "Package manager is busy, try again later"
+#                     exit 1
+#                   fi
+# @security         - Root permissions may be needed for some lock files
+#                   - Safe handling of file paths and process names
+# @note             Some lock files may only be accessible by root
+# @public
+# --
+check_package_manager_status() {
+  local -ar processes=(
+    "dpkg"
+    "apt-get"
+    "apt"
+  )
+  local -ar lock_files=(
+    "/var/lib/dpkg/lock"
+    "/var/lib/dpkg/lock-frontend"
+    "/var/lib/apt/lists/lock"
+    "/var/cache/apt/archives/lock"
+  )
+  local running=false
+  local held=false
+  local process
+  local lock_file
+
+  log_debug "Checking package manager processes and lock files..."
+
+  # Check processes
+  for process in "${processes[@]}"; do
+    if is_process_running "${process}"; then
+      log_warning "Package manager process '${process}' is running"
+      running=true
+      break
+    fi
+  done
+
+  # Check lock files
+  if ! "${running}"; then
+    for lock_file in "${lock_files[@]}"; do
+      if is_lock_file_held "${lock_file}"; then
+        log_warning "Package manager lock file '${lock_file}' is held"
+        held=true
+        break
+      fi
+    done
+  fi
+
+  # Return status based on checks
+  if "${running}"; then
+    log_error "Package manager process is currently running"
+    return 1
+  elif "${held}"; then
+    log_error "Package manager lock file is currently held"
+    return 1
+  else
+    log_debug "Package manager is not running and no lock files are held"
+    return 0
+  fi
+}
+
+# --
 # @description      Validates the APT lock file and its directory
 # @param            lock_file Path to the APT lock file (optional,
 #                   defaults to ROOTINE_APT_LOCK_FILE)
