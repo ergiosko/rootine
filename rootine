@@ -1,0 +1,315 @@
+#!/usr/bin/env bash
+
+# ---
+# @description      Main entry point for the Rootine framework - a modular Bash
+#                   automation system
+# @author           Sergiy Noskov <sergiy@noskov.org>
+# @copyright        Ergiosko <contact@ergiosko.com>
+# @license          MIT
+# @version          1.0.0
+# @since            1.0.0
+# @category         Core
+# @dependencies     - Bash 4.4.0 or higher
+#                   - realpath
+#                   - date
+#                   - dirname
+# @configuration    Environment variables can be set before execution:
+#                   - IS_ROOTINE_INSTALLED: Set to 1 if installed system-wide
+# @arguments        [command] [arguments...]
+# @param            command   The command to execute
+# @param            arguments Optional arguments passed to the command
+# @envvar           USER          Current user's login name
+# @envvar           SHELL         Current shell path
+# @envvar           BASH_VERSION  Bash version string
+# @stderr           Status and error messages
+# @exitstatus       0 Success
+#                   1 Various error conditions:
+#                   - Not running in Bash
+#                   - Incompatible Bash version
+#                   - Failed to resolve paths
+#                   - Missing required directories
+#                   - Failed to load bootstrap
+#                   - No command specified
+# @return           Exit status from executed command or error status
+# @example          # Get help
+#                   $ ./rootine help
+#
+#                   # Run a specific command
+#                   $ ./rootine command arg1 arg2
+# @functions        check_bash_version  Verifies Bash version compatibility
+#                   _set_app_env        Sets up environment variables
+#                   get_app_path        Resolves application installation path
+#                   _set_app_paths      Defines framework directory paths
+#                   _validate_app_paths Validates required directories exist
+#                   main                Main program entry point
+# @security         - Validates paths before use
+#                   - Uses full paths for commands
+#                   - Employs strict error checking
+# @todo             - Add command auto-completion
+# ---
+
+# Color definitions for consistent message formatting
+declare -gr RCLR_RED=$'\e[0;31m'
+declare -gr RCLR_GREEN=$'\e[0;32m'
+declare -gr RCLR_YELLOW=$'\e[0;33m'
+declare -gr RCLR_BLUE=$'\e[0;34m'
+declare -gr RCLR_MAGENTA=$'\e[0;35m'
+declare -gr RCLR_CYAN=$'\e[0;36m'
+declare -gr RCLR_WHITE=$'\e[0;37m'
+declare -gr RCLR_DEFAULT=$'\e[0;39m'
+declare -gr RCLR_RESET=$'\e[0m'
+
+# --
+# @description      Validates that script is running under Bash
+# @exitstatus       1 If not running under Bash
+# @global           BASH_VERSION  Used to check if running under Bash
+# @global           SHELL         Used in error message if not Bash
+# --
+if [[ -z "${BASH_VERSION:-}" ]]; then
+  printf "%s[ ERROR ]%s This script requires the Bash shell to run.\n" \
+    "${RCLR_RED}" "${RCLR_RESET}" >&2
+  printf "  Current shell: %s\n" "${SHELL:-Unknown shell}" >&2
+  printf "  Please run this script using Bash.\n" >&2
+  exit 1
+fi
+
+declare -gr ROOTINE_MIN_BASH_VERSION="4.4.0"
+declare -gr ROOTINE_UNKNOWN="Unknown"
+
+# --
+# @description      Verifies that Bash version meets minimum requirements
+# @exitstatus       0 Version check passed
+#                   1 Version check failed
+# @global           BASH_VERSINFO Array containing Bash version components
+# @example          if ! check_bash_version; then
+#                     echo "Incompatible Bash version"
+#                     exit 1
+#                   fi
+# --
+check_bash_version() {
+  local major minor patch
+
+  printf "%s[ DEBUG ]%s Checking Bash version compatibility...\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+
+  read -r major minor patch < <(echo "${ROOTINE_MIN_BASH_VERSION}" | tr '.' ' ')
+
+  if ((BASH_VERSINFO[0] < major)) ||
+    ((BASH_VERSINFO[0] == major && BASH_VERSINFO[1] < minor)) ||
+    ((BASH_VERSINFO[0] == major && BASH_VERSINFO[1] == minor && BASH_VERSINFO[2] < patch)); then
+    printf "%s[ ERROR ]%s Incompatible Bash version detected.\n" \
+      "${RCLR_RED}" "${RCLR_RESET}" >&2
+    printf "  Required version: %s or higher\n" "${ROOTINE_MIN_BASH_VERSION}" >&2
+    printf "  Current version:  %s\n" "${BASH_VERSION:-${ROOTINE_UNKNOWN}}" >&2
+    printf "  Please upgrade your Bash installation.\n" >&2
+    return 1
+  fi
+
+  printf "%s[ DEBUG ]%s Bash version compatibility check passed\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+  return 0
+}
+
+# --
+# @description      Sets up the application environment variables
+# @global           Sets various global environment variables
+# @sideeffects      - Sets strict error checking modes
+#                   - Sets IFS
+#                   - Sets locale variables
+#                   - Defines version and installation status
+# --
+_set_app_env() {
+  printf "%s[ DEBUG ]%s Setting up application environment...\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+
+  set -euf -o pipefail
+
+  declare -g IFS=$' \n\t'
+
+  declare -gx LC_ALL="en_US.UTF-8"
+  declare -gx LANG="en_US.UTF-8"
+  declare -gx LANGUAGE="en_US.UTF-8"
+
+  declare -gr ROOTINE_VERSION="1.0.0"
+  declare -gix IS_ROOTINE_INSTALLED="${IS_ROOTINE_INSTALLED:-0}"
+
+  printf "%s[ DEBUG ]%s Environment variables set successfully\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+}
+
+# --
+# @description      Resolves the absolute path to the application directory
+# @stdout           Absolute path to application directory if successful
+# @stderr           Status and error messages
+# @exitstatus       0 Success
+#                   1 Failed to resolve path
+# @global           BASH_SOURCE Used to determine script location
+# --
+get_app_path() {
+  local path
+
+  printf "%s[ DEBUG ]%s Resolving application path...\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+
+  if [[ -z "${BASH_SOURCE[0]:-}" ]]; then
+    printf "%s[ ERROR ]%s Cannot determine script location.\n" \
+      "${RCLR_RED}" "${RCLR_RESET}" >&2
+    printf "  BASH_SOURCE[0] is not set.\n" >&2
+    printf "  Please ensure the script is being run correctly.\n" >&2
+    return 1
+  fi
+
+  if ! path="$(realpath -- "$(dirname -- "${BASH_SOURCE[0]}")")" &>/dev/null; then
+    printf "%s[ ERROR ]%s Cannot resolve script directory path.\n" \
+      "${RCLR_RED}" "${RCLR_RESET}" >&2
+    printf "  Please check:\n" >&2
+    printf "  - All parent directories exist\n" >&2
+    printf "  - You have sufficient permissions\n" >&2
+    printf "  - The path contains no broken symbolic links\n" >&2
+    return 1
+  fi
+
+  printf "%s[ DEBUG ]%s Application path resolved: %s\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" "${path}" >&2
+  printf "%s\n" "${path}"
+}
+
+# --
+# @description      Sets up global path variables for application directories
+# @exitstatus       0 Success
+#                   1 Failed to get application path
+# @global           Sets ROOTINE_PATH, ROOTINE_LIBRARY_DIR, and ROOTINE_COMMANDS_DIR,
+#                   global variables
+# --
+_set_app_paths() {
+  local path
+
+  printf "%s[ DEBUG ]%s Setting up application paths...\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+
+  if ! path="$(get_app_path)"; then
+    return 1
+  fi
+
+  declare -gr ROOTINE_PATH="${path}"
+  declare -gr ROOTINE_LIBRARY_DIR="${ROOTINE_PATH}/library"
+  declare -gr ROOTINE_COMMANDS_DIR="${ROOTINE_PATH}/commands"
+
+  printf "%s[ DEBUG ]%s Application paths configured\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+  return 0
+}
+
+# --
+# @description      Validates that all required application directories exist
+# @exitstatus       0 All required paths exist and are accessible
+#                   1 Missing or inaccessible required path
+# @global           Reads ROOTINE_* directory paths
+# --
+_validate_app_paths() {
+  local -ar required_dirs=(
+    "${ROOTINE_LIBRARY_DIR}"
+    "${ROOTINE_COMMANDS_DIR}"
+  )
+
+  printf "%s[ DEBUG ]%s Validating application directory structure...\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+
+  for dir in "${required_dirs[@]}"; do
+    printf "  Checking directory: %s\n" "${dir}" >&2
+    if [[ ! -d "${dir}" ]]; then
+      printf "%s[ ERROR ]%s Missing required directory.\n" \
+        "${RCLR_RED}" "${RCLR_RESET}" >&2
+      printf "  Directory: %s\n" "${dir}" >&2
+      printf "  Please ensure:\n" >&2
+      printf "  - Rootine is properly installed\n" >&2
+      printf "  - You have the correct permissions\n" >&2
+      return 1
+    fi
+  done
+
+  printf "  Checking core component: bootstrap.sh\n" >&2
+  if [[ ! -f "${ROOTINE_LIBRARY_DIR}/bootstrap.sh" ]]; then
+    printf "%s[ ERROR ]%s Missing core component.\n" \
+      "${RCLR_RED}" "${RCLR_RESET}" >&2
+    printf "  File: %s/bootstrap.sh\n" "${ROOTINE_LIBRARY_DIR}" >&2
+    printf "  Please reinstall Rootine to restore missing components.\n" >&2
+    return 1
+  fi
+
+  printf "%s[ DEBUG ]%s Directory structure validation passed\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+  return 0
+}
+
+# --
+# @description      Main program entry point and execution flow controller
+# @param            $@ Command and arguments to execute
+# @exitstatus       0 Successful execution
+#                   1 Various error conditions (see script header)
+# @global           Various ROOTINE_* configuration variables
+# @sideeffects      - Initializes environment
+#                   - Loads bootstrap component
+#                   - Executes specified command
+# --
+main() {
+  local start_time end_time
+
+  printf "%s[ DEBUG ]%s Starting Rootine v%s\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" "${ROOTINE_VERSION:-unknown}" >&2
+  printf "  Date: %s\n" "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >&2
+  printf "  User: %s\n" "${USER:-unknown}" >&2
+
+  start_time=$(date +%s)
+
+  check_bash_version || return 1
+  _set_app_env
+  _set_app_paths || return 1
+  _validate_app_paths || return 1
+
+  printf "%s[ DEBUG ]%s Loading core component...\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+
+  if ! source "${ROOTINE_LIBRARY_DIR}/bootstrap.sh"; then
+    printf "%s[ ERROR ]%s Failed to load core component.\n" \
+      "${RCLR_RED}" "${RCLR_RESET}" >&2
+    printf "  Component: %s\n" "${ROOTINE_LIBRARY_DIR}/bootstrap.sh" >&2
+    printf "  Please check:\n" >&2
+    printf "  - File permissions\n" >&2
+    printf "  - File contents integrity\n" >&2
+    printf "  - No syntax errors in the file\n" >&2
+    return 1
+  fi
+
+  printf "%s[ DEBUG ]%s Core component loaded successfully\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+
+  local cmd="${1:-}"
+
+  if [[ -z "${cmd}" ]]; then
+    printf "%s[ ERROR ]%s No command specified.\n" \
+      "${RCLR_RED}" "${RCLR_RESET}" >&2
+    printf "  Usage: %s <command> [arguments...]\n" "${0}" >&2
+    printf "  Run '%s help' for available commands.\n" "${0}" >&2
+    return 1
+  fi
+
+  shift
+
+  printf "%s[ DEBUG ]%s Executing command: %s\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" "${cmd}" >&2
+
+  _route_command "${cmd}" "$@"
+  local status=$?
+
+  end_time=$(date +%s)
+  printf "%s[ DEBUG ]%s Command execution completed\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+  printf "  Status: %s\n" "$([[ ${status} -eq 0 ]] && echo "Success" || echo "Failed")" >&2
+  printf "  Duration: %d second(s)\n" $((end_time - start_time)) >&2
+
+  return ${status}
+}
+
+# Execute main only if script is being run directly
+[[ "${BASH_SOURCE[0]}" == "$0" ]] && main "$@"
