@@ -12,7 +12,7 @@
 ### Quick Steps
 
 1. **DO NOT** create a public GitHub issue
-2. Email: sergiy@noskov.org
+2. Email: sergiy@noskov.org starting with \[SECURITY\] in the subject line
 3. Include:
     - Detailed description
     - Steps to reproduce

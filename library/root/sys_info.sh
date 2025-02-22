@@ -23,7 +23,7 @@
 #                   - Cache duration configurable via ROOTINE_SYS_INFO_CACHE_DURATION
 #                   - Fallback methods available when commands missing
 # @envvar           ROOTINE_UNKNOWN Default value for unavailable information
-# @envvar           ROOTINE_TMP_DIR Directory for cache files
+# @envvar           ROOTINE_CACHE_DIR Directory for cache files
 # @envvar           ROOTINE_SYS_INFO_CACHE_DURATION Cache duration in seconds (default: 300)
 # @stdout           Formatted system information report
 # @stderr           Log messages and error information
@@ -48,7 +48,7 @@ is_sourced || exit 1
 
 # Ensure required variables are set
 : "${ROOTINE_UNKNOWN:=Unknown}"
-: "${ROOTINE_TMP_DIR:=/tmp/rootine}"
+: "${ROOTINE_CACHE_DIR:=/var/cache/rootine}"
 : "${ROOTINE_SYS_INFO_CACHE_DURATION:=300}"
 
 # --
@@ -721,7 +721,7 @@ _generate_sys_info_report() {
 # @public
 # --
 get_system_info() {
-  local -r cache_file="${ROOTINE_TMP_DIR}/system_info.cache"
+  local -r cache_file="${ROOTINE_CACHE_DIR}/system_info.cache"
   local -ir cache_max_age=${ROOTINE_SYS_INFO_CACHE_DURATION}
   local -A info
 
@@ -748,15 +748,6 @@ get_system_info() {
   _collect_network_info
   _collect_gpu_info
   _collect_system_status
-
-  # Ensure cache directory exists
-  if [[ ! -d "${ROOTINE_TMP_DIR}" ]]; then
-    mkdir -p "${ROOTINE_TMP_DIR}" || {
-      log_error "Failed to create cache directory: ${ROOTINE_TMP_DIR}"
-      _generate_sys_info_report
-      return 1
-    }
-  fi
 
   # Generate and cache report
   _generate_sys_info_report | tee "${cache_file}"

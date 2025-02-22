@@ -39,8 +39,10 @@
 
 **Sergiy Noskov** (Lead)
 - GitHub: [@noskov](https://github.com/noskov)
+- Website: [noskov.org](https://noskov.org)
 - Email: sergiy@noskov.org
 
 **Ergiosko** (Organization)
+- GitHub: [@ergiosko](https://github.com/ergiosko)
 - Website: [ergiosko.com](https://ergiosko.com)
 - Email: contact@ergiosko.com
