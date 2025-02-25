@@ -61,6 +61,7 @@ sudo ./install.sh
 ```
 
 The installer will:
+- Create Rootine-related utility directories
 - Detect the appropriate system-wide bashrc location (`/etc/bash.bashrc` or `/etc/bashrc`)
 - Create a backup of your current bashrc as `*.rootine.bak`
 - Add Rootine configuration to your system-wide bashrc
@@ -94,6 +95,7 @@ sudo ./uninstall.sh
 ```
 
 The uninstaller will:
+- Remove Rootine-related utility directories
 - Remove all Rootine-related configurations from your system-wide bashrc
 - Keep a backup of the original configuration as `*.rootine.bak`
 - Remove the global `rootine` alias and `IS_ROOTINE_INSTALLED` variable
@@ -203,37 +205,72 @@ We follow these naming conventions for consistency and clarity:
 1. `commands/`: Contains scripts that perform specific tasks. These scripts might use functions from the library directory.
 The separation into `root/` and `user/` subdirectories ensures that root actions are kept separate and protected.
 
-2. `library/`: Contains reusable functions and helper scripts. The `common/` directory holds functions that are used by both root and user scripts. The `root/` and `user/` subdirectories contain functions specific to each level.
+2. `library/`: Contains reusable functions and helper scripts. The `common/` directory holds functions that are used by both root and user scripts. The `root/` and `user/` subdirectories contain functions specific to each privilege level.
 
-3. `rootine` (Main Script): The main `rootine` script handles this structure. It sources the appropriate library functions and then execute the requested command script.
+3. `library/bootstrap.sh`: The core initialization component that:
+  - Sets up error handling and cleanup procedures
+  - Validates the environment and required dependencies
+  - Initializes system-wide constants and configurations
+  - Manages user privilege levels (root/user)
+  - Provides dynamic function loading and command routing
+  - Handles library file sourcing based on user level
+  - Implements secure temporary file management
+  - Establishes logging and debugging infrastructure
 
-### Command Categories
+The bootstrap process ensures:
+  - Proper initialization of the framework
+  - Secure execution environment
+  - Clean error handling and resource cleanup
+  - Appropriate privilege separation
+  - Dynamic command and function resolution
 
-#### Root Commands
-
-Located in `commands/root/`:
-- System modifications
-- Package management
-- Service control
-- Security operations
-
-#### User Commands
-
-Located in `commands/user/`:
-- Regular system operations
-- Configuration management
-- Package information
-- Status checks
+4. `rootine` (Main Script): The framework's entry point that, in a nutshell, initializes core components, and routes commands to their appropriate handlers. It acts as a secure gateway between user input and the framework's functionality.
 
 ### Basic Usage
+
+Rootine's command-line interface follows a simple pattern:
 
 ```bash
 rootine [command] [options]
 ```
 
-### Common Usage Examples
+Commands are organized by privilege level in corresponding subdirectories:
 
+- Root-level commands: `commands/root/*.sh`
+- User-level commands: `commands/user/*.sh`
 
+For example, to install Git:
+
+```bash
+# This will execute commands/root/install-git.sh
+rootine install-git
+```
+
+Each command is a standalone Bash script that:
+
+1. Lives in the appropriate privilege directory
+2. Has a `.sh` extension (omitted when calling)
+3. Contains a `main()` function that performs the actual work
+
+More examples:
+
+```bash
+# Root-level commands (require sudo)
+rootine install-apache2-server  # Install Apache2 web server
+rootine remove-docker           # Remove Docker and its dependencies
+rootine configure-firewall      # Configure system firewall
+
+# User-level commands
+rootine install-nodejs          # Install Node.js runtime environment
+rootine check-updates           # Check for system updates
+rootine get-system-info         # Display system information
+```
+
+Available commands can be found by exploring the `commands/` directory structure or by running:
+
+```bash
+rootine --help
+```
 
 
 ## Contributing

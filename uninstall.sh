@@ -37,7 +37,8 @@
 #                   rootine configuration
 #                   ROOTINE_CODE_MARKER_END - Marker indicating end of
 #                   rootine configuration
-# @sideeffects      - Creates backup of system bashrc file (.rootine.bak)
+# @sideeffects      - Removes required utility directories
+#                   - Creates backup of system bashrc file (.rootine.bak)
 #                   - Modifies system bashrc by removing rootine configuration block
 #                   - Removes global 'rootine' alias
 #                   - Removes global IS_ROOTINE_INSTALLED variable
