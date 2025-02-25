@@ -1,5 +1,18 @@
 # Rootine — A Bash Library for Lazy Ubuntoids
 
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/releases)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ergiosko/rootine/shellcheck.yml?branch=main&style=flat-square)](https://github.com/ergiosko/rootine/actions)
+[![Bash Version](https://img.shields.io/badge/bash-%3E%3D4.4.0-brightgreen?style=flat-square)](https://www.gnu.org/software/bash/)
+[![Ubuntu Version](https://img.shields.io/badge/ubuntu-%3E%3D20.04-orange?style=flat-square)](https://ubuntu.com/)
+[![Code Style](https://img.shields.io/badge/code%20style-shellcheck-blue?style=flat-square)](https://www.shellcheck.net/)
+[![GitHub issues](https://img.shields.io/github/issues/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/pulls)
+[![GitHub Discussions](https://img.shields.io/github/discussions/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/discussions)
+[![Security Policy](https://img.shields.io/badge/security-policy-red?style=flat-square)](https://github.com/ergiosko/rootine/security/policy)
+[![GitHub](https://img.shields.io/github/license/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/blob/main/LICENSE)
+[![GitHub Sponsor](https://img.shields.io/github/sponsors/ergiosko?style=flat-square&logo=github&label=Sponsor)](https://github.com/sponsors/ergiosko)
+
+
 ## Description
 
 
