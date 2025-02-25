@@ -130,7 +130,7 @@ _set_app_env() {
   declare -gx LANG="en_US.UTF-8"
   declare -gx LANGUAGE="en_US.UTF-8"
 
-  declare -gr ROOTINE_VERSION="1.0.0"
+  declare -gr ROOTINE_VERSION="0.9.0"
   declare -gix IS_ROOTINE_INSTALLED="${IS_ROOTINE_INSTALLED:-0}"
 
   printf "%s[ DEBUG ]%s Environment variables set successfully\n" \
@@ -255,11 +255,6 @@ _validate_app_paths() {
 main() {
   local start_time end_time
 
-  printf "%s[ DEBUG ]%s Starting Rootine v%s\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" "${ROOTINE_VERSION:-unknown}" >&2
-  printf "  Date: %s\n" "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >&2
-  printf "  User: %s\n" "${USER:-unknown}" >&2
-
   start_time=$(date +%s)
 
   check_bash_version || return 1
@@ -267,8 +262,11 @@ main() {
   _set_app_paths || return 1
   _validate_app_paths || return 1
 
-  printf "%s[ DEBUG ]%s Loading core component...\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+  printf "%s[ DEBUG ]%s Starting Rootine v%s\n" \
+    "${RCLR_WHITE}" "${RCLR_RESET}" "${ROOTINE_VERSION:-Unknown}" >&2
+  printf "  Date: %s\n" "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >&2
+  printf "  User: %s\n" "${USER:-Unknown}" >&2
+  printf "  Loading core component...\n" >&2
 
   if ! source "${ROOTINE_LIBRARY_DIR}/bootstrap.sh"; then
     printf "%s[ ERROR ]%s Failed to load core component.\n" \
@@ -290,11 +288,22 @@ main() {
     printf "%s[ ERROR ]%s No command specified.\n" \
       "${RCLR_RED}" "${RCLR_RESET}" >&2
     printf "  Usage: %s <command> [arguments...]\n" "${0}" >&2
-    printf "  Run '%s help' for available commands.\n" "${0}" >&2
+    printf "  Run '%s --help' for available commands.\n" "${0}" >&2
     return 1
   fi
 
   shift
+
+  case "${cmd}" in
+    -h|--help|help)
+      show_help_info
+      return 0
+      ;;
+    -v|--version)
+      printf "v%s\n" "${ROOTINE_VERSION:-Unknown}" >&2
+      return 0
+      ;;
+  esac
 
   printf "%s[ DEBUG ]%s Executing command: %s\n" \
     "${RCLR_WHITE}" "${RCLR_RESET}" "${cmd}" >&2
@@ -303,11 +312,11 @@ main() {
   local status=$?
 
   end_time=$(date +%s)
+
   printf "%s[ DEBUG ]%s Command execution completed\n" \
     "${RCLR_WHITE}" "${RCLR_RESET}" >&2
   printf "  Status: %s\n" "$([[ ${status} -eq 0 ]] && echo "Success" || echo "Failed")" >&2
   printf "  Duration: %d second(s)\n" $((end_time - start_time)) >&2
-
   return ${status}
 }
 

@@ -15,7 +15,8 @@
 
 ## Description
 
-
+> [!CAUTION]
+> This library is currently under active development and is NOT ready for production use. Production readiness will be achieved with the first public release (v1.0.0). See [Project Status](#project-status).
 
 
 ## Table of Contents
@@ -342,7 +343,7 @@ For security concerns, please email sergiy@noskov.org or contact@ergiosko.com st
 ### Current Status
 
 - **Phase**: Active Development
-- **Version**: 0.x.x (Alpha)
+- **Version**: 0.9.0
 - **Stability**: NOT PRODUCTION READY
 
 ### Focus Areas
@@ -351,7 +352,8 @@ For security concerns, please email sergiy@noskov.org or contact@ergiosko.com st
 - Performance optimization
 - Test coverage expansion
 
-> **IMPORTANT**: This library is currently under active development and is NOT ready for production use. Production readiness will be achieved with the first public release (v1.0.0).
+> [!IMPORTANT]
+> This library is currently under active development and is NOT ready for production use. Production readiness will be achieved with the first public release (v1.0.0).
 
 
 ## Maintainers
