@@ -79,6 +79,31 @@ if [[ ! -w "${ROOTINE_ETC_BASHRC_FILE}" ]]; then
   exit 1
 fi
 
+# Remove required utility directories
+ROOTINE_UTILITY_DIRECTORIES=(
+  "/srv/backups/rootine"
+  "/var/cache/rootine"
+  "/var/log/rootine"
+  "/var/run/rootine"
+  "/tmp/rootine"
+)
+
+for dir in "${ROOTINE_UTILITY_DIRECTORIES[@]}"; do
+  [[ ! -d "${dir}" ]] && continue
+
+  if ! rm -rf "${dir}"; then
+    printf "%s[ ERROR ]%s Failed to remove utility directory\n" \
+      "${RCLR_RED}" "${RCLR_RESET}" >&2
+    printf "  Directory: %s\n" "${dir}" >&2
+    printf "  Please check:\n" >&2
+    printf "  - You have delete permissions\n" >&2
+    printf "  - Parent directory exists\n" >&2
+    return 1
+  fi
+
+  echo "[SUCCESS] ${dir} utility directory removed successfully" >&2
+done
+
 # Define markers for rootine configuration block
 ROOTINE_CODE_MARKER_START="# -- Start Rootine Code --"
 ROOTINE_CODE_MARKER_END="# -- End Rootine Code --"

@@ -398,8 +398,6 @@ _source_user_level_files() {
 # --
 _validate_constants() {
   local -ar required_constants=(
-    "LANG"
-    "LC_ALL"
     "ROOTINE_COMMANDS_DIR"
     "ROOTINE_LIBRARY_DIR"
     "ROOTINE_LOG_LEVEL_DEFAULT"
@@ -423,60 +421,6 @@ _validate_constants() {
     printf "  Please ensure all required constants are properly defined\n" >&2
     return 1
   fi
-
-  return 0
-}
-
-# --
-# @description      Creates required utility directories for the framework
-# @stdout           None
-# @stderr           Status and error messages
-# @exitstatus       0 All directories created/exist and have correct permissions
-#                   1 Failed to create or set permissions on directory
-# @global           ROOTINE_BACKUPS_DIR   Directory for backup files
-# @global           ROOTINE_LOGS_DIR      Directory for log files
-# @global           ROOTINE_TMP_DIR       Directory for temporary files
-# @global           ROOTINE_CLEANUP_DIRS  Array of directories to clean on exit
-# @sideeffects      - Creates directories if they don't exist
-#                   - Sets directory permissions to 0755
-#                   - Adds temp directory to cleanup list
-# @example          _create_utility_directories || echo "Failed to create directories"
-# @internal
-# --
-_create_utility_directories() {
-  local -ar dirs=(
-    "${ROOTINE_BACKUPS_DIR:?[ ERROR ] ROOTINE_BACKUPS_DIR not set}"
-    "${ROOTINE_CACHE_DIR:?[ ERROR ] ROOTINE_CACHE_DIR not set}"
-    "${ROOTINE_LOGS_DIR:?[ ERROR ] ROOTINE_LOGS_DIR not set}"
-    "${ROOTINE_RUNTIME_DIR:?[ ERROR ] ROOTINE_RUNTIME_DIR not set}"
-    "${ROOTINE_TMP_DIR:?[ ERROR ] ROOTINE_TMP_DIR not set}"
-  )
-
-  for dir in "${dirs[@]}"; do
-    [[ -d "${dir}" ]] && continue
-
-    if ! mkdir -p "${dir}"; then
-      printf "%s[ ERROR ]%s Failed to create utility directory\n" \
-        "${RCLR_RED}" "${RCLR_RESET}" >&2
-      printf "  Directory: %s\n" "${dir}" >&2
-      printf "  Please check:\n" >&2
-      printf "  - You have write permissions\n" >&2
-      printf "  - Parent directory exists\n" >&2
-      printf "  - Disk has sufficient space\n" >&2
-      return 1
-    fi
-
-    if ! chmod 0755 "${dir}"; then
-      printf "%s[ ERROR ]%s Failed to set directory permissions\n" \
-        "${RCLR_RED}" "${RCLR_RESET}" >&2
-      printf "  Directory: %s\n" "${dir}" >&2
-      printf "  Required permissions: 0755\n" >&2
-      printf "  Please check you have sufficient privileges\n" >&2
-      return 1
-    fi
-  done
-
-  ROOTINE_CLEANUP_DIRS+=("${ROOTINE_TMP_DIR}")
 
   return 0
 }
@@ -717,11 +661,7 @@ _init_environment() {
     return 1
   fi
 
-  if ! _create_utility_directories; then
-    printf "%s[ ERROR ]%s Failed to create utility directories\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
-    return 1
-  fi
+  ROOTINE_CLEANUP_DIRS+=("${ROOTINE_TMP_DIR}")
 
   printf "%s[ DEBUG ]%s Environment initialized successfully\n" \
     "${RCLR_WHITE}" "${RCLR_RESET}" >&2
