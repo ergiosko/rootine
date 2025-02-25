@@ -288,17 +288,26 @@ apt_get_do() {
   local -ir timeout="${ROOTINE_APT_COMMAND_TIMEOUT:-300}"
   local -i status=0
 
-  trap 'status=$?; _release_apt_lock; exit "${status}"' ERR SIGHUP SIGINT SIGQUIT SIGTERM
+  trap 'status=$?; _release_apt_lock; return "${status}"' ERR SIGHUP SIGINT SIGQUIT SIGTERM
   trap '_release_apt_lock' EXIT
+
+  if ! check_package_manager_status; then
+    log_error "Package manager is busy, try again later"
+    return 1
+  fi
 
   if ! check_internet_connection; then
     return "${ROOTINE_STATUS_NETWORK_UNREACHABLE}"
   fi
 
-  mapfile -t apt_options < <(_filter_apt_options "${command}")
+  if ! mapfile -t apt_options < <(_filter_apt_options "${command}"); then
+    log_error "Failed to process APT options from '${command}' command"
+    return 1
+  fi
+
   cmd=(
     "apt-get"
-    "${apt_options[@]+"${apt_options[@]}"}"
+    "${apt_options[@]:-}"
     "${command}"
     "${@}"
   )
@@ -308,19 +317,21 @@ apt_get_do() {
     return 1
   fi
 
-  declare -gx DEBIAN_FRONTEND="noninteractive"
-  declare -gx DEBIAN_PRIORITY="critical"
+  LC_ALL="C.UTF-8"
+  LANG="C.UTF-8"
+  LANGUAGE="C.UTF-8"
+  DEBIAN_FRONTEND="noninteractive"
+  DEBIAN_PRIORITY="critical"
+  APT_LISTCHANGES_FRONTEND="none"
 
   log_debug "Running '${cmd[*]}'"
 
   if ! timeout "${timeout}" "${cmd[@]}"; then
     status=$?
     log_error "Command failed with ${status} error code"
-    _release_apt_lock
     return "${status}"
   fi
 
-  _release_apt_lock
   log_debug "Command '${cmd[*]}' has been executed successfully"
   return 0
 }
@@ -337,12 +348,17 @@ apt_get_do() {
 # --
 add_apt_repository() {
   local -r repo_spec="${1:?Error: Missing repository specification}"
-  local -a cmd=("add-apt-repository")
+  local -a cmd
   local -ir timeout="${ROOTINE_APT_COMMAND_TIMEOUT:-300}"
   local -i status=0
 
-  trap 'status=$?; _release_apt_lock; exit "${status}"' ERR SIGHUP SIGINT SIGQUIT SIGTERM
+  trap 'status=$?; _release_apt_lock; return "${status}"' ERR SIGHUP SIGINT SIGQUIT SIGTERM
   trap '_release_apt_lock' EXIT
+
+  if ! check_package_manager_status; then
+    log_error "Package manager is busy, try again later"
+    return 1
+  fi
 
   if ! command -v add-apt-repository &>/dev/null; then
     log_error "add-apt-repository command not found. Installing software-properties-common..."
@@ -357,26 +373,32 @@ add_apt_repository() {
     return "${ROOTINE_STATUS_NETWORK_UNREACHABLE}"
   fi
 
+  cmd=(
+    "add-apt-repository"
+    "-y"
+    "${repo_spec}"
+  )
+
   if ! _acquire_apt_lock; then
     log_error "Failed to acquire APT lock"
     return 1
   fi
 
-  declare -gx DEBIAN_FRONTEND="noninteractive"
-  declare -gx DEBIAN_PRIORITY="critical"
-
-  cmd+=("-y" "${repo_spec}")
+  LC_ALL="C.UTF-8"
+  LANG="C.UTF-8"
+  LANGUAGE="C.UTF-8"
+  DEBIAN_FRONTEND="noninteractive"
+  DEBIAN_PRIORITY="critical"
+  APT_LISTCHANGES_FRONTEND="none"
 
   log_debug "Running '${cmd[*]}'"
 
   if ! timeout "${timeout}" "${cmd[@]}"; then
     status=$?
     log_error "Failed to add repository: ${repo_spec}"
-    _release_apt_lock
     return "${status}"
   fi
 
-  _release_apt_lock
   log_success "Successfully added repository: ${repo_spec}"
   return 0
 }
