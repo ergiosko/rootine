@@ -661,8 +661,6 @@ _init_environment() {
     return 1
   fi
 
-  ROOTINE_CLEANUP_DIRS+=("${ROOTINE_TMP_DIR}")
-
   printf "%s[ DEBUG ]%s Environment initialized successfully\n" \
     "${RCLR_WHITE}" "${RCLR_RESET}" >&2
   return 0

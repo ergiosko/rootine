@@ -28,7 +28,7 @@ is_sourced || exit 1
 # --
 _is_git_repo() {
   if ! git rev-parse --is-inside-work-tree &>/dev/null; then
-    log_error "Not in a Git repository"
+    log_error "Current directory is not a Git repository"
     return 1
   fi
   return 0
@@ -138,12 +138,12 @@ git_clone() {
 # @public
 # --
 git_config() {
-  local config_file="--${1:-global}"
+  local config_file="--${1:-local}"
   local show_only=false
   shift || true
 
   # Validate scope
-  if [[ ! "${config_file#--}" =~ ^(local|global|system)$ ]]; then
+  if [[ ! "${config_file#--}" =~ ^(global|system|local|worktree)$ ]]; then
     log_error "Invalid configuration scope: ${config_file#--}"
     return 1
   fi
@@ -235,9 +235,9 @@ git_reset() {
   fi
 
   local -a cmd=(
-    "git rm -r --cached ."
+    "git rm -rf --cached ."
     "git reset --hard ${commit}"
-    "git clean -fd"
+    "git clean -df"
   )
 
   for c in "${cmd[@]}"; do
@@ -266,20 +266,19 @@ git_push() {
   local commit_msg="${1:-Update}"
   shift || true
 
-  local force_push=false
-  local verbose=false
+  local all_branches=false
   local branch="${ROOTINE_GIT_DEFAULT_BRANCH:-main}"
   local remote="${ROOTINE_GIT_DEFAULT_REMOTE:-origin}"
+  local force=false
+  local verbose=false
+  local upstream=false
 
   _is_git_repo || return 1
 
   while (( ${#} )); do
     case "${1}" in
-      -f|--force)
-        force_push=true
-        ;;
-      -v|--verbose)
-        verbose=true
+      --all|--branches)
+        all_branches=true
         ;;
       -b|--branch)
         branch="${2:?Branch name required for -b/--branch}"
@@ -288,6 +287,15 @@ git_push() {
       -r|--remote)
         remote="${2:?Remote name required for -r/--remote}"
         shift
+        ;;
+      -f|--force)
+        force=true
+        ;;
+      -v|--verbose)
+        verbose=true
+        ;;
+      -u|--set-upstream)
+        upstream=true
         ;;
       *)
         log_error "Invalid argument '${1}'"
@@ -303,7 +311,7 @@ git_push() {
     return 1
   fi
 
-  if ! git add .; then
+  if ! git add -A; then
     log_error "Failed to stage changes"
     return 1
   fi
@@ -318,15 +326,24 @@ git_push() {
     return 1
   fi
 
-  local -a push_args=("${remote}" "${branch}")
-  "${force_push}" && push_args+=(--force)
-  "${verbose}" && push_args+=(--verbose)
+  local -a push_args=()
+
+  if [[ "${all_branches}" == "true" ]]; then
+    push_args+=("--all")
+  else
+    [[ -n "${branch}" ]] && push_args+=("--branch" "${branch}")
+    [[ -n "${remote}" ]] && push_args+=("--remote" "${remote}")
+  fi
+
+  "${force}" && push_args+=("--force")
+  "${verbose}" && push_args+=("--verbose")
+  "${upstream}" && push_args+=("-u")
 
   if ! git push "${push_args[@]}"; then
-    log_error "Failed to push to ${remote}:${branch}"
+    log_error "Failed to push to ${remote}:${branch} running 'git push ${push_args[*]}'"
     return 1
   fi
 
-  log_success "Successfully pushed to ${remote}:${branch}"
+  log_success "Successfully pushed to ${remote}:${branch} running 'git push ${push_args[*]}'"
   return 0
 }
