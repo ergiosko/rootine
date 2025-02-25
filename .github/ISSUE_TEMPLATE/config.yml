@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Wiki
-    url: https://github.com/ergiosko/rootine/wiki
-    about: Check our Wiki before creating an issue
+  # - name: Wiki
+  #   url: https://github.com/ergiosko/rootine/wiki
+  #   about: Check our Wiki before creating an issue
 
   - name: Security Policy
     url: https://github.com/ergiosko/rootine/security/policy
