@@ -380,11 +380,6 @@ Prerequisites:
 - Ubuntu systems expertise
 - Good communication skills
 
-### Communication
-
-- [GitHub Discussions](https://github.com/ergiosko/rootine/discussions)
-- [Issue Tracker](https://github.com/ergiosko/rootine/issues)
-
 
 ## Contact
 
@@ -392,12 +387,13 @@ For all support inquiries, community discussions, and contact information, pleas
 
 ### Quick Links
 
-- [Community Discussions](https://github.com/ergiosko/rootine/discussions)
-- [Issue Reports](https://github.com/ergiosko/rootine/issues)
+- [Github Discussions](https://github.com/ergiosko/rootine/discussions)
+- [Issue Tracker](https://github.com/ergiosko/rootine/issues)
+- [Pull Requests](https://github.com/ergiosko/rootine/pulls)
 - [Security Policy](https://github.com/ergiosko/rootine/security)
-- Professional: contact@ergiosko.com
 
-**Note**: For security vulnerabilities, please DO NOT use public channels. Follow the security reporting guidelines in our [Security Policy](.github/SECURITY.md).
+> [!NOTE]
+> For security vulnerabilities, please DO NOT use public channels. Follow the security reporting guidelines in our [Security Policy](.github/SECURITY.md).
 
 
 ## License

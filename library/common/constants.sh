@@ -236,5 +236,6 @@ declare -gAr ROOTINE_COMMENT_TAGS=(
   ["@todo"]="Todo"                    # Notes for future development or improvements.
   ["@note"]="Note"                    # Adds additional notes or clarifications (use sparingly).
   ["@internal"]="Internal"            # Marks something as internal and not intended for external use.
+  ["@public"]="Public"                # Marks something as public and intended for external use.
   ["@ignore"]="Ignore"                # Indicates that a section of code should be ignored by documentation tools.
 )
