@@ -33,7 +33,7 @@ check_system_requirements() {
 
   local -a required_commands=("ufw" "hostname" "systemctl")
 
-  if ! is_command_available "${required_commands[@]}"; then
+  if ! is_command "${required_commands[@]}"; then
     log_error "Missing required commands"
     ((status+=1))
   fi

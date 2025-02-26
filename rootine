@@ -49,15 +49,15 @@
 # ---
 
 # Color definitions for consistent message formatting
-declare -gr RCLR_RED=$'\e[0;31m'
-declare -gr RCLR_GREEN=$'\e[0;32m'
-declare -gr RCLR_YELLOW=$'\e[0;33m'
-declare -gr RCLR_BLUE=$'\e[0;34m'
-declare -gr RCLR_MAGENTA=$'\e[0;35m'
-declare -gr RCLR_CYAN=$'\e[0;36m'
-declare -gr RCLR_WHITE=$'\e[0;37m'
-declare -gr RCLR_DEFAULT=$'\e[0;39m'
-declare -gr RCLR_RESET=$'\e[0m'
+declare -g RCLR_RED=$'\e[0;31m'
+declare -g RCLR_GREEN=$'\e[0;32m'
+declare -g RCLR_YELLOW=$'\e[0;33m'
+declare -g RCLR_BLUE=$'\e[0;34m'
+declare -g RCLR_MAGENTA=$'\e[0;35m'
+declare -g RCLR_CYAN=$'\e[0;36m'
+declare -g RCLR_WHITE=$'\e[0;37m'
+declare -g RCLR_DEFAULT=$'\e[0;39m'
+declare -g RCLR_RESET=$'\e[0m'
 
 # --
 # @description      Validates that script is running under Bash
@@ -125,11 +125,6 @@ _set_app_env() {
   set -euf -o pipefail
 
   declare -g IFS=$' \n\t'
-
-  declare -gx LC_ALL="en_US.UTF-8"
-  declare -gx LANG="en_US.UTF-8"
-  declare -gx LANGUAGE="en_US.UTF-8"
-
   declare -gr ROOTINE_VERSION="0.9.0"
   declare -gix IS_ROOTINE_INSTALLED="${IS_ROOTINE_INSTALLED:-0}"
 
@@ -307,16 +302,17 @@ main() {
 
   printf "%s[ DEBUG ]%s Executing command: %s\n" \
     "${RCLR_WHITE}" "${RCLR_RESET}" "${cmd}" >&2
-
   _route_command "${cmd}" "$@"
   local status=$?
 
   end_time=$(date +%s)
-
   printf "%s[ DEBUG ]%s Command execution completed\n" \
     "${RCLR_WHITE}" "${RCLR_RESET}" >&2
   printf "  Status: %s\n" "$([[ ${status} -eq 0 ]] && echo "Success" || echo "Failed")" >&2
   printf "  Duration: %d second(s)\n" $((end_time - start_time)) >&2
+
+  # shellcheck disable=SC2086
+  unset ${!RCLR_@}
   return ${status}
 }
 

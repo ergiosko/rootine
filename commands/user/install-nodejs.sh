@@ -13,7 +13,7 @@ main() {
   local nvm_version="${SCRIPT_ARG_NVM_VERSION}"
   local node_version="${SCRIPT_ARG_NODE_VERSION}"
 
-  if ! is_command_available "curl"; then
+  if ! is_command "curl"; then
     return 1
   fi
 
@@ -28,7 +28,7 @@ main() {
   [[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"
   [[ -s "${NVM_DIR}/bash_completion" ]] && \. "${NVM_DIR}/bash_completion"
 
-  if ! is_command_available "nvm"; then
+  if ! is_command "nvm"; then
     log_error "nvm installation failed"
     return 1
   fi

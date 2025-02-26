@@ -34,11 +34,10 @@
 #                   _safe_remove              Safely removes files and directories
 #                   _cleanup_handler          Handles cleanup on exit
 #                   _error_handler            Handles error conditions
-#                   is_command_available      Checks for required system commands
+#                   is_command      Checks for required system commands
 #                   _populate_ubuntu_info     Gathers system information
 #                   _get_user_level           Determines user execution level
 #                   _source_user_level_files  Loads appropriate library files
-#                   _validate_constants       Verifies required constants
 #                   _create_utility_dirs      Creates required directories
 #                   _find_library_function    Locates library functions
 #                   _route_command            Routes and executes commands
@@ -228,10 +227,10 @@ _error_handler() {
 # @stderr           Error message if commands are missing
 # @exitstatus       0 All commands are available
 #                   1 One or more commands are missing
-# @example          is_command_available "date" "dirname" "realpath"
-#                   is_command_available "date dirname realpath"
+# @example          is_command "date" "dirname" "realpath"
+#                   is_command "date dirname realpath"
 # --
-is_command_available() {
+is_command() {
   local -a commands=()
   local -a missing_cmds=()
   local cmd
@@ -276,7 +275,7 @@ is_command_available() {
 _populate_ubuntu_info() {
   local desc release codename kernel
 
-  if is_command_available "lsb_release"; then
+  if is_command "lsb_release"; then
     desc="$(lsb_release -ds &>/dev/null || echo "${ROOTINE_UNKNOWN}")"
     release="$(lsb_release -rs &>/dev/null || echo "${ROOTINE_UNKNOWN}")"
     codename="$(lsb_release -cs &>/dev/null || echo "${ROOTINE_UNKNOWN}")"
@@ -286,7 +285,7 @@ _populate_ubuntu_info() {
     codename="${ROOTINE_UNKNOWN}"
   fi
 
-  kernel="$(is_command_available "uname" && uname -r &>/dev/null ||
+  kernel="$(is_command "uname" && uname -r &>/dev/null ||
     echo "${ROOTINE_UNKNOWN}")"
 
   declare -gr ROOTINE_UBUNTU_DESCRIPTION="${desc}"
@@ -383,44 +382,6 @@ _source_user_level_files() {
     fi
     source "${file}"
   done
-
-  return 0
-}
-
-# --
-# @description      Validates that all required environment constants are set
-# @stdout           None
-# @stderr           Error message listing missing constants
-# @exitstatus       0 All required constants are set
-#                   1 One or more constants are missing
-# @example          _validate_constants || echo "Missing required constants"
-# @internal
-# --
-_validate_constants() {
-  local -ar required_constants=(
-    "ROOTINE_COMMANDS_DIR"
-    "ROOTINE_LIBRARY_DIR"
-    "ROOTINE_LOG_LEVEL_DEFAULT"
-    "ROOTINE_MIN_BASH_VERSION"
-    "ROOTINE_PATH"
-    "ROOTINE_TMP_DIR"
-    "ROOTINE_VALID_FILE_PERMISSIONS"
-    "ROOTINE_VERSION"
-  )
-  local missing_constants=()
-
-  for const in "${required_constants[@]}"; do
-    [[ -z "${!const+@}" ]] && missing_constants+=("${const}")
-  done
-
-  if ((${#missing_constants[@]} > 0)); then
-    printf "%s[ ERROR ]%s Required environment constants not set\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
-    printf "  Missing constants:\n" >&2
-    printf "  - %s\n" "${missing_constants[@]}" >&2
-    printf "  Please ensure all required constants are properly defined\n" >&2
-    return 1
-  fi
 
   return 0
 }
@@ -637,7 +598,7 @@ _init_environment() {
     return 1
   fi
 
-  if ! is_command_available "date" "dirname" "lsb_release" "mkdir" "realpath" "uname"; then
+  if ! is_command "date" "dirname" "lsb_release" "mkdir" "realpath" "uname"; then
     printf "%s[ ERROR ]%s Missing required system commands\n" \
       "${RCLR_RED}" "${RCLR_RESET}" >&2
     return 1
@@ -651,12 +612,6 @@ _init_environment() {
   local -r user_level="$(_get_user_level)"
   if ! _source_user_level_files "${user_level}"; then
     printf "%s[ ERROR ]%s Failed to source user level files\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
-    return 1
-  fi
-
-  if ! _validate_constants; then
-    printf "%s[ ERROR ]%s Constants validation failed\n" \
       "${RCLR_RED}" "${RCLR_RESET}" >&2
     return 1
   fi

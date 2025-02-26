@@ -47,7 +47,7 @@ is_sourced || exit 1
 snap_stop() {
   local -ar required_cmds=("pgrep" "killall")
 
-  if ! is_command_available "${required_cmds[@]}"; then
+  if ! is_command "${required_cmds[@]}"; then
     log_error "Missing required commands: ${required_cmds[*]}"
     return 1
   fi
@@ -86,7 +86,7 @@ snap_refresh() {
   local -ar required_cmds=("snap" "sleep")
   local -i attempt=1
 
-  if ! is_command_available "${required_cmds[@]}"; then
+  if ! is_command "${required_cmds[@]}"; then
     log_error "Missing required commands: ${required_cmds[*]}"
     return 1
   fi

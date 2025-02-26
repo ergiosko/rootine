@@ -753,7 +753,7 @@ send_email_message() {
   local -r subject="${2:?Email subject required}"
   local -r message="${3:?Email message required}"
 
-  is_command_available "mail" || {
+  is_command "mail" || {
     log_error "Required command 'mail' not found"
     log_info "Install using: sudo apt-get install mailutils"
     return 1

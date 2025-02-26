@@ -1,4 +1,4 @@
-# Rootine — A Bash Library for Lazy Ubuntoids
+# Rootine — Bash Library for Lazy Ubuntoids
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/releases)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ergiosko/rootine/shellcheck.yml?branch=main&style=flat-square)](https://github.com/ergiosko/rootine/actions)
