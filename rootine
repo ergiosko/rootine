@@ -48,17 +48,6 @@
 # @todo             - Add command auto-completion
 # ---
 
-# Color definitions for consistent message formatting
-declare -g RCLR_RED=$'\e[0;31m'
-declare -g RCLR_GREEN=$'\e[0;32m'
-declare -g RCLR_YELLOW=$'\e[0;33m'
-declare -g RCLR_BLUE=$'\e[0;34m'
-declare -g RCLR_MAGENTA=$'\e[0;35m'
-declare -g RCLR_CYAN=$'\e[0;36m'
-declare -g RCLR_WHITE=$'\e[0;37m'
-declare -g RCLR_DEFAULT=$'\e[0;39m'
-declare -g RCLR_RESET=$'\e[0m'
-
 # --
 # @description      Validates that script is running under Bash
 # @exitstatus       1 If not running under Bash
@@ -67,7 +56,7 @@ declare -g RCLR_RESET=$'\e[0m'
 # --
 if [[ -z "${BASH_VERSION:-}" ]]; then
   printf "%s[ ERROR ]%s This script requires the Bash shell to run.\n" \
-    "${RCLR_RED}" "${RCLR_RESET}" >&2
+    $'\e[0;31m' $'\e[0m' >&2
   printf "  Current shell: %s\n" "${SHELL:-Unknown shell}" >&2
   printf "  Please run this script using Bash.\n" >&2
   exit 1
@@ -90,7 +79,7 @@ check_bash_version() {
   local major minor patch
 
   printf "%s[ DEBUG ]%s Checking Bash version compatibility...\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
 
   read -r major minor patch < <(echo "${ROOTINE_MIN_BASH_VERSION}" | tr '.' ' ')
 
@@ -98,7 +87,7 @@ check_bash_version() {
     ((BASH_VERSINFO[0] == major && BASH_VERSINFO[1] < minor)) ||
     ((BASH_VERSINFO[0] == major && BASH_VERSINFO[1] == minor && BASH_VERSINFO[2] < patch)); then
     printf "%s[ ERROR ]%s Incompatible Bash version detected.\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Required version: %s or higher\n" "${ROOTINE_MIN_BASH_VERSION}" >&2
     printf "  Current version:  %s\n" "${BASH_VERSION:-${ROOTINE_UNKNOWN}}" >&2
     printf "  Please upgrade your Bash installation.\n" >&2
@@ -106,7 +95,7 @@ check_bash_version() {
   fi
 
   printf "%s[ DEBUG ]%s Bash version compatibility check passed\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
   return 0
 }
 
@@ -120,7 +109,7 @@ check_bash_version() {
 # --
 _set_app_env() {
   printf "%s[ DEBUG ]%s Setting up application environment...\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
 
   set -euf -o pipefail
 
@@ -129,7 +118,7 @@ _set_app_env() {
   declare -gix IS_ROOTINE_INSTALLED="${IS_ROOTINE_INSTALLED:-0}"
 
   printf "%s[ DEBUG ]%s Environment variables set successfully\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
 }
 
 # --
@@ -144,11 +133,11 @@ get_app_path() {
   local path
 
   printf "%s[ DEBUG ]%s Resolving application path...\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
 
   if [[ -z "${BASH_SOURCE[0]:-}" ]]; then
     printf "%s[ ERROR ]%s Cannot determine script location.\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  BASH_SOURCE[0] is not set.\n" >&2
     printf "  Please ensure the script is being run correctly.\n" >&2
     return 1
@@ -156,7 +145,7 @@ get_app_path() {
 
   if ! path="$(realpath -- "$(dirname -- "${BASH_SOURCE[0]}")")" &>/dev/null; then
     printf "%s[ ERROR ]%s Cannot resolve script directory path.\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Please check:\n" >&2
     printf "  - All parent directories exist\n" >&2
     printf "  - You have sufficient permissions\n" >&2
@@ -165,7 +154,7 @@ get_app_path() {
   fi
 
   printf "%s[ DEBUG ]%s Application path resolved: %s\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" "${path}" >&2
+    $'\e[0;37m' $'\e[0m' "${path}" >&2
   printf "%s\n" "${path}"
 }
 
@@ -180,7 +169,7 @@ _set_app_paths() {
   local path
 
   printf "%s[ DEBUG ]%s Setting up application paths...\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
 
   if ! path="$(get_app_path)"; then
     return 1
@@ -191,7 +180,7 @@ _set_app_paths() {
   declare -gr ROOTINE_COMMANDS_DIR="${ROOTINE_PATH}/commands"
 
   printf "%s[ DEBUG ]%s Application paths configured\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
   return 0
 }
 
@@ -208,13 +197,13 @@ _validate_app_paths() {
   )
 
   printf "%s[ DEBUG ]%s Validating application directory structure...\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
 
   for dir in "${required_dirs[@]}"; do
     printf "  Checking directory: %s\n" "${dir}" >&2
     if [[ ! -d "${dir}" ]]; then
       printf "%s[ ERROR ]%s Missing required directory.\n" \
-        "${RCLR_RED}" "${RCLR_RESET}" >&2
+        $'\e[0;31m' $'\e[0m' >&2
       printf "  Directory: %s\n" "${dir}" >&2
       printf "  Please ensure:\n" >&2
       printf "  - Rootine is properly installed\n" >&2
@@ -226,14 +215,14 @@ _validate_app_paths() {
   printf "  Checking core component: bootstrap.sh\n" >&2
   if [[ ! -f "${ROOTINE_LIBRARY_DIR}/bootstrap.sh" ]]; then
     printf "%s[ ERROR ]%s Missing core component.\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  File: %s/bootstrap.sh\n" "${ROOTINE_LIBRARY_DIR}" >&2
     printf "  Please reinstall Rootine to restore missing components.\n" >&2
     return 1
   fi
 
   printf "%s[ DEBUG ]%s Directory structure validation passed\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
   return 0
 }
 
@@ -251,21 +240,20 @@ main() {
   local start_time end_time
 
   start_time=$(date +%s)
-
   check_bash_version || return 1
   _set_app_env
   _set_app_paths || return 1
   _validate_app_paths || return 1
 
   printf "%s[ DEBUG ]%s Starting Rootine v%s\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" "${ROOTINE_VERSION:-Unknown}" >&2
+    $'\e[0;37m' $'\e[0m' "${ROOTINE_VERSION:-Unknown}" >&2
   printf "  Date: %s\n" "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >&2
   printf "  User: %s\n" "${USER:-Unknown}" >&2
   printf "  Loading core component...\n" >&2
 
   if ! source "${ROOTINE_LIBRARY_DIR}/bootstrap.sh"; then
     printf "%s[ ERROR ]%s Failed to load core component.\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Component: %s\n" "${ROOTINE_LIBRARY_DIR}/bootstrap.sh" >&2
     printf "  Please check:\n" >&2
     printf "  - File permissions\n" >&2
@@ -275,13 +263,13 @@ main() {
   fi
 
   printf "%s[ DEBUG ]%s Core component loaded successfully\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
 
   local cmd="${1:-}"
 
   if [[ -z "${cmd}" ]]; then
     printf "%s[ ERROR ]%s No command specified.\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Usage: %s <command> [arguments...]\n" "${0}" >&2
     printf "  Run '%s --help' for available commands.\n" "${0}" >&2
     return 1
@@ -301,18 +289,15 @@ main() {
   esac
 
   printf "%s[ DEBUG ]%s Executing command: %s\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" "${cmd}" >&2
+    $'\e[0;37m' $'\e[0m' "${cmd}" >&2
   _route_command "${cmd}" "$@"
   local status=$?
 
   end_time=$(date +%s)
   printf "%s[ DEBUG ]%s Command execution completed\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
   printf "  Status: %s\n" "$([[ ${status} -eq 0 ]] && echo "Success" || echo "Failed")" >&2
   printf "  Duration: %d second(s)\n" $((end_time - start_time)) >&2
-
-  # shellcheck disable=SC2086
-  unset ${!RCLR_@}
   return ${status}
 }
 

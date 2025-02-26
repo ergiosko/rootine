@@ -34,7 +34,7 @@
 #                   _safe_remove              Safely removes files and directories
 #                   _cleanup_handler          Handles cleanup on exit
 #                   _error_handler            Handles error conditions
-#                   is_command      Checks for required system commands
+#                   is_command                Checks for required system commands
 #                   _populate_ubuntu_info     Gathers system information
 #                   _get_user_level           Determines user execution level
 #                   _source_user_level_files  Loads appropriate library files
@@ -129,7 +129,7 @@ _cleanup_handler() {
 
   if [[ -n "${ROOTINE_TEMPORARY_FILES[*]:-}" ]]; then
     printf "%s[ DEBUG ]%s Cleaning up temporary files...\n" \
-      "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+      $'\e[0;37m' $'\e[0m' >&2
     printf "  Total files: %d\n" "${#ROOTINE_TEMPORARY_FILES[@]}" >&2
 
     for file in "${ROOTINE_TEMPORARY_FILES[@]}"; do
@@ -142,7 +142,7 @@ _cleanup_handler() {
 
   if [[ -n "${ROOTINE_CLEANUP_DIRS[*]:-}" ]]; then
     printf "%s[ DEBUG ]%s Cleaning up temporary directories...\n" \
-      "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+      $'\e[0;37m' $'\e[0m' >&2
     printf "  Total directories: %d\n" "${#ROOTINE_CLEANUP_DIRS[@]}" >&2
 
     for dir in "${ROOTINE_CLEANUP_DIRS[@]}"; do
@@ -155,12 +155,12 @@ _cleanup_handler() {
 
   if ((cleanup_status != 0)); then
     printf "%s[ ERROR ]%s Failed to clean up the following items:\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  %s\n" "${failed_cleanups[@]}" >&2
   fi
 
   printf "%s[ DEBUG ]%s Cleanup handler completed\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
   printf "  Exit code: %d\n" "${exit_code}" >&2
 
   set -e
@@ -193,14 +193,14 @@ _error_handler() {
   stack_size=$((${#FUNCNAME[@]} - 1))
 
   printf "%s[ ERROR ]%s Script execution failed\n" \
-    "${RCLR_RED}" "${RCLR_RESET}" >&2
+    $'\e[0;31m' $'\e[0m' >&2
   printf "  Location: %s\n" "${source}" >&2
   printf "  Line: %d\n" "${lineno}" >&2
   printf "  Exit code: %d\n" "${error_code}" >&2
 
   if ((stack_size > 0)); then
     printf "\n%s[ DEBUG ]%s Call stack (most recent call first):\n" \
-      "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+      $'\e[0;37m' $'\e[0m' >&2
 
     for ((i = 1; i <= stack_size; i += 1)); do
       local -r func="${FUNCNAME[i]}"
@@ -215,7 +215,7 @@ _error_handler() {
   fi
 
   printf "\n%s[ DEBUG ]%s Error handler triggered with exit code: %s\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" "${error_code}" >&2
+    $'\e[0;37m' $'\e[0m' "${error_code}" >&2
 
   exit "${error_code}"
 }
@@ -248,7 +248,7 @@ is_command() {
 
   if [[ ${#missing_cmds[@]} -gt 0 ]]; then
     printf "%s[ ERROR ]%s Missing required system commands\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Commands: %s\n" "$(printf "'%s' " "${missing_cmds[@]}")" >&2
     printf "  Please install the required packages for these commands\n" >&2
     return 1
@@ -346,7 +346,7 @@ _source_user_level_files() {
   for file in "${common_files[@]}"; do
     if [[ ! -f "${file}" ]] || [[ ! -r "${file}" ]]; then
       printf "%s[ ERROR ]%s Common library file not accessible\n" \
-        "${RCLR_RED}" "${RCLR_RESET}" >&2
+        $'\e[0;31m' $'\e[0m' >&2
       printf "  File: %s\n" "${file}" >&2
       printf "  Please check:\n" >&2
       printf "  - File exists\n" >&2
@@ -362,7 +362,7 @@ _source_user_level_files() {
     "user") level_files=("${user_files[@]}") ;;
     *)
       printf "%s[ ERROR ]%s Invalid user level specified\n" \
-        "${RCLR_RED}" "${RCLR_RESET}" >&2
+        $'\e[0;31m' $'\e[0m' >&2
       printf "  Level: %s\n" "${level}" >&2
       printf "  Valid levels: root, user\n" >&2
       return 1
@@ -372,7 +372,7 @@ _source_user_level_files() {
   for file in "${level_files[@]}"; do
     if [[ ! -f "${file}" ]] || [[ ! -r "${file}" ]]; then
       printf "%s[ ERROR ]%s %s-level library file not accessible\n" \
-        "${RCLR_RED}" "${RCLR_RESET}" "${level^}" >&2
+        $'\e[0;31m' $'\e[0m' "${level^}" >&2
       printf "  File: %s\n" "${file}" >&2
       printf "  Please check:\n" >&2
       printf "  - File exists\n" >&2
@@ -458,7 +458,7 @@ _route_command() {
   local -r call="${1:?Command call parameter is required}"
   shift || {
     printf "%s[ ERROR ]%s No command arguments provided\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Usage: <command> [arguments...]\n" >&2
     return 1
   }
@@ -467,14 +467,14 @@ _route_command() {
   local -r level="$(_get_user_level)"
   if [[ -z "${level}" ]]; then
     printf "%s[ ERROR ]%s Failed to determine user execution level\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Please check effective user ID (EUID)\n" >&2
     return 1
   fi
 
   local -r request_id="$(date -u +%Y%m%d_%H%M%S_%N)"
   printf "%s[ DEBUG ]%s Processing function call\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
   printf "  Request ID: %s\n" "${request_id}" >&2
   printf "  Call: %s\n" "${call}" >&2
 
@@ -491,7 +491,7 @@ _route_command() {
       root | user)
         if [[ "${lib_name}" != "${level}" ]]; then
           printf "%s[ ERROR ]%s Access denied to library\n" \
-            "${RCLR_RED}" "${RCLR_RESET}" >&2
+            $'\e[0;31m' $'\e[0m' >&2
           printf "  Library: %s\n" "${lib_name}" >&2
           printf "  Current user level: %s\n" "${level}" >&2
           printf "  Required user level: %s\n" "${lib_name}" >&2
@@ -501,7 +501,7 @@ _route_command() {
         ;;
       *)
         printf "%s[ ERROR ]%s Invalid library specified\n" \
-          "${RCLR_RED}" "${RCLR_RESET}" >&2
+          $'\e[0;31m' $'\e[0m' >&2
         printf "  Library: %s\n" "${lib_name}" >&2
         printf "  Valid libraries: common, root, user\n" >&2
         return 1
@@ -514,7 +514,7 @@ _route_command() {
         if [[ -r "${lib_file}" ]] && source "${lib_file}" 2>/dev/null; then
           if declare -F "${func_name}" >/dev/null; then
             printf "%s[ DEBUG ]%s Executing library function\n" \
-              "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+              $'\e[0;37m' $'\e[0m' >&2
             printf "  Library: %s\n" "${lib_name}" >&2
             printf "  Function: %s\n" "${func_name}" >&2
             "${func_name}" "$@"
@@ -525,7 +525,7 @@ _route_command() {
     fi
 
     printf "%s[ ERROR ]%s Function not found in library\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Library: %s\n" "${lib_name}" >&2
     printf "  Function: %s\n" "${func_name}" >&2
     printf "  Please check:\n" >&2
@@ -539,7 +539,7 @@ _route_command() {
   local -r cmd_path="${ROOTINE_COMMANDS_DIR}/${level}/${call}.sh"
   if [[ -f "${cmd_path}" ]] && [[ -r "${cmd_path}" ]]; then
     printf "%s[ DEBUG ]%s Executing command script\n" \
-      "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+      $'\e[0;37m' $'\e[0m' >&2
     printf "  Command: %s\n" "${call}" >&2
     printf "  Path: %s\n" "${cmd_path}" >&2
     declare -g ROOTINE_COMMAND_PATH="${cmd_path}"
@@ -550,14 +550,14 @@ _route_command() {
   # Case 3: Try direct library function call
   if _find_library_function "${call}" "${level}"; then
     printf "%s[ DEBUG ]%s Executing direct function call\n" \
-      "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+      $'\e[0;37m' $'\e[0m' >&2
     printf "  Function: %s\n" "${call}" >&2
     "${call}" "$@"
     return $?
   fi
 
   printf "%s[ ERROR ]%s Command or function not found\n" \
-    "${RCLR_RED}" "${RCLR_RESET}" >&2
+    $'\e[0;31m' $'\e[0m' >&2
   printf "  Name: %s\n" "${call}" >&2
   printf "  User level: %s\n" "${level}" >&2
   printf "  Please check:\n" >&2
@@ -594,30 +594,30 @@ _init_environment() {
 
   if ! is_sourced; then
     printf "%s[ ERROR ]%s Bootstrap must be sourced, not executed directly\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     return 1
   fi
 
   if ! is_command "date" "dirname" "lsb_release" "mkdir" "realpath" "uname"; then
     printf "%s[ ERROR ]%s Missing required system commands\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     return 1
   fi
 
   printf "%s[ DEBUG ]%s Initializing environment\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
 
   _populate_ubuntu_info
 
   local -r user_level="$(_get_user_level)"
   if ! _source_user_level_files "${user_level}"; then
     printf "%s[ ERROR ]%s Failed to source user level files\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     return 1
   fi
 
   printf "%s[ DEBUG ]%s Environment initialized successfully\n" \
-    "${RCLR_WHITE}" "${RCLR_RESET}" >&2
+    $'\e[0;37m' $'\e[0m' >&2
   return 0
 }
 
@@ -632,7 +632,7 @@ _init_environment() {
 # --
 if ! _init_environment "$@"; then
   printf "%s[ ERROR ]%s Environment initialization failed\n" \
-    "${RCLR_RED}" "${RCLR_RESET}" >&2
+    $'\e[0;31m' $'\e[0m' >&2
   printf "  Please check previous error messages for details\n" >&2
   exit 1
 fi

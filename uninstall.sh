@@ -94,7 +94,7 @@ for dir in "${ROOTINE_UTILITY_DIRECTORIES[@]}"; do
 
   if ! rm -rf "${dir}"; then
     printf "%s[ ERROR ]%s Failed to remove utility directory\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Directory: %s\n" "${dir}" >&2
     printf "  Please check:\n" >&2
     printf "  - You have delete permissions\n" >&2

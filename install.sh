@@ -101,7 +101,7 @@ for dir in "${ROOTINE_UTILITY_DIRECTORIES[@]}"; do
 
   if ! mkdir -p "${dir}"; then
     printf "%s[ ERROR ]%s Failed to create utility directory\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Directory: %s\n" "${dir}" >&2
     printf "  Please check:\n" >&2
     printf "  - You have write permissions\n" >&2
@@ -112,7 +112,7 @@ for dir in "${ROOTINE_UTILITY_DIRECTORIES[@]}"; do
 
   if ! chmod 0755 "${dir}"; then
     printf "%s[ ERROR ]%s Failed to set directory permissions\n" \
-      "${RCLR_RED}" "${RCLR_RESET}" >&2
+      $'\e[0;31m' $'\e[0m' >&2
     printf "  Directory: %s\n" "${dir}" >&2
     printf "  Required permissions: 0755\n" >&2
     printf "  Please check you have sufficient privileges\n" >&2

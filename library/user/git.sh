@@ -5,7 +5,7 @@
 # @author           Sergiy Noskov <sergiy@noskov.org>
 # @copyright        Ergiosko <contact@ergiosko.com>
 # @license          MIT
-# @version          1.1.0
+# @version          1.0.0
 # @since            1.0.0
 # @category         Version Control
 # @dependencies     bash (>= 4.0), git (>= 2.0)

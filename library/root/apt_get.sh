@@ -15,7 +15,6 @@
 #                   - ROOTINE_APT_SOURCES_LIST_DIR
 #                   - ROOTINE_APT_LOCK_FILE
 #                   - ROOTINE_APT_DPKG_LOCK_TIMEOUT
-#                   - ROOTINE_APT_COMMAND_TIMEOUT
 #                   - ROOTINE_APT_COMMAND_OPTIONS (associative array)
 #                   - ROOTINE_APT_QUIET_MODE (optional)
 # @exitstatus       0 Success
@@ -272,12 +271,30 @@ _filter_apt_options() {
 }
 
 # --
+# @description      Sets environment variables required for non-interactive apt-get operations
+# @global           LC_ALL Sets locale to C.UTF-8 for consistent output formatting
+# @global           LANG Sets language locale to C.UTF-8
+# @global           LANGUAGE Sets language preference to C.UTF-8
+# @global           DEBIAN_FRONTEND Sets to noninteractive to prevent prompts
+# @global           DEBIAN_PRIORITY Sets to critical to minimize user interaction
+# @global           APT_LISTCHANGES_FRONTEND Disables listchanges frontend
+# @return           Always returns 0 (success)
+# @example          _set_apt_get_env_vars
+# --
+_set_apt_get_env_vars() {
+  declare -gx LC_ALL="C.UTF-8"
+  declare -gx LANG="C.UTF-8"
+  declare -gx LANGUAGE="C.UTF-8"
+  declare -gx DEBIAN_FRONTEND="noninteractive"
+  declare -gx DEBIAN_PRIORITY="critical"
+  declare -gx APT_LISTCHANGES_FRONTEND="none"
+  return 0
+}
+
+# --
 # @description      Executes apt-get commands with proper locking and error handling
 # @param            command The apt-get command to execute (default: update)
 # @param            [args...] Additional arguments to pass to apt-get
-# @envvar           ROOTINE_APT_COMMAND_TIMEOUT Command execution timeout (default: 300s)
-# @envvar           DEBIAN_FRONTEND Set to noninteractive
-# @envvar           DEBIAN_PRIORITY Set to critical
 # @return           0 on success, non-zero on failure
 # @public
 # --
@@ -285,7 +302,6 @@ apt_get_do() {
   local -r command="${1:-update}"
   shift
   local -a apt_options cmd
-  local -ir timeout="${ROOTINE_APT_COMMAND_TIMEOUT:-300}"
   local -i status=0
 
   trap 'status=$?; _release_apt_lock; return "${status}"' ERR SIGHUP SIGINT SIGQUIT SIGTERM
@@ -317,16 +333,11 @@ apt_get_do() {
     return 1
   fi
 
-  LC_ALL="C.UTF-8"
-  LANG="C.UTF-8"
-  LANGUAGE="C.UTF-8"
-  DEBIAN_FRONTEND="noninteractive"
-  DEBIAN_PRIORITY="critical"
-  APT_LISTCHANGES_FRONTEND="none"
+  _set_apt_get_env_vars
 
   log_debug "Running '${cmd[*]}'"
 
-  if ! timeout "${timeout}" "${cmd[@]}"; then
+  if ! "${cmd[@]}"; then
     status=$?
     log_error "Command failed with ${status} error code"
     return "${status}"
@@ -339,9 +350,6 @@ apt_get_do() {
 # --
 # @description      Adds a new APT repository with proper error handling
 # @param            repo_spec Repository specification to add
-# @envvar           ROOTINE_APT_COMMAND_TIMEOUT Command execution timeout (default: 300s)
-# @envvar           DEBIAN_FRONTEND Set to noninteractive
-# @envvar           DEBIAN_PRIORITY Set to critical
 # @return           0 on success, non-zero on failure
 # @public
 # @example          add_apt_repository "ppa:user/repo-name"
@@ -349,7 +357,6 @@ apt_get_do() {
 add_apt_repository() {
   local -r repo_spec="${1:?Error: Missing repository specification}"
   local -a cmd
-  local -ir timeout="${ROOTINE_APT_COMMAND_TIMEOUT:-300}"
   local -i status=0
 
   trap 'status=$?; _release_apt_lock; return "${status}"' ERR SIGHUP SIGINT SIGQUIT SIGTERM
@@ -384,16 +391,11 @@ add_apt_repository() {
     return 1
   fi
 
-  LC_ALL="C.UTF-8"
-  LANG="C.UTF-8"
-  LANGUAGE="C.UTF-8"
-  DEBIAN_FRONTEND="noninteractive"
-  DEBIAN_PRIORITY="critical"
-  APT_LISTCHANGES_FRONTEND="none"
+  _set_apt_get_env_vars
 
   log_debug "Running '${cmd[*]}'"
 
-  if ! timeout "${timeout}" "${cmd[@]}"; then
+  if ! "${cmd[@]}"; then
     status=$?
     log_error "Failed to add repository: ${repo_spec}"
     return "${status}"
