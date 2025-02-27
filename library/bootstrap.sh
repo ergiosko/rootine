@@ -535,19 +535,31 @@ _route_command() {
     return 1
   fi
 
-  # Case 2: Check for commands in user level directory
-  local -r cmd_path="${ROOTINE_COMMANDS_DIR}/${level}/${call}.sh"
-  if [[ -f "${cmd_path}" ]] && [[ -r "${cmd_path}" ]]; then
-    printf "%s[ DEBUG ]%s Executing command script\n" \
+  # Case 2: Check for commands in common level directory
+  local -r common_cmd_path="${ROOTINE_COMMANDS_DIR}/common/${call}.sh"
+  if [[ -f "${common_cmd_path}" ]] && [[ -r "${common_cmd_path}" ]]; then
+    printf "%s[ DEBUG ]%s Executing common command script\n" \
       $'\e[0;37m' $'\e[0m' >&2
     printf "  Command: %s\n" "${call}" >&2
-    printf "  Path: %s\n" "${cmd_path}" >&2
-    declare -g ROOTINE_COMMAND_PATH="${cmd_path}"
-    source "${cmd_path}" "$@"
+    printf "  Path: %s\n" "${common_cmd_path}" >&2
+    declare -g ROOTINE_COMMAND_PATH="${common_cmd_path}"
+    source "${common_cmd_path}" "$@"
     return $?
   fi
 
-  # Case 3: Try direct library function call
+  # Case 3: Check for commands in user level directory
+  local -r level_cmd_path="${ROOTINE_COMMANDS_DIR}/${level}/${call}.sh"
+  if [[ -f "${level_cmd_path}" ]] && [[ -r "${level_cmd_path}" ]]; then
+    printf "%s[ DEBUG ]%s Executing user-level command script\n" \
+      $'\e[0;37m' $'\e[0m' >&2
+    printf "  Command: %s\n" "${call}" >&2
+    printf "  Path: %s\n" "${level_cmd_path}" >&2
+    declare -g ROOTINE_COMMAND_PATH="${level_cmd_path}"
+    source "${level_cmd_path}" "$@"
+    return $?
+  fi
+
+  # Case 4: Try direct library function call
   if _find_library_function "${call}" "${level}"; then
     printf "%s[ DEBUG ]%s Executing direct function call\n" \
       $'\e[0;37m' $'\e[0m' >&2

@@ -7,7 +7,7 @@
 # @license          MIT
 # @version          1.0.0
 # @since            1.0.0
-# @category         User Commands
+# @category         Common Commands
 # @dependencies     - Bash 4.4.0 or higher
 #                   - ssh-keygen (openssh-client)
 #                   - chmod
