@@ -63,7 +63,7 @@ _verify_requirements() {
   local -a missing_commands=()
 
   for cmd in "${required_commands[@]}"; do
-    command -v "$cmd" >/dev/null 2>&1 || missing_commands+=("$cmd")
+    command -v "${cmd}" >/dev/null 2>&1 || missing_commands+=("${cmd}")
   done
 
   if ((${#missing_commands[@]} > 0)); then
@@ -174,7 +174,7 @@ _get_cpu_freq_dmidecode() {
   local freq
 
   # Need root privileges for dmidecode
-  if [[ $EUID -ne 0 ]]; then
+  if [[ ${EUID} -ne 0 ]]; then
     printf '%s\n' "${ROOTINE_UNKNOWN}"
     return 1
   fi
@@ -625,7 +625,7 @@ _collect_datetime_info() {
   if command -v whoami >/dev/null; then
     info[username]=$(whoami)
   else
-    info[username]=$USER
+    info[username]="${USER}"
   fi
 
   return 0

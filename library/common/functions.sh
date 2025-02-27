@@ -185,7 +185,7 @@ _dump_indexed_array() {
     if _is_nested_var "ref[${i}]"; then
       var_dump "ref[${i}]" "${max_depth}" "${depth}" "${width}"
     else
-      printf "string(%d) \"%s\"\n" "${#ref[$i]}" "${ref[$i]}"
+      printf "string(%d) \"%s\"\n" "${#ref[${i}]}" "${ref[${i}]}"
     fi
   done
   printf "%s}\n" "${indent}"
@@ -233,7 +233,7 @@ _dump_associative_array() {
     if _is_nested_var "ref[${key}]"; then
       var_dump "ref[${key}]" "${max_depth}" "${depth}" "${width}"
     else
-      printf "string(%d) \"%s\"\n" "${#ref[$key]}" "${ref[$key]}"
+      printf "string(%d) \"%s\"\n" "${#ref[${key}]}" "${ref[${key}]}"
     fi
   done
   printf "%s}\n" "${indent}"
@@ -476,7 +476,7 @@ check_script_permissions() {
     fi
   done
 
-  if "$valid_perm_found"; then
+  if "${valid_perm_found}"; then
     log_success "Script permissions valid for: ${script_path}"
     return 0
   else

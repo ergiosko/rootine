@@ -56,7 +56,7 @@
 # ---
 
 # Verify script is running with root privileges
-if [[ $EUID -ne 0 ]]; then
+if [[ ${EUID} -ne 0 ]]; then
   echo "[ ERROR ] This script must be run as root" >&2
   exit 1
 fi
@@ -148,7 +148,7 @@ EOF
   )
 
   # Append the configuration to the file
-  if ! echo "$ROOTINE_CONFIG_BLOCK" >>"${ROOTINE_ETC_BASHRC_FILE}"; then
+  if ! echo "${ROOTINE_CONFIG_BLOCK}" >>"${ROOTINE_ETC_BASHRC_FILE}"; then
     echo "[ ERROR ] Failed to update ${ROOTINE_ETC_BASHRC_FILE}" >&2
     exit 1
   fi

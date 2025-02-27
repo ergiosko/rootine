@@ -58,7 +58,7 @@
 # ---
 
 # Verify script is running with root privileges
-if [[ $EUID -ne 0 ]]; then
+if [[ ${EUID} -ne 0 ]]; then
   echo "[ ERROR ] This script must be run as root" >&2
   exit 1
 fi

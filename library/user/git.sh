@@ -171,7 +171,7 @@ git_config() {
     )
 
     for key in "${!configs[@]}"; do
-      local value="${configs[$key]}"
+      local value="${configs[${key}]}"
       if [[ -n "${value}" ]]; then
         if ! git config "${config_file}" "${key}" "${value}"; then
           log_error "Failed to set ${key}=${value}"

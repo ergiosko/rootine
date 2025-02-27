@@ -74,10 +74,10 @@ _get_arg_description() {
   local entry short
 
   if [[ ${#arg} -eq 1 ]]; then
-    entry="${ROOTINE_COMMON_ARGS[$arg]:-}"
+    entry="${ROOTINE_COMMON_ARGS[${arg}]:-}"
   else
     short="${ROOTINE_COMMON_ARGS_LONG_TO_SHORT[${arg#--}]:-}"
-    entry="${ROOTINE_COMMON_ARGS[$short]:-}"
+    entry="${ROOTINE_COMMON_ARGS[${short}]:-}"
   fi
 
   if [[ -z "${entry}" ]]; then
@@ -108,10 +108,10 @@ _arg_requires_value() {
   local entry short
 
   if [[ ${#arg} -eq 1 ]]; then
-    entry="${ROOTINE_COMMON_ARGS[$arg]:-}"
+    entry="${ROOTINE_COMMON_ARGS[${arg}]:-}"
   else
     short="${ROOTINE_COMMON_ARGS_LONG_TO_SHORT[${arg#--}]:-}"
-    entry="${ROOTINE_COMMON_ARGS[$short]:-}"
+    entry="${ROOTINE_COMMON_ARGS[${short}]:-}"
   fi
 
   [[ -z "${entry}" ]] && return 1
@@ -180,12 +180,12 @@ _handle_common_args() {
     case "${arg_key}" in
       --*)
         long_name="${arg_key#--}"
-        short_name="${ROOTINE_COMMON_ARGS_LONG_TO_SHORT[$long_name]:-}"
+        short_name="${ROOTINE_COMMON_ARGS_LONG_TO_SHORT[${long_name}]:-}"
         [[ -z "${short_name}" ]] && break
         ;;
       -*)
         short_name="${arg_key#-}"
-        entry="${ROOTINE_COMMON_ARGS[$short_name]:-}"
+        entry="${ROOTINE_COMMON_ARGS[${short_name}]:-}"
         [[ -z "${entry}" ]] && break
         ;;
       *)
@@ -218,6 +218,7 @@ _handle_common_args() {
         printf "Script version: %s\n" "${ROOTINE_VERSION:-ROOTINE_UNKNOWN}"
         exit 0
         ;;
+      *) ;;
     esac
     shift
   done
@@ -259,7 +260,7 @@ _validate_argument() {
 # --
 _parse_arg_components() {
   local arg="${1:?Argument name required}"
-  local entry="${ROOTINE_SCRIPT_ARGS[$arg]:-}"
+  local entry="${ROOTINE_SCRIPT_ARGS[${arg}]:-}"
 
   if [[ -z "${entry}" ]]; then
     log_error "Argument '${arg}' not found in ROOTINE_SCRIPT_ARGS"
@@ -297,7 +298,7 @@ _process_long_arg() {
   local -n args_ref="${2:?Args reference required}"
   local long_name="${arg_key#--}"
 
-  if [[ -n "${ROOTINE_SCRIPT_ARGS[$long_name]:-}" ]]; then
+  if [[ -n "${ROOTINE_SCRIPT_ARGS[${long_name}]:-}" ]]; then
     local components requires_value pattern
     components=$(_parse_arg_components "${long_name}") || return "${ROOTINE_STATUS_USAGE}"
     requires_value=$(cut -d';' -f2 <<<"${components}")
@@ -325,7 +326,7 @@ _process_long_arg() {
     fi
 
     args_ref=("${args_ref[@]:1}")
-  elif [[ -n "${ROOTINE_COMMON_ARGS_LONG_TO_SHORT[$long_name]:-}" ]]; then
+  elif [[ -n "${ROOTINE_COMMON_ARGS_LONG_TO_SHORT[${long_name}]:-}" ]]; then
     log_error "Common argument ${long_name} used in script-specific section. Use short option."
     _show_script_args_help
     return "${ROOTINE_STATUS_USAGE}"

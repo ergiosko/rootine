@@ -286,6 +286,7 @@ main() {
       printf "v%s\n" "${ROOTINE_VERSION:-Unknown}" >&2
       return 0
       ;;
+    *) ;;
   esac
 
   printf "%s[ DEBUG ]%s Executing command: %s\n" \
@@ -298,7 +299,7 @@ main() {
     $'\e[0;37m' $'\e[0m' >&2
   printf "  Status: %s\n" "$([[ ${status} -eq 0 ]] && echo "Success" || echo "Failed")" >&2
   printf "  Duration: %d second(s)\n" $((end_time - start_time)) >&2
-  return ${status}
+  return "${status}"
 }
 
 # Execute main only if script is being run directly

@@ -71,6 +71,10 @@ upgrade_apt_packages() {
         ((status+=1))
       fi
       ;;
+    *)
+      log_error "Invalid upgrade type: ${upgrade_type}"
+      ((status+=1))
+      ;;
   esac
 
   return "${status}"
