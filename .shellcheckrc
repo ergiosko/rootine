@@ -5,6 +5,6 @@ disable=SC1090,SC1091,SC2034,SC2154,SC2181,SC2310,SC2311,SC2312,SC2317
 enable=all
 external-sources=true
 format=json
-severity=error
+severity=debug
 shell=bash
 source-path=SCRIPTDIR

@@ -4,12 +4,12 @@ is_sourced || exit 1
 
 declare -gA ROOTINE_SCRIPT_ARGS=(
   [message]="Commit message:1:${1:-Update}:"
-  [branches]="Push all branches:0:${2:-true}:"
+  [branches]="Push all branches:0:${2:-true}:^(true|false)$"
   [branch]="Target branch:1:${3:-ROOTINE_GIT_DEFAULT_BRANCH}:"
   [remote]="Remote repository:1:${4:-ROOTINE_GIT_DEFAULT_REMOTE}:"
-  [force]="Force push:0:${5:-false}:"
-  [verbose]="Show verbose output:0:${6:-false}:"
-  [upstream]="Upstream (tracking) reference:0:${7:-true}:"
+  [force]="Force push:0:${5:-false}:^(true|false)$"
+  [verbose]="Show verbose output:0:${6:-false}:^(true|false)$"
+  [upstream]="Upstream (tracking) reference:0:${7:-true}:^(true|false)$"
 )
 
 main() {

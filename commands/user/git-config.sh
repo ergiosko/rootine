@@ -4,7 +4,7 @@ is_sourced || exit 1
 
 declare -gA ROOTINE_SCRIPT_ARGS=(
   [config-scope]="Configuration scope (global, local, worktree):1:${1:-local}:^(global|local|worktree)$"
-  [show-only]="Show configuration without making changes:0:false:"
+  [show-only]="Show configuration without making changes:0:false:^(true|false)$"
 )
 
 main() {

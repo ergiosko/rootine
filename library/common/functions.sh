@@ -737,7 +737,8 @@ check_internet_connection() {
 # --
 # @description      Generates a secure SSH key pair with proper permissions
 # @param            $1 key_file     Path to SSH key (default: $HOME/.ssh/id_rsa)
-# @param            $2 key_type     Type of key [ed25519|rsa|ecdsa] (default: ed25519)
+# @param            $2 key_type     Type of key [dsa|ecdsa|ecdsa-sk|ed25519|ed25519-sk|rsa]
+#                                   (default: ed25519)
 # @param            $3 key_bits     Number of bits for the key (default: 4096)
 # @param            $4 key_comment  Comment for the key (default: $USER@$HOSTNAME)
 # @stdout           Public key contents on success
@@ -747,9 +748,9 @@ check_internet_connection() {
 #                   2 Invalid parameters or missing dependencies
 #                   3 User input error (password mismatch)
 # @dependencies     ssh-keygen, chmod, mkdir
-# @security         - Creates .ssh directory with 700 permissions
-#                   - Sets private key to 600 permissions
-#                   - Sets public key to 644 permissions
+# @security         - Creates .ssh directory with 0700 permissions
+#                   - Sets private key to 0600 permissions
+#                   - Sets public key to 0644 permissions
 #                   - Validates key type and parameters
 #                   - Secure password handling
 # @example          # Generate default ED25519 key

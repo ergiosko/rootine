@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-# --
-# @description      Installs nvm (Node Version Manager) and Node.js
+# ---
+# @description      Installs nvm (Node Version Manager), Node.js and npm
 # @author           Sergiy Noskov <sergiy@noskov.org>
 # @copyright        Ergiosko <contact@ergiosko.com>
 # @license          MIT
 # @version          1.0.0
 # @since            1.0.0
-# @category         Commands
+# @category         User Commands
 # @param            $1 nvm_version  Version of nvm to install (default: v0.40.1)
 # @param            $2 node_version Version of Node.js to install (default: 22)
 # @stdout           Version information for installed components
@@ -22,7 +22,7 @@
 #                   # Install specific versions
 #                   rootine install-nodejs v0.39.3 18
 # @public
-# --
+# ---
 
 is_sourced || exit 1
 
@@ -49,7 +49,7 @@ main() {
     return "${ROOTINE_STATUS_CANTCREAT}"
   fi
 
-  export NVM_DIR="${HOME}/.nvm"
+  declare -gx NVM_DIR="${HOME}/.nvm"
   if [[ ! -s "${NVM_DIR}/nvm.sh" ]]; then
     log_error "nvm installation files not found"
     return "${ROOTINE_STATUS_NOINPUT}"
