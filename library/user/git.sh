@@ -131,7 +131,7 @@ git_clone() {
 
 # --
 # @description      Manages git configuration at different scopes
-# @param            [scope] Configuration scope (local|global|system)
+# @param            [scope] Configuration scope (global|local|worktree)
 # @arguments        [--show-only] Only show current configuration
 # @return           0 on success, non-zero on failure
 # @example          git_config global --show-only
@@ -143,7 +143,7 @@ git_config() {
   shift || true
 
   # Validate scope
-  if [[ ! "${config_file#--}" =~ ^(global|system|local|worktree)$ ]]; then
+  if [[ ! "${config_file#--}" =~ ^(global|local|worktree)$ ]]; then
     log_error "Invalid configuration scope: ${config_file#--}"
     return 1
   fi
@@ -183,7 +183,7 @@ git_config() {
 
   log_info "${config_file#--} Git configuration:"
 
-  if ! git config "${config_file}" --list; then
+  if ! git config list "${config_file}"; then
     log_error "Failed to list ${config_file#--} configuration"
     ((status++))
   fi

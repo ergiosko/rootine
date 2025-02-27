@@ -735,6 +735,140 @@ check_internet_connection() {
 }
 
 # --
+# @description      Generates a secure SSH key pair with proper permissions
+# @param            $1 key_file     Path to SSH key (default: $HOME/.ssh/id_rsa)
+# @param            $2 key_type     Type of key [ed25519|rsa|ecdsa] (default: ed25519)
+# @param            $3 key_bits     Number of bits for the key (default: 4096)
+# @param            $4 key_comment  Comment for the key (default: $USER@$HOSTNAME)
+# @stdout           Public key contents on success
+# @stderr           Error messages and status updates
+# @exitstatus       0 Success
+#                   1 General failure (permissions, validation)
+#                   2 Invalid parameters or missing dependencies
+#                   3 User input error (password mismatch)
+# @dependencies     ssh-keygen, chmod, mkdir
+# @security         - Creates .ssh directory with 700 permissions
+#                   - Sets private key to 600 permissions
+#                   - Sets public key to 644 permissions
+#                   - Validates key type and parameters
+#                   - Secure password handling
+# @example          # Generate default ED25519 key
+#                   generate_ssh_key
+#
+#                   # Generate RSA key with custom settings
+#                   generate_ssh_key "/path/to/key" "rsa" 4096 "user@host"
+# @public
+# --
+generate_ssh_key() {
+  local -r key_file="${1:-${HOME}/.ssh/id_rsa}"
+  local -r key_type="${2:-ed25519}"
+  local -r key_bits="${3:-4096}"
+  local -r key_comment="${4:-${USER}@${HOSTNAME}}"
+  local password password_confirm
+
+  # Verify dependencies
+  if ! command -v ssh-keygen >/dev/null; then
+    log_error "Required command 'ssh-keygen' not found"
+    log_info "Install using: sudo apt-get install openssh-client"
+    return "${ROOTINE_STATUS_USAGE}"
+  fi
+
+  # Validate key type
+  case "${key_type}" in
+    dsa|ecdsa|ecdsa-sk|ed25519|ed25519-sk|rsa) ;;
+    *)
+      log_error "Invalid key type '${key_type}'. Use: dsa, ecdsa, ecdsa-sk, ed25519, ed25519-sk, or rsa"
+      return "${ROOTINE_STATUS_USAGE}"
+      ;;
+  esac
+
+  # Validate key bits for RSA/ECDSA
+  if [[ "${key_type}" != "ed25519" ]]; then
+    if [[ ! "${key_bits}" =~ ^[0-9]+$ ]] || ((key_bits < 2048)); then
+      log_error "Invalid key bits '${key_bits}'. Must be >= 2048"
+      return "${ROOTINE_STATUS_USAGE}"
+    fi
+  fi
+
+  # Create .ssh directory
+  local -r ssh_dir="$(dirname "${key_file}")"
+  if ! mkdir -p "${ssh_dir}"; then
+    log_error "Failed to create directory: ${ssh_dir}"
+    return "${ROOTINE_STATUS_NOPERM}"
+  fi
+
+  # Check for existing key
+  if [[ -f "${key_file}" ]]; then
+    log_error "Key already exists: ${key_file}"
+    return "${ROOTINE_STATUS_DATAERR}"
+  fi
+
+  # Get password if desired
+  log_info "Enter key password (empty for no password):"
+  read -rs password
+  echo
+
+  if [[ -n "${password}" ]]; then
+    log_info "Confirm password:"
+    read -rs password_confirm
+    echo
+
+    if [[ "${password}" != "${password_confirm}" ]]; then
+      log_error "Passwords do not match"
+      return "${ROOTINE_STATUS_DATAERR}"
+    fi
+  fi
+
+  # Prepare key generation options
+  local -a keygen_opts=(
+    "-t" "${key_type}"
+    "-C" "${key_comment}"
+    "-f" "${key_file}"
+    "-a" "100"
+    "-o"
+    "-N" "${password}"
+  )
+
+  # Add key bits for RSA/ECDSA
+  if [[ "${key_type}" != "ed25519" ]]; then
+    keygen_opts+=("-b" "${key_bits}")
+  fi
+
+  # Generate key
+  log_info "Generating SSH key..."
+  if ! ssh-keygen "${keygen_opts[@]}"; then
+    log_error "Key generation failed"
+    return "${ROOTINE_STATUS_CANTCREAT}"
+  fi
+
+  # Set secure permissions
+  if ! chmod 0700 "${ssh_dir}"; then
+    log_error "Failed to set directory permissions: ${ssh_dir}"
+    return "${ROOTINE_STATUS_NOPERM}"
+  fi
+
+  if ! chmod 0600 "${key_file}"; then
+    log_error "Failed to set private key permissions: ${key_file}"
+    return "${ROOTINE_STATUS_NOPERM}"
+  fi
+
+  if ! chmod 0644 "${key_file}.pub"; then
+    log_error "Failed to set public key permissions: ${key_file}.pub"
+    return "${ROOTINE_STATUS_NOPERM}"
+  fi
+
+  # Display results
+  log_success "SSH key generated: ${key_file}"
+  log_info "Public key contents:"
+  if ! cat "${key_file}.pub"; then
+    log_error "Failed to read public key"
+    return "${ROOTINE_STATUS_NOINPUT}"
+  fi
+
+  return 0
+}
+
+# --
 # @description      Sends an email message using the mail command
 # @param            $1 recipient  Email address of the recipient (required)
 # @param            $2 subject    Subject of the email (required)

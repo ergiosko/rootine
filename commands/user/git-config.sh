@@ -3,7 +3,7 @@
 is_sourced || exit 1
 
 declare -gA ROOTINE_SCRIPT_ARGS=(
-  [config-scope]="Configuration scope (local, global, or system):1:${1:-global}:^(local|global|system)$"
+  [config-scope]="Configuration scope (global, local, worktree):1:${1:-local}:^(global|local|worktree)$"
   [show-only]="Show configuration without making changes:0:false:"
 )
 
