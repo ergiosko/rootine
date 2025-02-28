@@ -12,12 +12,10 @@
 [![GitHub](https://img.shields.io/github/license/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/blob/main/LICENSE)
 [![GitHub Sponsor](https://img.shields.io/github/sponsors/ergiosko?style=flat-square&logo=github&label=Sponsor)](https://github.com/sponsors/ergiosko)
 
-
 ## Description
 
 > [!CAUTION]
 > This library is currently under active development and is NOT ready for production use. Production readiness will be achieved with the first public release (v1.0.0). See [Project Status](#project-status).
-
 
 ## Table of Contents
 
@@ -32,11 +30,7 @@
 - [Contact](#contact)
 - [License](#license)
 
-
 ## Features
-
-
-
 
 ## Installation
 
@@ -50,30 +44,31 @@
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/ergiosko/rootine.git
-cd rootine
-```
+    ```bash
+    git clone https://github.com/ergiosko/rootine.git
+    cd rootine
+    ```
 
 2. Run the installation script with root privileges:
 
-```bash
-sudo ./install.sh
-```
+    ```bash
+    sudo ./install.sh
+    ```
 
-The installer will:
-- Create Rootine-related utility directories
-- Detect the appropriate system-wide bashrc location (`/etc/bash.bashrc` or `/etc/bashrc`)
-- Create a backup of your current bashrc as `*.rootine.bak`
-- Add Rootine configuration to your system-wide bashrc
-- Set up the global `rootine` alias
-- Create the global `IS_ROOTINE_INSTALLED` variable
+    The installer will:
+
+    - Create Rootine-related utility directories
+    - Detect the appropriate system-wide bashrc location (`/etc/bash.bashrc` or `/etc/bashrc`)
+    - Create a backup of your current bashrc as `*.rootine.bak`
+    - Add Rootine configuration to your system-wide bashrc
+    - Set up the global `rootine` alias
+    - Create the global `IS_ROOTINE_INSTALLED` variable
 
 3. Reload your terminal session to apply changes:
 
-```bash
-source /etc/bash.bashrc  # or /etc/bashrc depending on your system
-```
+    ```bash
+    source /etc/bash.bashrc  # or /etc/bashrc depending on your system
+    ```
 
 ### Verification
 
@@ -96,6 +91,7 @@ sudo ./uninstall.sh
 ```
 
 The uninstaller will:
+
 - Remove Rootine-related utility directories
 - Remove all Rootine-related configurations from your system-wide bashrc
 - Keep a backup of the original configuration as `*.rootine.bak`
@@ -121,28 +117,36 @@ Replace `/path/to/rootine` with the actual path to your Rootine installation.
 Common installation issues and solutions:
 
 1. **Permission Denied**
-  ```
-  [ ERROR ] This script must be run as root
-  ```
-  Solution: Run the installation script with `sudo`.
+
+    ```text
+    [ ERROR ] This script must be run as root
+    ```
+
+    Solution: Run the installation script with `sudo`.
 
 2. **Bashrc Not Found**
-  ```
-  [ ERROR ] No global bashrc file found
-  ```
-  Solution: Ensure either `/etc/bash.bashrc` or `/etc/bashrc` exists.
+
+    ```text
+    [ ERROR ] No global bashrc file found
+    ```
+
+    Solution: Ensure either `/etc/bash.bashrc` or `/etc/bashrc` exists.
 
 3. **Write Permission Error**
-  ```
-  [ ERROR ] No write permission for /etc/bash.bashrc
-  ```
-  Solution: Check file permissions and ensure you're running with sudo.
+
+    ```text
+    [ ERROR ] No write permission for /etc/bash.bashrc
+    ```
+
+    Solution: Check file permissions and ensure you're running with sudo.
 
 4. **Backup Creation Failed**
-  ```
-  [ ERROR ] Unable to create /etc/bash.bashrc backup file
-  ```
-  Solution: Ensure sufficient disk space and proper permissions in /etc.
+
+    ```text
+    [ ERROR ] Unable to create /etc/bash.bashrc backup file
+    ```
+
+    Solution: Ensure sufficient disk space and proper permissions in /etc.
 
 ### Security Considerations
 
@@ -166,21 +170,21 @@ Common installation issues and solutions:
 - The installation adds minimal overhead to your shell initialization
 - Both installation and uninstallation are idempotent operations
 
-
 ## Usage
 
 ### File Structure Overview
 
-```
+```text
 rootine/
 ├── commands/           - Command scripts
+│   ├── common/         - Commands common for all users
 │   ├── root/           - Commands requiring root privileges
 │   └── user/           - Commands for regular users
 ├── library/            - Core library functions
-│   ├── bootstrap.sh    - Initialization script
-│   ├── common/         - Shared utility functions
+│   ├── common/         - Common utility functions
 │   ├── root/           - Root-level functions
-│   └── user/           - User-level functions
+│   ├── user/           - User-level functions
+│   └── bootstrap.sh    - Initialization script
 ├── .github/            - GitHub-specific configurations
 ├── .editorconfig       - Editor configuration
 ├── .shellcheckrc       - ShellCheck configuration
@@ -209,21 +213,23 @@ The separation into `root/` and `user/` subdirectories ensures that root actions
 2. `library/`: Contains reusable functions and helper scripts. The `common/` directory holds functions that are used by both root and user scripts. The `root/` and `user/` subdirectories contain functions specific to each privilege level.
 
 3. `library/bootstrap.sh`: The core initialization component that:
-  - Sets up error handling and cleanup procedures
-  - Validates the environment and required dependencies
-  - Initializes system-wide constants and configurations
-  - Manages user privilege levels (root/user)
-  - Provides dynamic function loading and command routing
-  - Handles library file sourcing based on user level
-  - Implements secure temporary file management
-  - Establishes logging and debugging infrastructure
 
-The bootstrap process ensures:
-  - Proper initialization of the framework
-  - Secure execution environment
-  - Clean error handling and resource cleanup
-  - Appropriate privilege separation
-  - Dynamic command and function resolution
+    - Sets up error handling and cleanup procedures
+    - Validates the environment and required dependencies
+    - Initializes system-wide constants and configurations
+    - Manages user privilege levels (root/user)
+    - Provides dynamic function loading and command routing
+    - Handles library file sourcing based on user level
+    - Implements secure temporary file management
+    - Establishes logging and debugging infrastructure
+
+    The bootstrap process ensures:
+
+    - Proper initialization of the framework
+    - Secure execution environment
+    - Clean error handling and resource cleanup
+    - Appropriate privilege separation
+    - Dynamic command and function resolution
 
 4. `rootine` (Main Script): The framework's entry point that, in a nutshell, initializes core components, and routes commands to their appropriate handlers. It acts as a secure gateway between user input and the framework's functionality.
 
@@ -235,8 +241,9 @@ Rootine's command-line interface follows a simple pattern:
 rootine [command] [options]
 ```
 
-Commands are organized by privilege level in corresponding subdirectories:
+Commands are organized by common and privilege level in corresponding subdirectories:
 
+- Common-level commands: `commands/common/*.sh`
 - Root-level commands: `commands/root/*.sh`
 - User-level commands: `commands/user/*.sh`
 
@@ -256,6 +263,9 @@ Each command is a standalone Bash script that:
 More examples:
 
 ```bash
+# Common-level commands
+rootine generate-ssh-key        # Generate SSH key
+
 # Root-level commands (require sudo)
 rootine install-apache2-server  # Install Apache2 web server
 rootine remove-docker           # Remove Docker and its dependencies
@@ -273,7 +283,6 @@ Available commands can be found by exploring the `commands/` directory structure
 rootine --help
 ```
 
-
 ## Contributing
 
 ### Community Code of Conduct
@@ -286,7 +295,6 @@ All communication channels follow our [Code of Conduct](.github/CODE_OF_CONDUCT.
 
 Guidelines for contributing to the project, including how to submit bug reports, feature requests, and pull requests. Link to a [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for more detailed information.
 
-
 ## Tests
 
 ### Static Analysis
@@ -297,10 +305,10 @@ We use [ShellCheck](https://www.shellcheck.net/) for static analysis of our Bash
 
 1. **Install ShellCheck**:
 
-```bash
-# Ubuntu/Debian
-sudo apt install shellcheck
-```
+    ```bash
+    # Ubuntu/Debian
+    sudo apt install shellcheck
+    ```
 
 2. **Run Tests**:
 
@@ -322,7 +330,6 @@ Project-specific ShellCheck settings are defined in [.shellcheckrc](.shellcheckr
 
 For detailed error explanations, visit [shellcheck.net/wiki](https://shellcheck.net/wiki).
 
-
 ## Security
 
 We take security seriously. Please review our comprehensive [Security Policy](.github/SECURITY.md) for:
@@ -333,10 +340,9 @@ We take security seriously. Please review our comprehensive [Security Policy](.g
 - Contact information
 - Security features and limitations
 
-For security concerns, please email sergiy@noskov.org or contact@ergiosko.com starting with \[SECURITY\] in the subject line.
+For security concerns, please email <sergiy@noskov.org> or <contact@ergiosko.com> starting with \[SECURITY\] in the subject line.
 
 **Do not report security vulnerabilities through public GitHub issues.**
-
 
 ## Project Status
 
@@ -347,6 +353,7 @@ For security concerns, please email sergiy@noskov.org or contact@ergiosko.com st
 - **Stability**: NOT PRODUCTION READY
 
 ### Focus Areas
+
 - Security hardening
 - Documentation improvements
 - Performance optimization
@@ -355,31 +362,32 @@ For security concerns, please email sergiy@noskov.org or contact@ergiosko.com st
 > [!IMPORTANT]
 > This library is currently under active development and is NOT ready for production use. Production readiness will be achieved with the first public release (v1.0.0).
 
-
 ## Maintainers
 
 ### Core Team
 
 **Sergiy Noskov** (Lead Maintainer)
+
 - GitHub: [@noskov](https://github.com/noskov)
-- Email: sergiy@noskov.org
+- Email: <sergiy@noskov.org>
 - Web: [noskov.org](https://noskov.org/)
 - Focus: Architecture, Security, Releases
 
 **Ergiosko** (Organization)
+
 - GitHub: [@ergiosko](https://github.com/ergiosko)
-- Email: contact@ergiosko.com
+- Email: <contact@ergiosko.com>
 - Web: [ergiosko.com](https://ergiosko.com/)
 - Focus: Governance, Community, Strategy
 
 ### Becoming a Maintainer
 
 Prerequisites:
+
 - History of quality contributions
 - Strong Bash scripting knowledge
 - Ubuntu systems expertise
 - Good communication skills
-
 
 ## Contact
 
@@ -394,7 +402,6 @@ For all support inquiries, community discussions, and contact information, pleas
 
 > [!NOTE]
 > For security vulnerabilities, please DO NOT use public channels. Follow the security reporting guidelines in our [Security Policy](.github/SECURITY.md).
-
 
 ## License
 
@@ -428,5 +435,6 @@ Licensed under the MIT License
 ```
 
 For questions about licensing, contact:
+
 - Sergiy Noskov <sergiy@noskov.org>
 - Ergiosko <contact@ergiosko.com>
