@@ -1,32 +1,81 @@
 #!/usr/bin/env bash
 
+# ---
+# @description      Conventional Commits specification implementation and validation
+# @author           Sergiy Noskov <sergiy@noskov.org>
+# @copyright        Ergiosko <contact@ergiosko.com>
+# @license          MIT
+# @version          1.0.0
+# @since            1.0.0
+# @category         Core
+# @dependencies     - Bash 4.4.0 or higher
+# @see              https://www.conventionalcommits.org/
+#                   https://commitlint.js.org/
+# @security         - Validates commit message format
+#                   - Prevents malformed commits
+# @todo             - Add commit message linting
+#                   - Add commit hooks integration
+#                   - Add changelog generation
+#                   - Add support for custom scopes
+#                   - Add support for custom types
+# ---
+
 is_sourced || exit 1
+
+# Valid commit types based on conventional commits specification
+# @see https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional
+declare -ga ROOTINE_COMMIT_TYPES=(
+  "build"     # Changes that affect the build system or external dependencies
+              # Examples: npm, gulp, broccoli, webpack
+  "chore"     # Other changes that don't modify src or test files
+              # Examples: updating grunt tasks, no production code change
+  "ci"        # Changes to CI configuration files and scripts
+              # Examples: Github Actions, Travis, Circle, BrowserStack, SauceLabs
+  "docs"      # Documentation only changes
+              # Examples: README, JSDoc, man pages, comments
+  "feat"      # A new feature
+              # Examples: new API endpoints, new UI components
+  "fix"       # A bug fix
+              # Examples: resolving a bug, fixing a defect
+  "perf"      # A code change that improves performance
+              # Examples: optimizing loops, improving rendering
+  "refactor"  # A code change that neither fixes a bug nor adds a feature
+              # Examples: moving code, renaming variables
+  "revert"    # Reverts a previous commit
+              # Format: revert: <type>(<scope>): <description>
+  "style"     # Changes that do not affect the meaning of the code
+              # Examples: white-space, formatting, missing semi-colons
+  "test"      # Adding missing tests or correcting existing tests
+              # Examples: unit tests, integration tests, e2e tests
+)
+
+# Valid commit scopes for Rootine project
+declare -ga ROOTINE_COMMIT_SCOPES=(
+  "commands"  # Command scripts in commands/ directory
+  "common"    # Common utilities in library/common/
+  "core"      # Core functionality affecting entire system
+  "docs"      # Documentation files (.md, man pages)
+  "git"       # Git-related functionality
+  "library"   # Library functions in library/
+  "root"      # Root-level functionality
+  "security"  # Security-related changes
+  "user"      # User-level functionality
+)
 
 # --
 # @description      Validates a conventional commit type
 # @param            type The commit type to validate
 # @return           0 if valid, 1 otherwise
 # @example          _validate_commit_type "feat"
+# @see              https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#type-enum
 # @internal
 # --
 _validate_commit_type() {
   local type="${1:?Commit type required}"
-  local -a valid_types=(
-    "build"     # Changes that affect the build system or external dependencies
-    "chore"     # Other changes that don't modify src or test files
-    "ci"        # Changes to CI configuration files and scripts
-    "docs"      # Documentation only changes
-    "feat"      # A new feature
-    "fix"       # A bug fix
-    "perf"      # A code change that improves performance
-    "refactor"  # A code change that neither fixes a bug nor adds a feature
-    "revert"    # Reverts a previous commit
-    "style"     # Changes that do not affect the meaning of the code
-    "test"      # Adding missing tests or correcting existing tests
-  )
 
+  # Use space-padded string to ensure exact matches
   # shellcheck disable=SC2076
-  [[ " ${valid_types[*]} " =~ " ${type} " ]] && return 0
+  [[ " ${ROOTINE_COMMIT_TYPES[*]} " =~ " ${type} " ]] && return 0
   return 1
 }
 
@@ -35,37 +84,30 @@ _validate_commit_type() {
 # @param            scope The commit scope to validate
 # @return           0 if valid, 1 otherwise
 # @example          _validate_commit_scope "core"
+# @see              https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#scope-enum
 # @internal
 # --
 _validate_commit_scope() {
   local scope="${1:?Commit scope required}"
-  local -a valid_scopes=(
-    "commands"  # Command scripts
-    "common"    # Common utilities
-    "core"      # Core functionality
-    "docs"      # Documentation
-    "git"       # Git-related functionality
-    "library"   # Library functions
-    "root"      # Root-level functionality
-    "security"  # Security-related changes
-    "user"      # User-level functionality
-  )
 
+  # Use space-padded string to ensure exact matches
   # shellcheck disable=SC2076
-  [[ " ${valid_scopes[*]} " =~ " ${scope} " ]] && return 0
+  [[ " ${ROOTINE_COMMIT_SCOPES[*]} " =~ " ${scope} " ]] && return 0
   return 1
 }
 
 # --
 # @description      Creates a commit message following Conventional Commits spec
 # @param            type Commit type (feat, fix, etc.)
-# @param            [scope] Optional scope
+# @param            [scope] Optional scope in parentheses
 # @param            description Commit description
 # @param            [body] Optional commit body
 # @param            [footer] Optional commit footer
 # @param            [breaking=false] Whether this is a breaking change
 # @return           0 on success, 1 on failure
 # @example          git_conventional_commit "feat" "core" "add new feature"
+#                   git_conventional_commit "fix" "security" "patch CVE" "" "" true
+# @see              https://www.conventionalcommits.org/en/v1.0.0/#specification
 # @public
 # --
 git_conventional_commit() {
@@ -77,36 +119,37 @@ git_conventional_commit() {
   local breaking="${6:-false}"
   local message
 
-  # Validate commit type
+  # Validate commit type against allowed types
   if ! _validate_commit_type "${type}"; then
     log_error "Invalid commit type: ${type}"
-    log_info "Valid types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test"
+    log_info "Valid types: ${ROOTINE_COMMIT_TYPES[*]}"
     return 1
   fi
 
   # Validate commit scope if provided
   if [[ -n "${scope}" ]] && ! _validate_commit_scope "${scope}"; then
     log_error "Invalid commit scope: ${scope}"
-    log_info "Valid scopes: commands, common, core, docs, git, library, root, security, user"
+    log_info "Valid scopes: ${ROOTINE_COMMIT_SCOPES[*]}"
     return 1
   fi
 
-  # Validate description format
+  # Validate description format (must start with lowercase)
   if [[ ! "${description}" =~ ^[a-z] ]]; then
     log_error "Description must start with lowercase letter"
     return 1
   fi
 
-  # Build commit message
+  # Build commit message following conventional commits spec
+  # <type>[(scope)][!]: <description>
   message="${type}"
   [[ -n "${scope}" ]] && message+="(${scope})"
   [[ "${breaking}" == "true" ]] && message+="!"
   message+=": ${description}"
 
-  # Add body if provided
+  # Add optional body after blank line
   [[ -n "${body}" ]] && message+="\n\n${body}"
 
-  # Add footer if provided
+  # Add optional footer after blank line
   [[ -n "${footer}" ]] && message+="\n\n${footer}"
 
   # Add BREAKING CHANGE footer for breaking changes
@@ -115,7 +158,7 @@ git_conventional_commit() {
     message+="\nBREAKING CHANGE: ${description}"
   fi
 
-  # Create the commit
+  # Create the commit with formatted message
   if ! git commit -m "${message}"; then
     log_error "Failed to create commit"
     return 1
@@ -130,39 +173,43 @@ git_conventional_commit() {
 # @param            message The commit message to validate
 # @return           0 if valid, 1 otherwise
 # @example          git_validate_commit_message "feat(core): add new feature"
+# @see              https://commitlint.js.org/#/reference-rules
 # @public
 # --
 git_validate_commit_message() {
   local message="${1:?Commit message required}"
   local type scope description
 
-  # Build regex pattern from valid types
+  # Build regex pattern from valid types dynamically
   local types_pattern
-  types_pattern="$(printf '%s|' "${valid_types[@]}")"
+  types_pattern="$(printf '%s|' "${ROOTINE_COMMIT_TYPES[@]}")"
   types_pattern="${types_pattern%|}"  # Remove trailing |
 
-  # Build regex pattern for commit message
+  # Full commit message pattern following spec:
+  # type(scope)!: description
   local commit_pattern="^(${types_pattern})(\\([a-z-]+\\))?(!)?: [a-z].*"
 
+  # Validate basic message format
   if [[ ! "${message}" =~ ${commit_pattern} ]]; then
     log_error "Invalid commit message format"
     log_info "Expected format: type(scope): description"
-    log_info "Valid types: ${valid_types[*]}"
+    log_info "Valid types: ${ROOTINE_COMMIT_TYPES[*]}"
     return 1
   fi
 
+  # Extract components from message
   type="${BASH_REMATCH[1]}"
   scope="${BASH_REMATCH[2]}"
   scope="${scope#(}"  # Remove leading (
   scope="${scope%)}"  # Remove trailing )
 
-  # Validate type
+  # Validate commit type
   if ! _validate_commit_type "${type}"; then
     log_error "Invalid commit type: ${type}"
     return 1
   fi
 
-  # Validate scope if present
+  # Validate commit scope if present
   if [[ -n "${scope}" ]] && ! _validate_commit_scope "${scope}"; then
     log_error "Invalid commit scope: ${scope}"
     return 1
