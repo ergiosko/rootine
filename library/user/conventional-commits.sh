@@ -217,3 +217,98 @@ git_validate_commit_message() {
 
   return 0
 }
+
+# --
+# @description      Installs commit-msg hook for Conventional Commits validation
+# @param            [force=false] Whether to overwrite existing hook
+# @return           0 on success, 1 on failure
+# @example          git_install_commit_msg_hook
+#                   git_install_commit_msg_hook true
+# @sideeffects      - Creates/updates .git/hooks/commit-msg
+#                   - Sets executable permissions
+#                   - Creates backup of existing hook
+# @security         - Validates Git repository
+#                   - Sets proper file permissions (0755)
+#                   - Creates secure backup
+# @public
+# --
+git_install_commit_msg_hook() {
+  local force="${1:-false}"
+  local hooks_dir commit_msg_hook
+
+  # Verify we're in a Git repository
+  if ! _is_git_repo; then
+    return 1
+  fi
+
+  # Get Git hooks directory
+  if ! hooks_dir="$(git rev-parse --git-path hooks)"; then
+    log_error "Failed to get Git hooks directory"
+    return 1
+  fi
+
+  # Set commit-msg hook path
+  commit_msg_hook="${hooks_dir}/commit-msg"
+
+  # Check if hook already exists
+  if [[ -f "${commit_msg_hook}" ]] && [[ "${force}" != "true" ]]; then
+    log_error "commit-msg hook already exists. Use force=true to overwrite"
+    return 1
+  fi
+
+  # Create hooks directory if it doesn't exist
+  if [[ ! -d "${hooks_dir}" ]]; then
+    if ! mkdir -p "${hooks_dir}"; then
+      log_error "Failed to create hooks directory"
+      return 1
+    fi
+  fi
+
+  # Backup existing hook if it exists
+  if [[ -f "${commit_msg_hook}" ]]; then
+    local backup_file="${commit_msg_hook}.${USER}.${RANDOM}.bak"
+    if ! mv "${commit_msg_hook}" "${backup_file}"; then
+      log_error "Failed to backup existing commit-msg hook"
+      return 1
+    fi
+    log_info "Backed up existing commit-msg hook to ${backup_file}"
+  fi
+
+  # Create new hook
+  cat > "${commit_msg_hook}" <<'EOF'
+#!/usr/bin/env bash
+
+commit_msg_file="${1}"
+commit_msg="$(cat "${commit_msg_file}")"
+
+# Skip merge commits
+  if [[ "${commit_msg}" =~ ^Merge\ branch ]]; then
+  exit 0
+fi
+
+# Load Rootine environment
+if [[ -f "/usr/local/lib/rootine/library/bootstrap.sh" ]]; then
+  # shellcheck source=/dev/null
+  source "/usr/local/lib/rootine/library/bootstrap.sh"
+else
+  echo "Error: Rootine library not found"
+  exit 1
+fi
+
+# Validate commit message
+if ! git_validate_commit_message "${commit_msg}"; then
+  exit 1
+fi
+
+exit 0
+EOF
+
+  # Make hook executable
+  if ! chmod 0755 "${commit_msg_hook}"; then
+    log_error "Failed to make commit-msg hook executable"
+    return 1
+  fi
+
+  log_success "Successfully installed commit-msg hook in ${hooks_dir}"
+  return 0
+}

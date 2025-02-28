@@ -340,6 +340,7 @@ _source_user_level_files() {
 
   local -ar user_files=(
     "${lib_path}/user/constants.sh"
+    "${lib_path}/user/conventional-commits.sh"
     "${lib_path}/user/git.sh"
   )
 

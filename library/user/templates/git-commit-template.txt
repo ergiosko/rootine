@@ -1,0 +1,31 @@
+# <type>(<scope>): <description>
+# |<---- Using a maximum of 50 characters --->|
+# Example: feat(core): add new feature
+
+# [optional body]
+# |<---- Using a maximum of 72 characters ------------------------------------>|
+# Explain why this change is being made:
+
+# [optional footer]
+# Example: Closes #123, Relates to #456
+# Breaking changes: <description>
+
+# --- COMMIT END ---
+# Type can be
+#   build     (changes affecting build system or external dependencies)
+#   chore     (other changes that don't modify src or test files)
+#   ci        (changes to CI configuration files and scripts)
+#   docs      (documentation only changes)
+#   feat      (a new feature)
+#   fix       (a bug fix)
+#   perf      (a code change that improves performance)
+#   refactor  (a code change that neither fixes a bug nor adds a feature)
+#   revert    (reverts a previous commit)
+#   style     (changes that do not affect the meaning of the code)
+#   test      (adding missing tests or correcting existing tests)
+#
+# Scope should be one of:
+#   commands, common, core, docs, git, library, root, security, user
+#
+# Breaking changes should start with "BREAKING CHANGE: "
+# ------------------------------------------------------------------------------
