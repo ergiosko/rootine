@@ -149,9 +149,9 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local version="${SCRIPT_ARG_VERSION}"
-  local dev="${SCRIPT_ARG_DEV}"
-  local disable_others="${SCRIPT_ARG_DISABLE_OTHERS}"
+  local version="${ROOTINE_SCRIPT_ARG_VERSION}"
+  local dev="${ROOTINE_SCRIPT_ARG_DEV}"
+  local disable_others="${ROOTINE_SCRIPT_ARG_DISABLE_OTHERS}"
 
   log_info "Starting PHP ${version} installation..."
   log_debug "Development packages: ${dev}"

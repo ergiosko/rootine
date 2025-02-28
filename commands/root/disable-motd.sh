@@ -10,8 +10,8 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  local create_hushlogin="${SCRIPT_ARG_CREATE_HUSHLOGIN}"
-  local disable_news="${SCRIPT_ARG_DISABLE_NEWS}"
+  local create_hushlogin="${ROOTINE_SCRIPT_ARG_CREATE_HUSHLOGIN}"
+  local disable_news="${ROOTINE_SCRIPT_ARG_DISABLE_NEWS}"
   local motd_news_file="/etc/default/motd-news"
   local hushlogin_file="/root/.hushlogin"
   local update_motd_dir="/etc/update-motd.d"

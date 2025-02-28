@@ -126,9 +126,9 @@ verify_system_state() {
 main() {
   handle_args "$@"
 
-  local upgrade_type="${SCRIPT_ARG_UPGRADE_TYPE}"
-  local autoremove="${SCRIPT_ARG_AUTOREMOVE}"
-  local clean="${SCRIPT_ARG_CLEAN}"
+  local upgrade_type="${ROOTINE_SCRIPT_ARG_UPGRADE_TYPE}"
+  local autoremove="${ROOTINE_SCRIPT_ARG_AUTOREMOVE}"
+  local clean="${ROOTINE_SCRIPT_ARG_CLEAN}"
 
   log_info "Starting system package updates..."
   log_debug "Upgrade type: ${upgrade_type}"

@@ -99,7 +99,7 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local version="${SCRIPT_ARG_VERSION}"
+  local version="${ROOTINE_SCRIPT_ARG_VERSION}"
 
   log_info "Starting MariaDB installation..."
   log_debug "Version: ${version}"

@@ -113,8 +113,8 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local install_dir="${SCRIPT_ARG_INSTALL_DIR}"
-  local create_symlink="${SCRIPT_ARG_CREATE_SYMLINK}"
+  local install_dir="${ROOTINE_SCRIPT_ARG_INSTALL_DIR}"
+  local create_symlink="${ROOTINE_SCRIPT_ARG_CREATE_SYMLINK}"
 
   log_info "Starting ps_mem installation..."
   log_debug "Installation directory: ${install_dir}"

@@ -133,8 +133,8 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local version="${SCRIPT_ARG_VERSION}"
-  local start_service="${SCRIPT_ARG_START_SERVICE}"
+  local version="${ROOTINE_SCRIPT_ARG_VERSION}"
+  local start_service="${ROOTINE_SCRIPT_ARG_START_SERVICE}"
 
   log_info "Starting Varnish Cache installation..."
   log_debug "Version: ${version}"

@@ -119,8 +119,8 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local install_dir="${SCRIPT_ARG_INSTALL_DIR}"
-  local branch="${SCRIPT_ARG_BRANCH}"
+  local install_dir="${ROOTINE_SCRIPT_ARG_INSTALL_DIR}"
+  local branch="${ROOTINE_SCRIPT_ARG_BRANCH}"
 
   log_info "Starting MySQLTuner installation..."
   log_debug "Installation directory: ${install_dir}"

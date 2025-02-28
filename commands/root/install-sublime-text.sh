@@ -104,7 +104,7 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local channel="${SCRIPT_ARG_CHANNEL}"
+  local channel="${ROOTINE_SCRIPT_ARG_CHANNEL}"
 
   log_info "Starting Sublime Text installation..."
   log_debug "Repository channel: ${channel}"

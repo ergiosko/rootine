@@ -115,7 +115,7 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local remove_old="${SCRIPT_ARG_REMOVE_OLD}"
+  local remove_old="${ROOTINE_SCRIPT_ARG_REMOVE_OLD}"
 
   log_info "Starting Speedtest CLI installation..."
   log_debug "Remove old installations: ${remove_old}"

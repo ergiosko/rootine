@@ -48,8 +48,8 @@ parse_packages() {
 
 install_packages() {
   local -a packages=("$@")
-  local -i retries="${SCRIPT_ARG_RETRIES}"
-  local -i delay="${SCRIPT_ARG_DELAY}"
+  local -i retries="${ROOTINE_SCRIPT_ARG_RETRIES}"
+  local -i delay="${ROOTINE_SCRIPT_ARG_DELAY}"
   local -i attempt=1
   local package
 
@@ -103,7 +103,7 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local packages_arg="${SCRIPT_ARG_PACKAGES}"
+  local packages_arg="${ROOTINE_SCRIPT_ARG_PACKAGES}"
   local -a packages
 
   log_info "Starting snap packages installation..."

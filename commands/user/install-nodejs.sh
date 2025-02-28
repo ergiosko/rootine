@@ -34,8 +34,8 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  local -r nvm_version="${SCRIPT_ARG_NVM_VERSION}"
-  local -r node_version="${SCRIPT_ARG_NODE_VERSION}"
+  local -r nvm_version="${ROOTINE_SCRIPT_ARG_NVM_VERSION}"
+  local -r node_version="${ROOTINE_SCRIPT_ARG_NODE_VERSION}"
 
   if ! command -v curl >/dev/null; then
     log_error "Required command 'curl' not found"

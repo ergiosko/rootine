@@ -11,9 +11,9 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  local swap_size="${SCRIPT_ARG_SWAP_SIZE}"
-  local swappiness="${SCRIPT_ARG_SWAPPINESS}"
-  local cache_pressure="${SCRIPT_ARG_CACHE_PRESSURE}"
+  local swap_size="${ROOTINE_SCRIPT_ARG_SWAP_SIZE}"
+  local swappiness="${ROOTINE_SCRIPT_ARG_SWAPPINESS}"
+  local cache_pressure="${ROOTINE_SCRIPT_ARG_CACHE_PRESSURE}"
   local swapfile="/mnt/swapfile"
 
   if [[ -f "${swapfile}" ]]; then

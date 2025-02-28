@@ -92,7 +92,7 @@ verify_apache_config() {
 main() {
   handle_args "$@"
 
-  local htpasswd="${SCRIPT_ARG_HTPASSWD}"
+  local htpasswd="${ROOTINE_SCRIPT_ARG_HTPASSWD}"
 
   log_info "Starting Apache server installation..."
 

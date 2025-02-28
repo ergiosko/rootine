@@ -9,7 +9,7 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  local domain="${SCRIPT_ARG_DOMAIN}"
+  local domain="${ROOTINE_SCRIPT_ARG_DOMAIN}"
   local -a snap_commands=(
     "install core"
     "refresh core"

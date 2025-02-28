@@ -82,7 +82,7 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local url="${SCRIPT_ARG_URL}"
+  local url="${ROOTINE_SCRIPT_ARG_URL}"
 
   log_info "Starting Zoom installation..."
   log_debug "Download URL: ${url}"

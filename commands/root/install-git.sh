@@ -72,9 +72,9 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local user_email="${SCRIPT_ARG_USER_EMAIL}"
-  local user_name="${SCRIPT_ARG_USER_NAME}"
-  local core_filemode="${SCRIPT_ARG_CORE_FILEMODE}"
+  local user_email="${ROOTINE_SCRIPT_ARG_USER_EMAIL}"
+  local user_name="${ROOTINE_SCRIPT_ARG_USER_NAME}"
+  local core_filemode="${ROOTINE_SCRIPT_ARG_CORE_FILEMODE}"
 
   log_info "Starting Git installation and configuration..."
   log_debug "User email: ${user_email}"

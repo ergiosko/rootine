@@ -10,8 +10,8 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  local commit="${SCRIPT_ARG_COMMIT}"
-  local force="${SCRIPT_ARG_FORCE}"
+  local commit="${ROOTINE_SCRIPT_ARG_COMMIT}"
+  local force="${ROOTINE_SCRIPT_ARG_FORCE}"
 
   git_reset "${commit}" ${force:+--force}
   return 0

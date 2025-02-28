@@ -56,7 +56,6 @@ git_clone() {
   )
   shift "$(( ${#} >= 2 ? 2 : 1 ))"
 
-  # Input validation
   if [[ ! "${repository_url}" =~ ^(https?|git|ssh):// ]]; then
     log_error "Invalid repository URL format: ${repository_url}"
     return 1
@@ -99,7 +98,6 @@ git_clone() {
   if [[ -z "${destination_directory}" ]]; then
     destination_directory="$(basename "${repository_url%.git}")"
     destination_directory="${destination_directory%.*}"
-
     if [[ -z "${destination_directory}" ]]; then
       log_error "Cannot determine destination directory"
       return 1
@@ -113,7 +111,6 @@ git_clone() {
   fi
 
   local -a cmd=(git clone)
-
   "${options[bare]}" && cmd+=(--bare)
   [[ -n "${options[depth]}" ]] && cmd+=(--depth "${options[depth]}")
   [[ -n "${options[branch]}" ]] && cmd+=(--branch "${options[branch]}")
@@ -131,7 +128,7 @@ git_clone() {
 
 # --
 # @description      Manages git configuration at different scopes
-# @param            [scope] Configuration scope (global|local|worktree)
+# @param            [scope] Configuration scope (global|system|local|worktree)
 # @arguments        [--show-only] Only show current configuration
 # @return           0 on success, non-zero on failure
 # @example          git_config global --show-only
@@ -142,8 +139,7 @@ git_config() {
   local show_only=false
   shift || true
 
-  # Validate scope
-  if [[ ! "${config_file#--}" =~ ^(global|local|worktree)$ ]]; then
+  if [[ ! "${config_file#--}" =~ ^(global|system|local|worktree)$ ]]; then
     log_error "Invalid configuration scope: ${config_file#--}"
     return 1
   fi
@@ -169,23 +165,21 @@ git_config() {
       ["user.name"]="${ROOTINE_GIT_USER_NAME:-}"
       ["core.filemode"]="${ROOTINE_GIT_CORE_FILEMODE:-}"
     )
-
     for key in "${!configs[@]}"; do
       local value="${configs[${key}]}"
       if [[ -n "${value}" ]]; then
         if ! git config "${config_file}" "${key}" "${value}"; then
           log_error "Failed to set ${key}=${value}"
-          ((status++))
+          ((status+=1))
         fi
       fi
     done
   fi
 
   log_info "${config_file#--} Git configuration:"
-
   if ! git config list "${config_file}"; then
     log_error "Failed to list ${config_file#--} configuration"
-    ((status++))
+    ((status+=1))
   fi
 
   return "${status}"
@@ -227,7 +221,6 @@ git_reset() {
   if ! "${force}"; then
     log_warning "This will reset to '${commit}'. All uncommitted changes will be lost."
     read -r -p "Continue? [y/N] " response
-
     if [[ ! "${response}" =~ ^[Yy]$ ]]; then
       log_info "Operation cancelled"
       return 0
@@ -239,7 +232,6 @@ git_reset() {
     "git reset --hard ${commit}"
     "git clean -df"
   )
-
   for c in "${cmd[@]}"; do
     if ! eval "${c}"; then
       log_error "Command failed: ${c}"
@@ -305,7 +297,6 @@ git_push() {
     shift
   done
 
-  # Validate remote exists
   if ! git remote get-url "${remote}" &>/dev/null; then
     log_error "Remote '${remote}' does not exist"
     return 1
@@ -327,7 +318,6 @@ git_push() {
   fi
 
   local -a push_args=()
-
   if [[ "${all_branches}" == "true" ]]; then
     push_args+=("--all")
   else

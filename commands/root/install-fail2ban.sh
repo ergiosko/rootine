@@ -96,8 +96,8 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local create_local_config="${SCRIPT_ARG_CREATE_LOCAL_CONFIG}"
-  local enable_service="${SCRIPT_ARG_ENABLE_SERVICE}"
+  local create_local_config="${ROOTINE_SCRIPT_ARG_CREATE_LOCAL_CONFIG}"
+  local enable_service="${ROOTINE_SCRIPT_ARG_ENABLE_SERVICE}"
 
   log_info "Starting Fail2Ban installation..."
   log_debug "Create local config: ${create_local_config}"

@@ -51,7 +51,7 @@ handle_xrdp_restart() {
 main() {
   handle_args "$@"
 
-  local restart_xrdp="${SCRIPT_ARG_RESTART_XRDP}"
+  local restart_xrdp="${ROOTINE_SCRIPT_ARG_RESTART_XRDP}"
   local -a packages=("${DEFAULT_ROOTINE_APT_PACKAGES[@]}")
 
   log_info "Starting package installation..."

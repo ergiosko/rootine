@@ -104,8 +104,8 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local arch="${SCRIPT_ARG_ARCH}"
-  local codename="${SCRIPT_ARG_CODENAME}"
+  local arch="${ROOTINE_SCRIPT_ARG_ARCH}"
+  local codename="${ROOTINE_SCRIPT_ARG_CODENAME}"
 
   log_info "Starting Signal installation..."
   log_debug "Architecture: ${arch}"

@@ -15,13 +15,13 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  local message="${SCRIPT_ARG_MESSAGE}"
-  local branches="${SCRIPT_ARG_BRANCHES}"
-  local branch="${SCRIPT_ARG_BRANCH}"
-  local remote="${SCRIPT_ARG_REMOTE}"
-  local force="${SCRIPT_ARG_FORCE}"
-  local verbose="${SCRIPT_ARG_VERBOSE}"
-  local upstream="${SCRIPT_ARG_UPSTREAM}"
+  local message="${ROOTINE_SCRIPT_ARG_MESSAGE}"
+  local branches="${ROOTINE_SCRIPT_ARG_BRANCHES}"
+  local branch="${ROOTINE_SCRIPT_ARG_BRANCH}"
+  local remote="${ROOTINE_SCRIPT_ARG_REMOTE}"
+  local force="${ROOTINE_SCRIPT_ARG_FORCE}"
+  local verbose="${ROOTINE_SCRIPT_ARG_VERBOSE}"
+  local upstream="${ROOTINE_SCRIPT_ARG_UPSTREAM}"
   local -a push_args=()
 
   if [[ "${branches}" == "true" ]]; then

@@ -15,15 +15,15 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  local repository="${SCRIPT_ARG_REPOSITORY}"
-  local destination="${SCRIPT_ARG_DESTINATION}"
+  local repository="${ROOTINE_SCRIPT_ARG_REPOSITORY}"
+  local destination="${ROOTINE_SCRIPT_ARG_DESTINATION}"
   local -a clone_args=()
 
-  [[ "${SCRIPT_ARG_BARE}" == "true" ]] && clone_args+=(--bare)
-  [[ -n "${SCRIPT_ARG_DEPTH}" ]] && clone_args+=(--depth "${SCRIPT_ARG_DEPTH}")
-  [[ -n "${SCRIPT_ARG_BRANCH}" ]] && clone_args+=(--branch "${SCRIPT_ARG_BRANCH}")
-  [[ "${SCRIPT_ARG_SINGLE_BRANCH}" == "true" ]] && clone_args+=(--single-branch)
-  [[ "${SCRIPT_ARG_RECURSE_SUBMODULES}" == "true" ]] && clone_args+=(--recurse-submodules)
+  [[ "${ROOTINE_SCRIPT_ARG_BARE}" == "true" ]] && clone_args+=(--bare)
+  [[ -n "${ROOTINE_SCRIPT_ARG_DEPTH}" ]] && clone_args+=(--depth "${ROOTINE_SCRIPT_ARG_DEPTH}")
+  [[ -n "${ROOTINE_SCRIPT_ARG_BRANCH}" ]] && clone_args+=(--branch "${ROOTINE_SCRIPT_ARG_BRANCH}")
+  [[ "${ROOTINE_SCRIPT_ARG_SINGLE_BRANCH}" == "true" ]] && clone_args+=(--single-branch)
+  [[ "${ROOTINE_SCRIPT_ARG_RECURSE_SUBMODULES}" == "true" ]] && clone_args+=(--recurse-submodules)
 
   git_clone "${repository}" "${destination}" "${clone_args[@]}"
   return 0

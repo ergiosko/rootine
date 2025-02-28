@@ -157,9 +157,9 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local mail_name="${SCRIPT_ARG_MAIL_NAME}"
-  local interactive="${SCRIPT_ARG_INTERACTIVE}"
-  local configure_fw="${SCRIPT_ARG_CONFIGURE_FIREWALL}"
+  local mail_name="${ROOTINE_SCRIPT_ARG_MAIL_NAME}"
+  local interactive="${ROOTINE_SCRIPT_ARG_INTERACTIVE}"
+  local configure_fw="${ROOTINE_SCRIPT_ARG_CONFIGURE_FIREWALL}"
 
   log_info "Starting Postfix installation..."
   log_debug "Mail name: ${mail_name}"

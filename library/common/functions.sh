@@ -31,6 +31,7 @@
 #                   - is_package_installed(): Package installation verification
 #                   - check_disk_space(): Disk space availability check
 #                   - check_internet_connection(): Network connectivity test
+#                   - generate_ssh_key(): SSH key pair generation
 #                   - send_email_message(): Email dispatch utility
 #                   - show_help_info(): Help documentation display
 # @security         - Input validation on all public functions

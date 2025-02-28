@@ -286,7 +286,7 @@ _parse_arg_components() {
 # @exitstatus       0   Success
 #                   64  Usage error
 #                   1   Unknown option
-# @global           Sets SCRIPT_ARG_* variables based on arguments
+# @global           Sets ROOTINE_SCRIPT_ARG_* variables based on arguments
 # @sideeffects      - Modifies the referenced args array
 #                   - Creates global variables
 # @security         - Sanitizes variable names
@@ -320,9 +320,9 @@ _process_long_arg() {
         return "${ROOTINE_STATUS_USAGE}"
       fi
 
-      declare -g "SCRIPT_ARG_${safe_name^^}"="${arg_val}"
+      declare -g "ROOTINE_SCRIPT_ARG_${safe_name^^}"="${arg_val}"
     else
-      declare -g "SCRIPT_ARG_${safe_name^^}"="true"
+      declare -g "ROOTINE_SCRIPT_ARG_${safe_name^^}"="true"
     fi
 
     args_ref=("${args_ref[@]:1}")
@@ -344,7 +344,7 @@ _process_long_arg() {
 # @stderr           Error messages for missing required arguments
 # @exitstatus       0   All required arguments present
 #                   64  Missing required arguments
-# @global           Reads SCRIPT_ARG_* variables
+# @global           Reads ROOTINE_SCRIPT_ARG_* variables
 # @example          _validate_required_args || exit $?
 # @internal
 # --
@@ -356,7 +356,7 @@ _validate_required_args() {
     description=$(cut -d';' -f1 <<<"${components}")
     requires_value=$(cut -d';' -f2 <<<"${components}")
     arg="$(alnum_str "${arg}")"
-    var_name="SCRIPT_ARG_${arg^^}"
+    var_name="ROOTINE_SCRIPT_ARG_${arg^^}"
 
     if [[ "${requires_value}" == "1" && -z "${!var_name:-}" ]]; then
       log_error "Required argument missing: --${arg} (${description})"
@@ -404,7 +404,7 @@ _show_script_args_help() {
 #                   64  Usage error
 # @global           ROOTINE_REMAINING_ARGS  Array of remaining arguments to process
 # @sideeffects      - Sets default values for arguments
-#                   - Creates SCRIPT_ARG_* variables
+#                   - Creates ROOTINE_SCRIPT_ARG_* variables
 # @security         Validates all argument values against patterns
 # @internal
 # --
@@ -418,7 +418,7 @@ _handle_script_args() {
 
     if [[ -n "${default_value}" ]]; then
       arg="$(alnum_str "${arg}")"
-      declare -g SCRIPT_ARG_"${arg^^}"="${default_value}"
+      declare -g ROOTINE_SCRIPT_ARG_"${arg^^}"="${default_value}"
     fi
   done
 

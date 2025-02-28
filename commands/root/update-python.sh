@@ -154,9 +154,9 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local version="${SCRIPT_ARG_VERSION}"
-  local interactive="${SCRIPT_ARG_INTERACTIVE}"
-  local set_default="${SCRIPT_ARG_SET_DEFAULT}"
+  local version="${ROOTINE_SCRIPT_ARG_VERSION}"
+  local interactive="${ROOTINE_SCRIPT_ARG_INTERACTIVE}"
+  local set_default="${ROOTINE_SCRIPT_ARG_SET_DEFAULT}"
 
   log_info "Starting Python ${version} installation..."
   log_debug "Interactive configuration: ${interactive}"

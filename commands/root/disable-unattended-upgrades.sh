@@ -10,8 +10,8 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  local verify="${SCRIPT_ARG_VERIFY}"
-  local stop_service="${SCRIPT_ARG_STOP_SERVICE}"
+  local verify="${ROOTINE_SCRIPT_ARG_VERIFY}"
+  local stop_service="${ROOTINE_SCRIPT_ARG_STOP_SERVICE}"
   local apt_config="/etc/apt/apt.conf.d/20auto-upgrades"
   local service_name="unattended-upgrades"
 

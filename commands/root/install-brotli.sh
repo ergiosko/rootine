@@ -101,9 +101,9 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local php_version="${SCRIPT_ARG_PHP_VERSION}"
-  local use_libbrotli="${SCRIPT_ARG_USE_LIBBROTLI}"
-  local extension_dir="${SCRIPT_ARG_EXTENSION_DIR}"
+  local php_version="${ROOTINE_SCRIPT_ARG_PHP_VERSION}"
+  local use_libbrotli="${ROOTINE_SCRIPT_ARG_USE_LIBBROTLI}"
+  local extension_dir="${ROOTINE_SCRIPT_ARG_EXTENSION_DIR}"
 
   log_info "Starting Brotli installation..."
   log_debug "PHP version: ${php_version}"

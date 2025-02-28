@@ -85,8 +85,8 @@ verify_installation() {
 main() {
   handle_args "$@"
 
-  local enable_service="${SCRIPT_ARG_ENABLE_SERVICE}"
-  local verify_config="${SCRIPT_ARG_VERIFY_CONFIG}"
+  local enable_service="${ROOTINE_SCRIPT_ARG_ENABLE_SERVICE}"
+  local verify_config="${ROOTINE_SCRIPT_ARG_VERIFY_CONFIG}"
 
   log_info "Starting OpenSSH server installation..."
   log_debug "Enable service: ${enable_service}"

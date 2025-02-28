@@ -40,10 +40,10 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  local -r file="${SCRIPT_ARG_FILE}"
-  local -r type="${SCRIPT_ARG_TYPE}"
-  local -r bits="${SCRIPT_ARG_BITS}"
-  local -r comment="${SCRIPT_ARG_COMMENT}"
+  local -r file="${ROOTINE_SCRIPT_ARG_FILE}"
+  local -r type="${ROOTINE_SCRIPT_ARG_TYPE}"
+  local -r bits="${ROOTINE_SCRIPT_ARG_BITS}"
+  local -r comment="${ROOTINE_SCRIPT_ARG_COMMENT}"
 
   # Verify openssh-client is installed
   if ! is_package_installed "openssh-client"; then
