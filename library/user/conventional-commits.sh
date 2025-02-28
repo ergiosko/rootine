@@ -312,3 +312,20 @@ EOF
   log_success "Successfully installed commit-msg hook in ${hooks_dir}"
   return 0
 }
+
+git_install_commit_template() {
+  local force="${1:-false}"
+
+  if ! git config --get commit.template &>/dev/null || [[ "${force}" == "true" ]]; then
+    if ! git config --local commit.template "/usr/local/lib/rootine/library/user/templates/git-commit-template.txt"; then
+      log_error "Failed to set commit template"
+      return 1
+    fi
+    log_success "Successfully set commit template"
+  else
+    log_error "Commit template already configured. Use force=true to override"
+    return 1
+  fi
+
+  return 0
+}

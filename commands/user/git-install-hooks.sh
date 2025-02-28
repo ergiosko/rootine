@@ -11,6 +11,8 @@
 # @category         User Commands
 # @dependencies     - Bash 4.4.0 or higher
 #                   - Git 2.0 or higher
+#                   - library/user/conventional-commits.sh
+#                   - library/user/git.sh
 # ---
 
 is_sourced || exit 1
@@ -22,7 +24,7 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  if ! git_install_commit_hook "${ROOTINE_SCRIPT_ARG_FORCE}"; then
+  if ! git_install_commit_msg_hook "${ROOTINE_SCRIPT_ARG_FORCE}"; then
     return 1
   fi
 
