@@ -15,7 +15,9 @@
 ## Description
 
 > [!CAUTION]
-> This library is currently under active development and is NOT ready for production use. Production readiness will be achieved with the first public release (v1.0.0). See [Project Status](#project-status).
+> This library is currently under active development and is NOT ready for
+production use. Production readiness will be achieved with the first public
+release (v1.0.0). See [Project Status](#project-status).
 
 ## Table of Contents
 
@@ -58,7 +60,8 @@
     The installer will:
 
     - Create Rootine-related utility directories
-    - Detect the appropriate system-wide bashrc location (`/etc/bash.bashrc` or `/etc/bashrc`)
+    - Detect the appropriate system-wide bashrc location (`/etc/bash.bashrc`
+    or `/etc/bashrc`)
     - Create a backup of your current bashrc as `*.rootine.bak`
     - Add Rootine configuration to your system-wide bashrc
     - Set up the global `rootine` alias
@@ -166,7 +169,8 @@ Common installation issues and solutions:
 ### Notes
 
 - Always review scripts before running them with root privileges
-- Keep the backup files (`*.rootine.bak`) in case you need to restore the original configuration
+- Keep the backup files (`*.rootine.bak`) in case you need to restore the
+original configuration
 - The installation adds minimal overhead to your shell initialization
 - Both installation and uninstallation are idempotent operations
 
@@ -199,18 +203,23 @@ rootine/
 
 We follow these naming conventions for consistency and clarity:
 
-| Item        | Case Style  | Delimiter       | Extension  | Example            |
-|-------------|-------------|-----------------|------------|--------------------|
-| Commands    | kebab-case  | Hyphen (-)      | .sh        | `install-git.sh`   |
-| Library     | snake_case  | Underscore (_)  | .sh        | `log_messages.sh`  |
-| Functions   | snake_case  | Underscore (_)  | (none)     | `is_sourced()`     |
+| Item      | Case Style  | Delimiter       | Extension  | Example            |
+|-----------|-------------|-----------------|------------|--------------------|
+| Commands  | kebab-case  | Hyphen (-)      | .sh        | `install-git.sh`   |
+| Library   | snake_case  | Underscore (_)  | .sh        | `log_messages.sh`  |
+| Functions | snake_case  | Underscore (_)  | (none)     | `is_sourced()`     |
 
 ### How It Works
 
-1. `commands/`: Contains scripts that perform specific tasks. These scripts might use functions from the library directory.
-The separation into `root/` and `user/` subdirectories ensures that root actions are kept separate and protected.
+1. `commands/`: Contains scripts that perform specific tasks. These scripts
+might use functions from the library directory. The separation into `root/` and
+`user/` subdirectories ensures that root actions are kept separate and
+protected.
 
-2. `library/`: Contains reusable functions and helper scripts. The `common/` directory holds functions that are used by both root and user scripts. The `root/` and `user/` subdirectories contain functions specific to each privilege level.
+2. `library/`: Contains reusable functions and helper scripts. The `common/`
+directory holds functions that are used by both root and user scripts. The
+`root/` and `user/` subdirectories contain functions specific to each privilege
+level.
 
 3. `library/bootstrap.sh`: The core initialization component that:
 
@@ -231,7 +240,10 @@ The separation into `root/` and `user/` subdirectories ensures that root actions
     - Appropriate privilege separation
     - Dynamic command and function resolution
 
-4. `rootine` (Main Script): The framework's entry point that, in a nutshell, initializes core components, and routes commands to their appropriate handlers. It acts as a secure gateway between user input and the framework's functionality.
+4. `rootine` (Main Script): The framework's entry point that, in a nutshell,
+initializes core components, and routes commands to their appropriate handlers.
+It acts as a secure gateway between user input and the framework's
+functionality.
 
 ### Basic Usage
 
@@ -241,7 +253,8 @@ Rootine's command-line interface follows a simple pattern:
 rootine [command] [options]
 ```
 
-Commands are organized by common and privilege level in corresponding subdirectories:
+Commands are organized by common and privilege level in corresponding
+subdirectories:
 
 - Common-level commands: `commands/common/*.sh`
 - Root-level commands: `commands/root/*.sh`
@@ -277,7 +290,8 @@ rootine check-updates           # Check for system updates
 rootine get-system-info         # Display system information
 ```
 
-Available commands can be found by exploring the `commands/` directory structure or by running:
+Available commands can be found by exploring the `commands/` directory
+structure or by running:
 
 ```bash
 rootine --help
@@ -287,19 +301,24 @@ rootine --help
 
 ### Community Code of Conduct
 
-All communication channels follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md). We expect all community members to:
+All communication channels follow our
+[Code of Conduct](.github/CODE_OF_CONDUCT.md). We expect all community members
+to:
 
 - Be respectful and inclusive
 - Follow the guidelines
 - Help maintain a positive environment
 
-Guidelines for contributing to the project, including how to submit bug reports, feature requests, and pull requests. Link to a [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for more detailed information.
+Guidelines for contributing to the project, including how to submit bug
+reports, feature requests, and pull requests. Link to a
+[CONTRIBUTING.md](.github/CONTRIBUTING.md) file for more detailed information.
 
 ## Tests
 
 ### Static Analysis
 
-We use [ShellCheck](https://www.shellcheck.net/) for static analysis of our Bash scripts to ensure code quality and catch common errors.
+We use [ShellCheck](https://www.shellcheck.net/) for static analysis of our
+Bash scripts to ensure code quality and catch common errors.
 
 ### Running Tests Locally
 
@@ -312,27 +331,31 @@ We use [ShellCheck](https://www.shellcheck.net/) for static analysis of our Bash
 
 2. **Run Tests**:
 
-```bash
-# Test all shell scripts
-shellcheck rootine library/**/*.sh commands/**/*.sh
+    ```bash
+    # Test all shell scripts
+    shellcheck rootine library/**/*.sh commands/**/*.sh
 
-# Test specific file
-shellcheck path/to/script.sh
-```
+    # Test specific file
+    shellcheck path/to/script.sh
+    ```
 
 ### Continuous Integration
 
-ShellCheck runs automatically on all pull requests through our GitHub Actions workflow. PRs must pass ShellCheck validation before merging.
+ShellCheck runs automatically on all pull requests through our GitHub Actions
+workflow. PRs must pass ShellCheck validation before merging.
 
 ### ShellCheck Configuration
 
-Project-specific ShellCheck settings are defined in [.shellcheckrc](.shellcheckrc) file.
+Project-specific ShellCheck settings are defined in
+[.shellcheckrc](.shellcheckrc) file.
 
-For detailed error explanations, visit [shellcheck.net/wiki](https://shellcheck.net/wiki).
+For detailed error explanations, visit
+[shellcheck.net/wiki](https://shellcheck.net/wiki).
 
 ## Security
 
-We take security seriously. Please review our comprehensive [Security Policy](.github/SECURITY.md) for:
+We take security seriously. Please review our comprehensive
+[Security Policy](.github/SECURITY.md) for:
 
 - Vulnerability reporting procedures
 - Supported versions
@@ -340,7 +363,8 @@ We take security seriously. Please review our comprehensive [Security Policy](.g
 - Contact information
 - Security features and limitations
 
-For security concerns, please email <sergiy@noskov.org> or <contact@ergiosko.com> starting with \[SECURITY\] in the subject line.
+For security concerns, please email <sergiy@noskov.org> or
+<contact@ergiosko.com> starting with \[SECURITY\] in the subject line.
 
 **Do not report security vulnerabilities through public GitHub issues.**
 
@@ -360,7 +384,9 @@ For security concerns, please email <sergiy@noskov.org> or <contact@ergiosko.com
 - Test coverage expansion
 
 > [!IMPORTANT]
-> This library is currently under active development and is NOT ready for production use. Production readiness will be achieved with the first public release (v1.0.0).
+> This library is currently under active development and is NOT ready for
+production use. Production readiness will be achieved with the first public
+release (v1.0.0).
 
 ## Maintainers
 
@@ -391,7 +417,8 @@ Prerequisites:
 
 ## Contact
 
-For all support inquiries, community discussions, and contact information, please refer to our detailed [Support Guide](.github/SUPPORT.md).
+For all support inquiries, community discussions, and contact information,
+please refer to our detailed [Support Guide](.github/SUPPORT.md).
 
 ### Quick Links
 
@@ -401,7 +428,8 @@ For all support inquiries, community discussions, and contact information, pleas
 - [Security Policy](https://github.com/ergiosko/rootine/security)
 
 > [!NOTE]
-> For security vulnerabilities, please DO NOT use public channels. Follow the security reporting guidelines in our [Security Policy](.github/SECURITY.md).
+> For security vulnerabilities, please DO NOT use public channels. Follow the
+security reporting guidelines in our [Security Policy](.github/SECURITY.md).
 
 ## License
 
@@ -412,7 +440,8 @@ Copyright (c) 2024-2025 Sergiy Noskov <sergiy@noskov.org>
 Copyright (c) 2024-2025 Ergiosko <contact@ergiosko.com>
 ```
 
-Rootine is open-source software licensed under the [MIT License](LICENSE). This means you can:
+Rootine is open-source software licensed under the [MIT License](LICENSE).
+This means you can:
 
 - ✓ Use it commercially
 - ✓ Modify the source code
