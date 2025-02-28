@@ -282,7 +282,7 @@ commit_msg_file="${1}"
 commit_msg="$(cat "${commit_msg_file}")"
 
 # Skip merge commits
-  if [[ "${commit_msg}" =~ ^Merge\ branch ]]; then
+if [[ "${commit_msg}" =~ ^Merge\ branch ]]; then
   exit 0
 fi
 
@@ -313,11 +313,21 @@ EOF
   return 0
 }
 
+# --
+# @description      Installs Git commit message template
+# @param            [force=false] Whether to overwrite existing template
+# @return           0 on success, 1 on failure
+# @example          git_install_commit_template
+#                   git_install_commit_template true
+# @sideeffects      Sets Git commit.template configuration
+# @security         Uses local Git configuration
+# @public
+# --
 git_install_commit_template() {
   local force="${1:-false}"
 
   if ! git config --get commit.template &>/dev/null || [[ "${force}" == "true" ]]; then
-    if ! git config --local commit.template "/usr/local/lib/rootine/library/user/templates/git-commit-template.txt"; then
+    if ! git config --local commit.template "${ROOTINE_LIBRARY_DIR}/user/templates/git-commit-template.txt"; then
       log_error "Failed to set commit template"
       return 1
     fi
