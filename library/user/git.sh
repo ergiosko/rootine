@@ -180,7 +180,7 @@ git_reset() {
     fi
   done
 
-  log_success "Successfully reset to ${commit}"
+  log_success "Repository reset to commit: ${commit}"
   return 0
 }
 
@@ -274,7 +274,6 @@ git_push() {
     log_error "Failed to push to ${remote}:${branch} running 'git push ${push_args[*]}'"
     return 1
   fi
-
-  log_success "Successfully pushed to ${remote}:${branch} running 'git push ${push_args[*]}'"
+  log_success "Changes pushed successfully to ${remote}:${branch} (${commit}) running 'git push ${push_args[*]}'"
   return 0
 }

@@ -81,7 +81,6 @@ main() {
     return 1
   fi
 
-  log_success "Repository cloned successfully: ${repository}"
   return 0
 }
 

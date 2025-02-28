@@ -60,7 +60,6 @@ main() {
     return 1
   fi
 
-  log_success "Repository reset to commit: ${commit}"
   return 0
 }
 
