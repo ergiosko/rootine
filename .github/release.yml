@@ -1,0 +1,89 @@
+# .github/release.yml
+
+changelog:
+  categories:
+    - title: Breaking Changes 🛠
+      labels:
+        - breaking-change
+      commits:
+        - BREAKING CHANGE
+        - "!:"
+
+    - title: Features 🎉
+      labels:
+        - enhancement
+        - feature
+      commits:
+        - feat
+        - "feat:"
+
+    - title: Bug Fixes 🐛
+      labels:
+        - bug
+        - fix
+      commits:
+        - fix
+        - "fix:"
+
+    - title: Performance Improvements ⚡️
+      labels:
+        - performance
+      commits:
+        - perf
+        - "perf:"
+
+    - title: Documentation 📚
+      labels:
+        - documentation
+      commits:
+        - docs
+        - "docs:"
+
+    - title: Code Refactoring 🔄
+      labels:
+        - refactor
+      commits:
+        - refactor
+        - "refactor:"
+
+    - title: Build System & CI/CD 🛠
+      labels:
+        - build
+        - ci
+      commits:
+        - build
+        - ci
+        - "build:"
+        - "ci:"
+
+    - title: Tests 🧪
+      labels:
+        - test
+      commits:
+        - test
+        - "test:"
+
+    - title: Styles 🎨
+      labels:
+        - style
+      commits:
+        - style
+        - "style:"
+
+    - title: Chores & Maintenance 🧹
+      labels:
+        - chore
+      commits:
+        - chore
+        - "chore:"
+
+    - title: Reverts ⏮
+      labels:
+        - revert
+      commits:
+        - revert
+        - "revert:"
+
+    - title: Other Changes
+      labels:
+        - "*"
