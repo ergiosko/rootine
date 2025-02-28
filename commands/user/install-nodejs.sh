@@ -21,7 +21,6 @@
 #
 #                   # Install specific versions
 #                   rootine install-nodejs v0.39.3 18
-# @public
 # ---
 
 is_sourced || exit 1
