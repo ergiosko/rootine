@@ -34,6 +34,7 @@
 #                   - generate_ssh_key(): SSH key pair generation
 #                   - send_email_message(): Email dispatch utility
 #                   - show_help_info(): Help documentation display
+#                   - git_config(): Git configuration utility
 # @security         - Input validation on all public functions
 #                   - Secure handling of file operations
 #                   - Email address validation
@@ -86,12 +87,10 @@ _print_attributes() {
     ["declare -a"]="array"
     ["declare -A"]="associative"
   )
-
   local attr
   for attr in "${!attr_map[@]}"; do
     [[ "${declare_output}" == *"${attr}"* ]] && attrs+=("${attr_map[${attr}]}")
   done
-
   [[ "${#attrs[@]}" -gt 0 ]] && printf "%sAttributes: %s\n" "${indent}" "${attrs[*]}"
   return 0
 }
@@ -178,7 +177,6 @@ _dump_indexed_array() {
   fi
 
   local -n ref="${name}"
-
   printf "%sarray(%d) {\n" "${indent}" "${#ref[@]}"
   local i
   for i in "${!ref[@]}"; do
@@ -226,7 +224,6 @@ _dump_associative_array() {
   fi
 
   local -n ref="${name}"
-
   printf "%sassoc(%d) {\n" "${indent}" "${#ref[@]}"
   local key
   for key in "${!ref[@]}"; do
@@ -261,14 +258,12 @@ _dump_scalar() {
 
   local -r name="${1}"
   local -r indent="${2}"
-
   if ! declare -p "${name}" &>/dev/null; then
     log_error "_dump_scalar: variable '${name}' is not defined"
     return "${ROOTINE_STATUS_NOINPUT}"
   fi
 
   local -n ref="${name}"
-
   if [[ -z "${ref}" ]]; then
     printf "%sempty(0) \"\"\n" "${indent}"
   elif [[ "${ref}" =~ ^[[:digit:]]+$ ]]; then
@@ -276,7 +271,6 @@ _dump_scalar() {
   else
     printf "%sstring(%d) \"%s\"\n" "${indent}" "${#ref}" "${ref}"
   fi
-
   return 0
 }
 
@@ -370,13 +364,10 @@ var_dump() {
 
   local indent_str
   indent_str="$(printf "%*s" "$((current_depth * indent_width))" "")"
-
   _print_attributes "${declare_output}" "${indent_str}"
   _handle_variable_type "${var_name}" "${declare_output}" "${max_depth}" \
     "${current_depth}" "${indent_str}" "${indent_width}"
-
   (( "${do_exit}" == 1 )) && exit 0
-
   return 0
 }
 
@@ -435,9 +426,7 @@ trim_str() {
 # --
 alnum_str() {
   local str="${1:-}"
-
   str="$(printf "%s" "${str}" | tr -d '[:space:]' | tr -c '[:alnum:]' '_')"
-
   printf "%s" "${str}"
   return 0
 }
@@ -457,7 +446,6 @@ alnum_str() {
 # --
 check_script_permissions() {
   local -r script_path="${1:-$0}"
-
   [[ ! -f "${script_path}" ]] && {
     log_error "Script not found: ${script_path}"
     return 1
@@ -596,7 +584,6 @@ is_lock_file_held() {
     else
       log_error "Permission denied: cannot read ${real_path}"
     fi
-
     return "${ROOTINE_STATUS_NOPERM}"
   fi
 
@@ -632,7 +619,6 @@ is_lock_file_held() {
 # --
 is_package_installed() {
   local -r package="${1:?Package name is required}"
-
   if dpkg-query -W -f='${Status}' "${package}" &>/dev/null; then
     return 0
   else
@@ -681,7 +667,6 @@ check_disk_space() {
       return 1
     fi
   done
-
   return 0
 }
 
@@ -724,7 +709,6 @@ check_internet_connection() {
       log_success "Internet connection is active"
       return 0
     fi
-
     ((attempt < retries)) && {
       log_warning "Ping attempt ${attempt}/${retries} failed, retrying in 1s..."
       sleep 1
@@ -809,12 +793,10 @@ generate_ssh_key() {
   log_info "Enter key password (empty for no password):"
   read -rs password
   echo
-
   if [[ -n "${password}" ]]; then
     log_info "Confirm password:"
     read -rs password_confirm
     echo
-
     if [[ "${password}" != "${password_confirm}" ]]; then
       log_error "Passwords do not match"
       return "${ROOTINE_STATUS_DATAERR}"
@@ -866,7 +848,6 @@ generate_ssh_key() {
     log_error "Failed to read public key"
     return "${ROOTINE_STATUS_NOINPUT}"
   fi
-
   return 0
 }
 
@@ -924,7 +905,6 @@ send_email_message() {
 # --
 show_help_info() {
   local -r script_path="${1:-${ROOTINE_COMMAND_PATH:-$0}}"
-
   [[ ! -f "${script_path}" ]] && {
     log_error "Script not found: ${script_path}"
     exit 1
@@ -954,6 +934,62 @@ show_help_info() {
   else
     log_warning "No help information found in ${script_path}"
   fi
-
   exit 0
+}
+
+# --
+# @description      Manages git configuration at different scopes
+# @param            [scope] Configuration scope (global|system|local|worktree)
+# @arguments        [--show-only] Only show current configuration
+# @return           0 on success, non-zero on failure
+# @example          git_config global --show-only
+# @public
+# --
+git_config() {
+  local config_file="--${1:-local}"
+  local show_only=false
+  local -i status=0
+  shift || true
+
+  if [[ ! "${config_file#--}" =~ ^(global|system|local|worktree)$ ]]; then
+    log_error "Invalid configuration scope: ${config_file#--}"
+    return 1
+  fi
+
+  while (( ${#} )); do
+    case "${1}" in
+      --show-only)
+        show_only=true
+        ;;
+      *)
+        log_error "Invalid argument '${1}'"
+        return 1
+        ;;
+    esac
+    shift
+  done
+
+  if ! "${show_only}"; then
+    local -A configs=(
+      ["user.email"]="${ROOTINE_GIT_USER_EMAIL:-}"
+      ["user.name"]="${ROOTINE_GIT_USER_NAME:-}"
+      ["core.filemode"]="${ROOTINE_GIT_CORE_FILEMODE:-}"
+    )
+    for key in "${!configs[@]}"; do
+      local value="${configs[${key}]}"
+      if [[ -n "${value}" ]]; then
+        if ! git config "${config_file}" "${key}" "${value}"; then
+          log_error "Failed to set ${key}=${value}"
+          ((status+=1))
+        fi
+      fi
+    done
+  fi
+
+  log_info "${config_file#--} Git configuration:"
+  if ! git config list "${config_file}"; then
+    log_error "Failed to list ${config_file#--} configuration"
+    ((status+=1))
+  fi
+  return "${status}"
 }

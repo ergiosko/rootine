@@ -212,9 +212,9 @@ We follow these naming conventions for consistency and clarity:
 ### How It Works
 
 1. `commands/`: Contains scripts that perform specific tasks. These scripts
-might use functions from the library directory. The separation into `root/` and
-`user/` subdirectories ensures that root actions are kept separate and
-protected.
+might use functions from the library directory. The separation into `common/`,
+`root/` and `user/` subdirectories ensures that root actions are kept separate
+and protected.
 
 2. `library/`: Contains reusable functions and helper scripts. The `common/`
 directory holds functions that are used by both root and user scripts. The

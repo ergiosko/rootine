@@ -127,65 +127,6 @@ git_clone() {
 }
 
 # --
-# @description      Manages git configuration at different scopes
-# @param            [scope] Configuration scope (global|system|local|worktree)
-# @arguments        [--show-only] Only show current configuration
-# @return           0 on success, non-zero on failure
-# @example          git_config global --show-only
-# @public
-# --
-git_config() {
-  local config_file="--${1:-local}"
-  local show_only=false
-  shift || true
-
-  if [[ ! "${config_file#--}" =~ ^(global|system|local|worktree)$ ]]; then
-    log_error "Invalid configuration scope: ${config_file#--}"
-    return 1
-  fi
-
-  while (( ${#} )); do
-    case "${1}" in
-      --show-only)
-        show_only=true
-        ;;
-      *)
-        log_error "Invalid argument '${1}'"
-        return 1
-        ;;
-    esac
-    shift
-  done
-
-  local -i status=0
-
-  if ! "${show_only}"; then
-    local -A configs=(
-      ["user.email"]="${ROOTINE_GIT_USER_EMAIL:-}"
-      ["user.name"]="${ROOTINE_GIT_USER_NAME:-}"
-      ["core.filemode"]="${ROOTINE_GIT_CORE_FILEMODE:-}"
-    )
-    for key in "${!configs[@]}"; do
-      local value="${configs[${key}]}"
-      if [[ -n "${value}" ]]; then
-        if ! git config "${config_file}" "${key}" "${value}"; then
-          log_error "Failed to set ${key}=${value}"
-          ((status+=1))
-        fi
-      fi
-    done
-  fi
-
-  log_info "${config_file#--} Git configuration:"
-  if ! git config list "${config_file}"; then
-    log_error "Failed to list ${config_file#--} configuration"
-    ((status+=1))
-  fi
-
-  return "${status}"
-}
-
-# --
 # @description      Resets git repository to specified commit
 # @param            [commit] Commit to reset to (default: HEAD)
 # @arguments        [--force] Skip confirmation prompt

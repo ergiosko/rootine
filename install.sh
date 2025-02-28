@@ -95,10 +95,8 @@ ROOTINE_UTILITY_DIRECTORIES=(
   "/var/run/rootine"
   "/tmp/rootine"
 )
-
 for dir in "${ROOTINE_UTILITY_DIRECTORIES[@]}"; do
   [[ -d "${dir}" ]] && continue
-
   if ! mkdir -p "${dir}"; then
     printf "%s[ ERROR ]%s Failed to create utility directory\n" \
       $'\e[0;31m' $'\e[0m' >&2
@@ -118,7 +116,6 @@ for dir in "${ROOTINE_UTILITY_DIRECTORIES[@]}"; do
     printf "  Please check you have sufficient privileges\n" >&2
     return 1
   fi
-
   echo "[SUCCESS] ${dir} utility directory created successfully" >&2
 done
 
@@ -152,7 +149,6 @@ EOF
     echo "[ ERROR ] Failed to update ${ROOTINE_ETC_BASHRC_FILE}" >&2
     exit 1
   fi
-
   echo "[SUCCESS] Rootine installation completed successfully" >&2
   echo "  Please reload your terminal window" >&2
 else

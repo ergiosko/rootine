@@ -88,10 +88,8 @@ ROOTINE_UTILITY_DIRECTORIES=(
   "/var/run/rootine"
   "/tmp/rootine"
 )
-
 for dir in "${ROOTINE_UTILITY_DIRECTORIES[@]}"; do
   [[ ! -d "${dir}" ]] && continue
-
   if ! rm -rf "${dir}"; then
     printf "%s[ ERROR ]%s Failed to remove utility directory\n" \
       $'\e[0;31m' $'\e[0m' >&2
@@ -101,7 +99,6 @@ for dir in "${ROOTINE_UTILITY_DIRECTORIES[@]}"; do
     printf "  - Parent directory exists\n" >&2
     return 1
   fi
-
   echo "[SUCCESS] ${dir} utility directory removed successfully" >&2
 done
 

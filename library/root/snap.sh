@@ -46,7 +46,6 @@ is_sourced || exit 1
 # --
 snap_stop() {
   local -ar required_cmds=("pgrep" "killall")
-
   if ! is_command "${required_cmds[@]}"; then
     log_error "Missing required commands: ${required_cmds[*]}"
     return 1
@@ -58,12 +57,10 @@ snap_stop() {
   fi
 
   log_info "Stopping ${ROOTINE_SNAP_STORE}..."
-
   if ! killall -q -w "${ROOTINE_SNAP_STORE}"; then
     log_error "Failed to stop ${ROOTINE_SNAP_STORE} using killall"
     return 1
   fi
-
   log_success "Snap Store stopped successfully"
   return 0
 }
@@ -97,7 +94,6 @@ snap_refresh() {
 
   while ((attempt <= retries)); do
     log_info "Refreshing snap packages (attempt ${attempt}/${retries})..."
-
     if snap refresh; then
       log_success "Snap packages refreshed successfully"
       return 0
@@ -107,7 +103,6 @@ snap_refresh() {
       log_info "Waiting ${delay} seconds before retry..."
       sleep "${delay}"
     fi
-
     ((attempt+=1))
   done
 

@@ -80,7 +80,6 @@ check_bash_version() {
 
   printf "%s[ DEBUG ]%s Checking Bash version compatibility...\n" \
     $'\e[0;37m' $'\e[0m' >&2
-
   read -r major minor patch < <(echo "${ROOTINE_MIN_BASH_VERSION}" | tr '.' ' ')
 
   if ((BASH_VERSINFO[0] < major)) ||
@@ -110,13 +109,10 @@ check_bash_version() {
 _set_app_env() {
   printf "%s[ DEBUG ]%s Setting up application environment...\n" \
     $'\e[0;37m' $'\e[0m' >&2
-
   set -euf -o pipefail
-
   declare -g IFS=$' \n\t'
   declare -gr ROOTINE_VERSION="0.9.0"
   declare -gix IS_ROOTINE_INSTALLED="${IS_ROOTINE_INSTALLED:-0}"
-
   printf "%s[ DEBUG ]%s Environment variables set successfully\n" \
     $'\e[0;37m' $'\e[0m' >&2
 }
@@ -134,7 +130,6 @@ get_app_path() {
 
   printf "%s[ DEBUG ]%s Resolving application path...\n" \
     $'\e[0;37m' $'\e[0m' >&2
-
   if [[ -z "${BASH_SOURCE[0]:-}" ]]; then
     printf "%s[ ERROR ]%s Cannot determine script location.\n" \
       $'\e[0;31m' $'\e[0m' >&2
@@ -170,7 +165,6 @@ _set_app_paths() {
 
   printf "%s[ DEBUG ]%s Setting up application paths...\n" \
     $'\e[0;37m' $'\e[0m' >&2
-
   if ! path="$(get_app_path)"; then
     return 1
   fi
@@ -198,7 +192,6 @@ _validate_app_paths() {
 
   printf "%s[ DEBUG ]%s Validating application directory structure...\n" \
     $'\e[0;37m' $'\e[0m' >&2
-
   for dir in "${required_dirs[@]}"; do
     printf "  Checking directory: %s\n" "${dir}" >&2
     if [[ ! -d "${dir}" ]]; then
@@ -250,7 +243,6 @@ main() {
   printf "  Date: %s\n" "$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >&2
   printf "  User: %s\n" "${USER:-Unknown}" >&2
   printf "  Loading core component...\n" >&2
-
   if ! source "${ROOTINE_LIBRARY_DIR}/bootstrap.sh"; then
     printf "%s[ ERROR ]%s Failed to load core component.\n" \
       $'\e[0;31m' $'\e[0m' >&2
@@ -261,12 +253,10 @@ main() {
     printf "  - No syntax errors in the file\n" >&2
     return 1
   fi
-
   printf "%s[ DEBUG ]%s Core component loaded successfully\n" \
     $'\e[0;37m' $'\e[0m' >&2
 
   local cmd="${1:-}"
-
   if [[ -z "${cmd}" ]]; then
     printf "%s[ ERROR ]%s No command specified.\n" \
       $'\e[0;31m' $'\e[0m' >&2
@@ -274,7 +264,6 @@ main() {
     printf "  Run '%s --help' for available commands.\n" "${0}" >&2
     return 1
   fi
-
   shift
 
   case "${cmd}" in
@@ -293,7 +282,6 @@ main() {
     $'\e[0;37m' $'\e[0m' "${cmd}" >&2
   _route_command "${cmd}" "$@"
   local status=$?
-
   end_time=$(date +%s)
   printf "%s[ DEBUG ]%s Command execution completed\n" \
     $'\e[0;37m' $'\e[0m' >&2
