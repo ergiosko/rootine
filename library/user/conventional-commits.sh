@@ -281,45 +281,23 @@ git_install_commit_msg_hook() {
 commit_msg_file="${1}"
 commit_msg="$(cat "${commit_msg_file}")"
 
-# Skip merge commits
 if [[ "${commit_msg}" =~ ^Merge\ branch ]]; then
   exit 0
 fi
 
-# Get repository root path
 repo_root="$(git rev-parse --show-toplevel)"
 if [[ ! -d "${repo_root}" ]]; then
-  echo "Error: Failed to determine repository root" >&2
+  echo "ERROR: Failed to determine repository root" >&2
   exit 1
 fi
 
-if [[ -x "/usr/local/bin/rootine" ]]; then
-    ROOTINE_COMMAND="/usr/local/bin/rootine"
-elif [[ -x "/usr/local/lib/rootine/rootine" ]]; then
-    ROOTINE_COMMAND="/usr/local/lib/rootine/rootine"
-else
-    echo "Error: Could not find rootine executable" >&2
-    exit 1
-fi
-
-# Validate commit message using rootine executable
-if ! "${ROOTINE_COMMAND}" lib::user::git_validate_commit_message "${commit_msg}"; then
-    exit 1
-fi
-
-
-# Load Rootine bootstrap
-if [[ -x "${repo_root}/library/bootstrap.sh" ]]; then
-  # shellcheck source=/dev/null
-  source "${repo_root}/library/bootstrap.sh"
-
-  # Since we sourced bootstrap.sh, we can use the internal routing
-  # mechanism to call the validation function
-  if ! _route_command "lib::user::git_validate_commit_message" "${commit_msg}"; then
+if [[ -x "${repo_root}/rootine" ]]; then
+  ROOTINE_COMMAND="${repo_root}/rootine"
+  if ! "${ROOTINE_COMMAND}" lib::user::git_validate_commit_message "${commit_msg}"; then
     exit 1
   fi
 else
-  echo "Error: Rootine library not found in ${repo_root}/library" >&2
+  echo "ERROR: Rootine library not found in ${repo_root}/library" >&2
   exit 1
 fi
 
