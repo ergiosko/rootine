@@ -34,14 +34,14 @@ is_sourced || exit 1
 
 declare -gA ROOTINE_SCRIPT_ARGS=(
   [type]="Commit type (feat, fix, etc.):1:${1:-}:^($(IFS=\|; echo "${ROOTINE_COMMIT_TYPES[*]}"))"
-  [scope]="Commit scope:1:${2:-}:^($(IFS=\|; echo "${ROOTINE_COMMIT_SCOPES[*]}"))?$"
+  [scope]="Commit scope:0:${2:-}:^($(IFS=\|; echo "${ROOTINE_COMMIT_SCOPES[*]}"))?$"
   [description]="Commit description:1:${3:-}:^[a-z].*$"
-  [body]="Commit body (optional):1:${4:-}:"
-  [footer]="Commit footer (optional):1:${5:-}:"
+  [body]="Commit body (optional):0:${4:-}:"
+  [footer]="Commit footer (optional):0:${5:-}:"
   [breaking]="Mark as breaking change:0:${6:-false}:^(true|false)$"
   [branches]="Push all branches:0:${7:-true}:^(true|false)$"
-  [branch]="Target branch:1:${8:-ROOTINE_GIT_DEFAULT_BRANCH}:"
-  [remote]="Remote repository:1:${9:-ROOTINE_GIT_DEFAULT_REMOTE}:"
+  [branch]="Target branch:0:${8:-${ROOTINE_GIT_DEFAULT_BRANCH}}:"
+  [remote]="Remote repository:0:${9:-${ROOTINE_GIT_DEFAULT_REMOTE}}:"
   [force]="Force push:0:${10:-false}:^(true|false)$"
   [verbose]="Show verbose output:0:${11:-false}:^(true|false)$"
   [upstream]="Upstream (tracking) reference:0:${12:-true}:^(true|false)$"
@@ -62,18 +62,19 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
+  # Use parameter expansion to provide default empty values for optional arguments
   local type="${ROOTINE_SCRIPT_ARG_TYPE}"
-  local scope="${ROOTINE_SCRIPT_ARG_SCOPE}"
+  local scope="${ROOTINE_SCRIPT_ARG_SCOPE:-}"
   local description="${ROOTINE_SCRIPT_ARG_DESCRIPTION}"
-  local body="${ROOTINE_SCRIPT_ARG_BODY}"
-  local footer="${ROOTINE_SCRIPT_ARG_FOOTER}"
-  local breaking="${ROOTINE_SCRIPT_ARG_BREAKING}"
-  local branches="${ROOTINE_SCRIPT_ARG_BRANCHES}"
-  local branch="${ROOTINE_SCRIPT_ARG_BRANCH}"
-  local remote="${ROOTINE_SCRIPT_ARG_REMOTE}"
-  local force="${ROOTINE_SCRIPT_ARG_FORCE}"
-  local verbose="${ROOTINE_SCRIPT_ARG_VERBOSE}"
-  local upstream="${ROOTINE_SCRIPT_ARG_UPSTREAM}"
+  local body="${ROOTINE_SCRIPT_ARG_BODY:-}"
+  local footer="${ROOTINE_SCRIPT_ARG_FOOTER:-}"
+  local breaking="${ROOTINE_SCRIPT_ARG_BREAKING:-false}"
+  local branches="${ROOTINE_SCRIPT_ARG_BRANCHES:-true}"
+  local branch="${ROOTINE_SCRIPT_ARG_BRANCH:-${ROOTINE_GIT_DEFAULT_BRANCH}}"
+  local remote="${ROOTINE_SCRIPT_ARG_REMOTE:-${ROOTINE_GIT_DEFAULT_REMOTE}}"
+  local force="${ROOTINE_SCRIPT_ARG_FORCE:-false}"
+  local verbose="${ROOTINE_SCRIPT_ARG_VERBOSE:-false}"
+  local upstream="${ROOTINE_SCRIPT_ARG_UPSTREAM:-true}"
   local -a push_args=()
 
   # Stage all changes
