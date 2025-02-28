@@ -274,6 +274,6 @@ git_push() {
     log_error "Failed to push to ${remote}:${branch} running 'git push ${push_args[*]}'"
     return 1
   fi
-  log_success "Changes pushed successfully to ${remote}:${branch} (${commit}) running 'git push ${push_args[*]}'"
+  log_success "Changes pushed successfully to '${remote}:${branch}' running 'git push ${push_args[*]}'"
   return 0
 }
