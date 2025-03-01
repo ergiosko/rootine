@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 - Added commit message validation following [Conventional Commits v1.0.0](https://www.conventionalcommits.org/)
 - Added Git commit message template
 - Added support for commit types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test
-- Added scopes: commands, common, core, docs, git, library, root, security, user
+- Added scopes: commands, common, core, docs, git, github, library, root, security, user
 
 ### Changed
 

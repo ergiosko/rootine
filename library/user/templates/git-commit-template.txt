@@ -1,9 +1,9 @@
 # <type>(<scope>): <description>
-# |<---- Using a maximum of 50 characters --->|
+# |<--- Using a maximum of 50 characters ------->|
 # Example: feat(core): add new feature
 
 # [optional body]
-# |<---- Using a maximum of 72 characters ------------------------------------>|
+# |<--- Using a maximum of 72 characters ----------------------------->|
 # Explain why this change is being made:
 
 # [optional footer]
@@ -19,13 +19,14 @@
 #   feat      (a new feature)
 #   fix       (a bug fix)
 #   perf      (a code change that improves performance)
-#   refactor  (a code change that neither fixes a bug nor adds a feature)
+#   refactor  (a code change that does not fix a bug or add a function)
 #   revert    (reverts a previous commit)
 #   style     (changes that do not affect the meaning of the code)
 #   test      (adding missing tests or correcting existing tests)
 #
 # Scope should be one of:
-#   commands, common, core, docs, git, library, root, security, user
+#   commands, common, core, docs, git,
+#   github, library, root, security, user
 #
 # Breaking changes should start with "BREAKING CHANGE: "
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------

@@ -56,6 +56,7 @@ declare -ga ROOTINE_COMMIT_SCOPES=(
   "core"      # Core functionality affecting entire system
   "docs"      # Documentation files (.md, man pages)
   "git"       # Git-related functionality
+  "github"    # GitHub-related functionality
   "library"   # Library functions in library/
   "root"      # Root-level functionality
   "security"  # Security-related changes

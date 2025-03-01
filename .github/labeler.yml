@@ -1,78 +1,114 @@
-# Default GitHub Labels - Applied based on content patterns
+# Labels automatically applied based on content patterns
+# Sorted in alphabetical order
 
-# Bug label - for files that are likely bug fixes
+# Breaking Changes
+breaking-change:
+  - '**/BREAKING-CHANGE/**'
+  - '**/breaking/**'
+
+# Bug fixes
 bug:
-  - '**/fix/**'
   - '**/bugfix/**'
+  - '**/fix/**'
   - '**/hotfix/**'
   - '**/*fix*.sh'
 
-# Documentation label - for documentation changes
+# Chores and maintenance
+chore:
+  - '**/chore/**'
+  - '**/maintenance/**'
+  - '.gitattributes'
+  - '.gitignore'
+
+# Configuration files
+configuration:
+  - '**/*.cfg'
+  - '**/*.conf'
+  - '**/*.ini'
+  - '**/*.json'
+  - '**/*.yaml'
+  - '**/*.yml'
+
+# Dependencies and environment
+dependencies:
+  - '**/deps/**'
+  - '**/vendor/**'
+  - 'Dockerfile'
+  - 'package-lock.json'
+  - 'package.json'
+  - 'requirements.txt'
+
+# Documentation
 documentation:
   - '**/*.md'
   - '**/*.txt'
-  - 'docs/**/*'
   - '**/doc/**'
   - '**/docs/**'
-  - 'README*'
+  - 'docs/**/*'
   - 'LICENSE*'
+  - 'README*'
 
-# Enhancement label - for new features and improvements
+# New features and improvements
 enhancement:
-  - '**/feature/**'
-  - '**/feat/**'
   - '**/enhance/**'
+  - '**/feat/**'
+  - '**/feature/**'
   - '**/improvement/**'
 
-# Custom Labels for Rootine-specific content
+# Performance improvements
+performance:
+  - '**/optimize/**'
+  - '**/perf/**'
+  - '**/performance/**'
 
-# Shell scripts label - primary content type
+# Refactoring changes
+refactor:
+  - '**/redesign/**'
+  - '**/refactor/**'
+
+# Reverts
+revert:
+  - '**/revert/**'
+  - '**/rollback/**'
+
+# Security-related changes
+security:
+  - '**/auth/**'
+  - '**/crypto/**'
+  - '**/security/**'
+  - '**/ssl/**'
+
+# Shell scripts
 shell:
-  - '**/*.sh'
   - '**/*.bash'
+  - '**/*.sh'
   - '**/bin/*'
+
+# Style changes
+style:
+  - '**/.editorconfig'
+  - '**/.prettier*'
+  - '**/format/**'
+  - '**/style/**'
+
+# Tests
+tests:
+  - '**/*.spec.*'
+  - '**/*.test.*'
+  - '**/__tests__/**'
+  - '**/spec/**'
+  - '**/test/**'
 
 # Ubuntu-specific content
 ubuntu:
   - '**/apt/**'
+  - '**/debian/**'
   - '**/dpkg/**'
   - '**/ubuntu/**'
-  - '**/debian/**'
-
-# Configuration files
-configuration:
-  - '**/*.conf'
-  - '**/*.cfg'
-  - '**/*.yml'
-  - '**/*.yaml'
-  - '**/*.json'
-  - '**/*.ini'
 
 # CI/CD and workflow files
 workflow:
-  - '.github/workflows/**'
   - '.github/actions/**'
+  - '.github/workflows/**'
   - '.gitlab-ci.yml'
   - '**/pipeline/**'
-
-# Dependencies and environment
-dependencies:
-  - 'requirements.txt'
-  - 'package.json'
-  - 'package-lock.json'
-  - 'Dockerfile'
-  - '**/deps/**'
-  - '**/vendor/**'
-
-# Root scripts - main functionality
-scripts:
-  - '*.sh'
-  - 'bin/*'
-  - 'scripts/*'
-
-# Security-related changes
-security:
-  - '**/security/**'
-  - '**/crypto/**'
-  - '**/auth/**'
-  - '**/ssl/**'
