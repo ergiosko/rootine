@@ -1,97 +1,95 @@
-# Labels automatically applied based on content patterns
+"breaking-change":
+- "**/BREAKING-CHANGE/**"
+- "**/breaking/**"
 
-breaking-change:
-- '**/BREAKING-CHANGE/**'
-- '**/breaking/**'
+"bug":
+- "**/bugfix/**"
+- "**/fix/**"
+- "**/hotfix/**"
+- "**/*fix*.sh"
 
-bug:
-- '**/bugfix/**'
-- '**/fix/**'
-- '**/hotfix/**'
-- '**/*fix*.sh'
+"chore":
+- "**/chore/**"
+- "**/maintenance/**"
+- ".gitattributes"
+- ".gitignore"
 
-chore:
-- '**/chore/**'
-- '**/maintenance/**'
-- '.gitattributes'
-- '.gitignore'
+"configuration":
+- "**/*.cfg"
+- "**/*.conf"
+- "**/*.ini"
+- "**/*.json"
+- "**/*.yaml"
+- "**/*.yml"
 
-configuration:
-- '**/*.cfg'
-- '**/*.conf'
-- '**/*.ini'
-- '**/*.json'
-- '**/*.yaml'
-- '**/*.yml'
+"dependencies":
+- "**/deps/**"
+- "**/vendor/**"
+- "Dockerfile"
+- "package-lock.json"
+- "package.json"
+- "requirements.txt"
 
-dependencies:
-- '**/deps/**'
-- '**/vendor/**'
-- 'Dockerfile'
-- 'package-lock.json'
-- 'package.json'
-- 'requirements.txt'
+"documentation":
+- "**/*.md"
+- "**/*.txt"
+- "**/doc/**"
+- "**/docs/**"
+- "docs/**/*"
+- "LICENSE*"
+- "README*"
 
-documentation:
-- '**/*.md'
-- '**/*.txt'
-- '**/doc/**'
-- '**/docs/**'
-- 'docs/**/*'
-- 'LICENSE*'
-- 'README*'
+"enhancement":
+- "**/enhance/**"
+- "**/feat/**"
+- "**/feature/**"
+- "**/improvement/**"
 
-enhancement:
-- '**/enhance/**'
-- '**/feat/**'
-- '**/feature/**'
-- '**/improvement/**'
+"performance":
+- "**/optimize/**"
+- "**/perf/**"
+- "**/performance/**"
 
-performance:
-- '**/optimize/**'
-- '**/perf/**'
-- '**/performance/**'
+"refactor":
+- "**/redesign/**"
+- "**/refactor/**"
 
-refactor:
-- '**/redesign/**'
-- '**/refactor/**'
+"revert":
+- "**/revert/**"
+- "**/rollback/**"
 
-revert:
-- '**/revert/**'
-- '**/rollback/**'
+"security":
+- "**/auth/**"
+- "**/crypto/**"
+- "**/security/**"
+- "**/ssl/**"
 
-security:
-- '**/auth/**'
-- '**/crypto/**'
-- '**/security/**'
-- '**/ssl/**'
+"shell":
+- "**/*.bash"
+- "**/*.sh"
+- "**/bin/*"
 
-shell:
-- '**/*.bash'
-- '**/*.sh'
-- '**/bin/*'
+"style":
+- "**/.editorconfig"
+- "**/.prettier*"
+- "**/format/**"
+- "**/style/**"
 
-style:
-- '**/.editorconfig'
-- '**/.prettier*'
-- '**/format/**'
-- '**/style/**'
+"tests":
+- "**/*.spec.*"
+- "**/*.test.*"
+- "**/__tests__/**"
+- "**/spec/**"
+- "**/test/**"
 
-tests:
-- '**/*.spec.*'
-- '**/*.test.*'
-- '**/__tests__/**'
-- '**/spec/**'
-- '**/test/**'
+"ubuntu":
+- "**/apt/**"
+- "**/debian/**"
+- "**/dpkg/**"
+- "**/ubuntu/**"
 
-ubuntu:
-- '**/apt/**'
-- '**/debian/**'
-- '**/dpkg/**'
-- '**/ubuntu/**'
-
-workflow:
-- '.github/actions/**'
-- '.github/workflows/**'
-- '.gitlab-ci.yml'
-- '**/pipeline/**'
+"workflow":
+- ".github/actions/**"
+- ".github/workflows/**"
+- ".gitlab-ci.yml"
+- "**/pipeline/**"
