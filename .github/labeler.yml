@@ -1,95 +1,145 @@
+# Configuration for the GitHub Issue Labeler Action
+
 "breaking-change":
-- "**/BREAKING-CHANGE/**"
-- "**/breaking/**"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/BREAKING-CHANGE/**"
+      - "**/breaking/**"
 
 "bug":
-- "**/bugfix/**"
-- "**/fix/**"
-- "**/hotfix/**"
-- "**/*fix*.sh"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/bugfix/**"
+      - "**/fix/**"
+      - "**/hotfix/**"
+      - "**/*fix*.sh"
 
 "chore":
-- "**/chore/**"
-- "**/maintenance/**"
-- ".gitattributes"
-- ".gitignore"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/chore/**"
+      - "**/maintenance/**"
+      - ".gitattributes"
+      - ".gitignore"
 
 "configuration":
-- "**/*.cfg"
-- "**/*.conf"
-- "**/*.ini"
-- "**/*.json"
-- "**/*.yaml"
-- "**/*.yml"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/*.cfg"
+      - "**/*.conf"
+      - "**/*.ini"
+      - "**/*.json"
+      - "**/*.yaml"
+      - "**/*.yml"
 
 "dependencies":
-- "**/deps/**"
-- "**/vendor/**"
-- "Dockerfile"
-- "package-lock.json"
-- "package.json"
-- "requirements.txt"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/deps/**"
+      - "**/vendor/**"
+      - "Dockerfile"
+      - "package-lock.json"
+      - "package.json"
+      - "requirements.txt"
 
 "documentation":
-- "**/*.md"
-- "**/*.txt"
-- "**/doc/**"
-- "**/docs/**"
-- "docs/**/*"
-- "LICENSE*"
-- "README*"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/*.md"
+      - "**/*.txt"
+      - "**/doc/**"
+      - "**/docs/**"
+      - "docs/**/*"
+      - "LICENSE*"
+      - "README*"
 
 "enhancement":
-- "**/enhance/**"
-- "**/feat/**"
-- "**/feature/**"
-- "**/improvement/**"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/enhance/**"
+      - "**/feat/**"
+      - "**/feature/**"
+      - "**/improvement/**"
 
 "performance":
-- "**/optimize/**"
-- "**/perf/**"
-- "**/performance/**"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/optimize/**"
+      - "**/perf/**"
+      - "**/performance/**"
 
 "refactor":
-- "**/redesign/**"
-- "**/refactor/**"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/redesign/**"
+      - "**/refactor/**"
 
 "revert":
-- "**/revert/**"
-- "**/rollback/**"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/revert/**"
+      - "**/rollback/**"
 
 "security":
-- "**/auth/**"
-- "**/crypto/**"
-- "**/security/**"
-- "**/ssl/**"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/auth/**"
+      - "**/crypto/**"
+      - "**/security/**"
+      - "**/ssl/**"
 
 "shell":
-- "**/*.bash"
-- "**/*.sh"
-- "**/bin/*"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/*.bash"
+      - "**/*.sh"
+      - "**/bin/*"
 
 "style":
-- "**/.editorconfig"
-- "**/.prettier*"
-- "**/format/**"
-- "**/style/**"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/.editorconfig"
+      - "**/.prettier*"
+      - "**/format/**"
+      - "**/style/**"
 
 "tests":
-- "**/*.spec.*"
-- "**/*.test.*"
-- "**/__tests__/**"
-- "**/spec/**"
-- "**/test/**"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/*.spec.*"
+      - "**/*.test.*"
+      - "**/__tests__/**"
+      - "**/spec/**"
+      - "**/test/**"
 
 "ubuntu":
-- "**/apt/**"
-- "**/debian/**"
-- "**/dpkg/**"
-- "**/ubuntu/**"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - "**/apt/**"
+      - "**/debian/**"
+      - "**/dpkg/**"
+      - "**/ubuntu/**"
 
 "workflow":
-- ".github/actions/**"
-- ".github/workflows/**"
-- ".gitlab-ci.yml"
-- "**/pipeline/**"
+- "any":
+  - "changed-files":
+    - "any-glob-to-any-file":
+      - ".github/actions/**"
+      - ".github/workflows/**"
+      - ".gitlab-ci.yml"
+      - "**/pipeline/**"
