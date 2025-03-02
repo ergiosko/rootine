@@ -373,7 +373,7 @@ For security concerns, please email <sergiy@noskov.org> or
 ### Current Status
 
 - **Phase**: Active Development
-- **Version**: 0.9.0
+- **Version**: 0.x.x
 - **Stability**: NOT PRODUCTION READY
 
 ### Focus Areas

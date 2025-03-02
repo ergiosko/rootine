@@ -111,7 +111,7 @@ _set_app_env() {
     $'\e[0;37m' $'\e[0m' >&2
   set -euf -o pipefail
   declare -g IFS=$' \n\t'
-  declare -gr ROOTINE_VERSION="0.9.0"
+  declare -gr ROOTINE_VERSION="0.1.0"
   declare -gix IS_ROOTINE_INSTALLED="${IS_ROOTINE_INSTALLED:-0}"
   printf "%s[ DEBUG ]%s Environment variables set successfully\n" \
     $'\e[0;37m' $'\e[0m' >&2
