@@ -1,5 +1,5 @@
 # Add 'breaking-change' label to any changes in breaking change files
-"breaking-change":
+"breakingchange":
 - '**/BREAKING-CHANGE/**'
 - '**/breaking/**'
 
