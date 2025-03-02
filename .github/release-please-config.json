@@ -8,6 +8,7 @@
       "bump-patch-for-minor-pre-major": true,
       "include-v-in-tag": true,
       "initial-version": "0.1.0",
+      "force-release-version": "0.1.0",
       "extra-files": ["package.json"],
       "release-as": "",
       "versioning": {
