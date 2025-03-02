@@ -2,12 +2,14 @@ name: ShellCheck Validation
 
 on:
   push:
+    branches: [ main, develop ]
     paths:
       - 'rootine'
       - '**.sh'
       - '.shellcheckrc'
       - '.github/workflows/shellcheck.yml'
   pull_request:
+    branches: [ main, develop ]
     paths:
       - 'rootine'
       - '**.sh'
@@ -26,9 +28,9 @@ jobs:
         uses: ludeeus/action-shellcheck@master
         with:
           version: v0.10.0
-          severity: error
+          severity: warning
           format: json
           check_together: 'yes'
           scandir: '.'
         env:
-          SHELLCHECK_OPTS: -e SC1090 -e SC1091 -e SC2034 -e SC2181 -e SC2310 -e SC2311 -e SC2312 -e SC2317
+          SHELLCHECK_OPTS: -e SC1090 -e SC1091 -e SC2034 -e SC2154 -e SC2181 -e SC2310 -e SC2311 -e SC2312 -e SC2317

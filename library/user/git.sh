@@ -200,7 +200,7 @@ git_push() {
   shift || true
 
   local all_branches=false
-  local branch="${ROOTINE_GIT_DEFAULT_BRANCH:-main}"
+  local branch="${ROOTINE_GIT_DEFAULT_BRANCH:-develop}"
   local remote="${ROOTINE_GIT_DEFAULT_REMOTE:-origin}"
   local force=false
   local verbose=false
