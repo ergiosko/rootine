@@ -1,145 +1,99 @@
-# Configuration for the GitHub Issue Labeler Action
-
+# Add 'breaking-change' label to any changes in breaking change files
 "breaking-change":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/BREAKING-CHANGE/**"
-      - "**/breaking/**"
+- '**/BREAKING-CHANGE/**'
+- '**/breaking/**'
 
+# Add 'bug' label to any bug fix
 "bug":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/bugfix/**"
-      - "**/fix/**"
-      - "**/hotfix/**"
-      - "**/*fix*.sh"
+- '**/bugfix/**'
+- '**/fix/**'
+- '**/hotfix/**'
+- '**/*fix*.sh'
 
+# Add 'chore' label to any changes in maintenance files
 "chore":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/chore/**"
-      - "**/maintenance/**"
-      - ".gitattributes"
-      - ".gitignore"
+- '**/chore/**'
+- '**/maintenance/**'
+- '.gitattributes'
+- '.gitignore'
 
+# Add 'configuration' label to any changes in config files
 "configuration":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/*.cfg"
-      - "**/*.conf"
-      - "**/*.ini"
-      - "**/*.json"
-      - "**/*.yaml"
-      - "**/*.yml"
+- '**/*.cfg'
+- '**/*.conf'
+- '**/*.ini'
+- '**/*.json'
+- '**/*.yaml'
+- '**/*.yml'
 
 "dependencies":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/deps/**"
-      - "**/vendor/**"
-      - "Dockerfile"
-      - "package-lock.json"
-      - "package.json"
-      - "requirements.txt"
+- '**/deps/**'
+- '**/vendor/**'
+- 'Dockerfile'
+- 'package-lock.json'
+- 'package.json'
+- 'requirements.txt'
 
 "documentation":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/*.md"
-      - "**/*.txt"
-      - "**/doc/**"
-      - "**/docs/**"
-      - "docs/**/*"
-      - "LICENSE*"
-      - "README*"
+- '**/*.md'
+- '**/*.txt'
+- '**/doc/**'
+- '**/docs/**'
+- 'docs/**/*'
+- 'LICENSE*'
+- 'README*'
 
 "enhancement":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/enhance/**"
-      - "**/feat/**"
-      - "**/feature/**"
-      - "**/improvement/**"
+- '**/enhance/**'
+- '**/feat/**'
+- '**/feature/**'
+- '**/improvement/**'
 
 "performance":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/optimize/**"
-      - "**/perf/**"
-      - "**/performance/**"
+- '**/optimize/**'
+- '**/perf/**'
+- '**/performance/**'
 
 "refactor":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/redesign/**"
-      - "**/refactor/**"
+- '**/redesign/**'
+- '**/refactor/**'
 
 "revert":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/revert/**"
-      - "**/rollback/**"
+- '**/revert/**'
+- '**/rollback/**'
 
 "security":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/auth/**"
-      - "**/crypto/**"
-      - "**/security/**"
-      - "**/ssl/**"
+- '**/auth/**'
+- '**/crypto/**'
+- '**/security/**'
+- '**/ssl/**'
 
 "shell":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/*.bash"
-      - "**/*.sh"
-      - "**/bin/*"
+- '**/*.bash'
+- '**/*.sh'
+- '**/bin/*'
 
 "style":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/.editorconfig"
-      - "**/.prettier*"
-      - "**/format/**"
-      - "**/style/**"
+- '**/.editorconfig'
+- '**/.prettier*'
+- '**/format/**'
+- '**/style/**'
 
 "tests":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/*.spec.*"
-      - "**/*.test.*"
-      - "**/__tests__/**"
-      - "**/spec/**"
-      - "**/test/**"
+- '**/*.spec.*'
+- '**/*.test.*'
+- '**/__tests__/**'
+- '**/spec/**'
+- '**/test/**'
 
 "ubuntu":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - "**/apt/**"
-      - "**/debian/**"
-      - "**/dpkg/**"
-      - "**/ubuntu/**"
+- '**/apt/**'
+- '**/debian/**'
+- '**/dpkg/**'
+- '**/ubuntu/**'
 
 "workflow":
-- "any":
-  - "changed-files":
-    - "any-glob-to-any-file":
-      - ".github/actions/**"
-      - ".github/workflows/**"
-      - ".gitlab-ci.yml"
-      - "**/pipeline/**"
+- '.github/actions/**'
+- '.github/workflows/**'
+- '.gitlab-ci.yml'
+- '**/pipeline/**'
