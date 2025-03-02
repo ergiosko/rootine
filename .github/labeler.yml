@@ -1,50 +1,97 @@
 # Labels automatically applied based on content patterns
-# Sorted in alphabetical order
 
 breaking-change:
-  - any: ['**/BREAKING-CHANGE/**', '**/breaking/**']
+- '**/BREAKING-CHANGE/**'
+- '**/breaking/**'
 
 bug:
-  - any: ['**/bugfix/**', '**/fix/**', '**/hotfix/**', '**/*fix*.sh']
+- '**/bugfix/**'
+- '**/fix/**'
+- '**/hotfix/**'
+- '**/*fix*.sh'
 
 chore:
-  - any: ['**/chore/**', '**/maintenance/**', '.gitattributes', '.gitignore']
+- '**/chore/**'
+- '**/maintenance/**'
+- '.gitattributes'
+- '.gitignore'
 
 configuration:
-  - any: ['**/*.cfg', '**/*.conf', '**/*.ini', '**/*.json', '**/*.yaml', '**/*.yml']
+- '**/*.cfg'
+- '**/*.conf'
+- '**/*.ini'
+- '**/*.json'
+- '**/*.yaml'
+- '**/*.yml'
 
 dependencies:
-  - any: ['**/deps/**', '**/vendor/**', 'Dockerfile', 'package-lock.json', 'package.json', 'requirements.txt']
+- '**/deps/**'
+- '**/vendor/**'
+- 'Dockerfile'
+- 'package-lock.json'
+- 'package.json'
+- 'requirements.txt'
 
 documentation:
-  - any: ['**/*.md', '**/*.txt', '**/doc/**', '**/docs/**', 'docs/**/*', 'LICENSE*', 'README*']
+- '**/*.md'
+- '**/*.txt'
+- '**/doc/**'
+- '**/docs/**'
+- 'docs/**/*'
+- 'LICENSE*'
+- 'README*'
 
 enhancement:
-  - any: ['**/enhance/**', '**/feat/**', '**/feature/**', '**/improvement/**']
+- '**/enhance/**'
+- '**/feat/**'
+- '**/feature/**'
+- '**/improvement/**'
 
 performance:
-  - any: ['**/optimize/**', '**/perf/**', '**/performance/**']
+- '**/optimize/**'
+- '**/perf/**'
+- '**/performance/**'
 
 refactor:
-  - any: ['**/redesign/**', '**/refactor/**']
+- '**/redesign/**'
+- '**/refactor/**'
 
 revert:
-  - any: ['**/revert/**', '**/rollback/**']
+- '**/revert/**'
+- '**/rollback/**'
 
 security:
-  - any: ['**/auth/**', '**/crypto/**', '**/security/**', '**/ssl/**']
+- '**/auth/**'
+- '**/crypto/**'
+- '**/security/**'
+- '**/ssl/**'
 
 shell:
-  - any: ['**/*.bash', '**/*.sh', '**/bin/*']
+- '**/*.bash'
+- '**/*.sh'
+- '**/bin/*'
 
 style:
-  - any: ['**/.editorconfig', '**/.prettier*', '**/format/**', '**/style/**']
+- '**/.editorconfig'
+- '**/.prettier*'
+- '**/format/**'
+- '**/style/**'
 
 tests:
-  - any: ['**/*.spec.*', '**/*.test.*', '**/__tests__/**', '**/spec/**', '**/test/**']
+- '**/*.spec.*'
+- '**/*.test.*'
+- '**/__tests__/**'
+- '**/spec/**'
+- '**/test/**'
 
 ubuntu:
-  - any: ['**/apt/**', '**/debian/**', '**/dpkg/**', '**/ubuntu/**']
+- '**/apt/**'
+- '**/debian/**'
+- '**/dpkg/**'
+- '**/ubuntu/**'
 
 workflow:
-  - any: ['.github/actions/**', '.github/workflows/**', '.gitlab-ci.yml', '**/pipeline/**']
+- '.github/actions/**'
+- '.github/workflows/**'
+- '.gitlab-ci.yml'
+- '**/pipeline/**'
