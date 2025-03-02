@@ -10,7 +10,7 @@
       "initial-version": "0.1.0",
       "force-release-version": "0.1.0",
       "extra-files": ["package.json"],
-      "release-as": "",
+      "release-as": "0.1.0",
       "versioning": {
         "always-bump-patch": true,
         "prerelease": false
