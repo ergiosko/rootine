@@ -9,7 +9,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Core
-# @dependencies     - Bash 4.4.0 or higher
+# @dependencies     - Bash 5.0.0 or higher
 #                   - date
 #                   - dirname
 #                   - lsb_release

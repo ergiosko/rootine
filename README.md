@@ -2,7 +2,7 @@
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/ergiosko/rootine?style=flat-square&color=084298)](https://github.com/ergiosko/rootine/releases)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ergiosko/rootine/shellcheck.yml?branch=main&style=flat-square&color=0f5132)](https://github.com/ergiosko/rootine/actions)
-[![Bash Version](https://img.shields.io/badge/bash-%3E%3D4.4.0-brightgreen?style=flat-square&color=801f4f)](https://www.gnu.org/software/bash/)
+[![Bash Version](https://img.shields.io/badge/bash-%3E%3D5.0.0-brightgreen?style=flat-square&color=801f4f)](https://www.gnu.org/software/bash/)
 [![Ubuntu Version](https://img.shields.io/badge/ubuntu-%3E%3D20.04-orange?style=flat-square&color=984c0c)](https://ubuntu.com/)
 [![Code Style](https://img.shields.io/badge/code%20style-shellcheck-blue?style=flat-square&color=3d0a91)](https://www.shellcheck.net/)
 [![GitHub issues](https://img.shields.io/github/issues/ergiosko/rootine?style=flat-square&color=997404)](https://github.com/ergiosko/rootine/issues)
@@ -38,7 +38,7 @@ release (v1.0.0). See [Project Status](#project-status).
 
 ### Prerequisites
 
-- [Bash](https://www.gnu.org/software/bash/) v4.4.0 or higher
+- [Bash](https://www.gnu.org/software/bash/) v5.0.0 or higher
 - [Git](https://git-scm.com/) v2 or higher
 - Root/sudo privileges
 - Required utilities:

@@ -28,7 +28,7 @@ unacceptable behavior to <contact@ergiosko.com>.
 
 ### Prerequisites
 
-- [Bash](https://www.gnu.org/software/bash/) v4.4.0 or higher
+- [Bash](https://www.gnu.org/software/bash/) v5.0.0 or higher
 - [Git](https://git-scm.com/) v2 or higher
 - [ShellCheck](https://www.shellcheck.net/) v0.8.0 or higher
 - [Ubuntu](https://ubuntu.com/) 20.04 or higher
@@ -113,7 +113,7 @@ headers use `# ---` (3 hyphens).
 # @deprecated       Marks a function/feature as deprecated, with optional reason
 #                   and/or alternative.
 # @category         Core|Common|Root|User
-# @dependencies     - Bash 4.4.0 or higher
+# @dependencies     - Bash 5.0.0 or higher
 #                   - Required system commands
 #                   - Other dependencies
 # @configuration    Environment variables or configuration requirements

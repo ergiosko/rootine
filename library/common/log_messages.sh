@@ -9,7 +9,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Logging
-# @dependencies     - Bash 4.4.0 or higher
+# @dependencies     - Bash 5.0.0 or higher
 #                   - date command
 #                   - logger command (optional, for syslog integration)
 # @configuration    Requires ROOTINE_LOG_LEVEL_* and ROOTINE_COLOR_* variables to be set

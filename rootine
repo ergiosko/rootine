@@ -9,7 +9,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Core
-# @dependencies     - Bash 4.4.0 or higher
+# @dependencies     - Bash 5.0.0 or higher
 #                   - realpath
 #                   - date
 #                   - dirname
@@ -62,7 +62,7 @@ if [[ -z "${BASH_VERSION:-}" ]]; then
   exit 1
 fi
 
-declare -gr ROOTINE_MIN_BASH_VERSION="4.4.0"
+declare -gr ROOTINE_MIN_BASH_VERSION="5.0.0"
 declare -gr ROOTINE_UNKNOWN="Unknown"
 
 # --

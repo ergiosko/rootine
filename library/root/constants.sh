@@ -8,7 +8,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         System Administration
-# @dependencies     Bash 4.4.0 or higher
+# @dependencies     Bash 5.0.0 or higher
 # @configuration    Requires root privileges
 # @envvar           ROOTINE_APT_UPDATE_RETRIES  Number of retries for apt updates
 # @envvar           ROOTINE_APT_DPKG_LOCK_TIMEOUT  Timeout for dpkg locks

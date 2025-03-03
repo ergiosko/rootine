@@ -9,7 +9,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Installation
-# @dependencies     bash (v4+), grep, sed
+# @dependencies     Bash 5.0.0 or higher, grep, sed
 # @configuration    No configuration needed. Script detects system bashrc
 #                   location automatically.
 # @arguments        None

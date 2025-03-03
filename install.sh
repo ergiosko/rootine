@@ -9,7 +9,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Installation
-# @dependencies     bash (v4+), grep, realpath
+# @dependencies     Bash 5.0.0 or higher, grep, realpath
 # @configuration    No configuration needed. Script detects system bashrc
 #                   location automatically.
 # @arguments        None

@@ -8,7 +8,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Rootine
-# @dependencies     Bash 4.0+, pgrep, killall, snap, sleep
+# @dependencies     Bash 5.0.0+, pgrep, killall, snap, sleep
 # @configuration    Requires initialization of the following environment variables:
 #                   - ROOTINE_SNAP_STORE: Name of the snap store process.
 #                   - ROOTINE_SNAP_REFRESH_RETRIES: Number of retries for snap refresh (default: 3).

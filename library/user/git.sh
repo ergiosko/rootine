@@ -8,7 +8,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Version Control
-# @dependencies     bash (>= 4.0), git (>= 2.0)
+# @dependencies     bash (>= 5.0.0), git (>= 2.0)
 # @envvar           ROOTINE_GIT_USER_EMAIL      User's email for git config
 # @envvar           ROOTINE_GIT_USER_NAME       User's name for git config
 # @envvar           ROOTINE_GIT_CORE_FILEMODE   Git filemode setting
