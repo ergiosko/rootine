@@ -208,6 +208,7 @@ git_push() {
 
   _is_git_repo || return 1
 
+  # Parse command line arguments
   while (( ${#} )); do
     case "${1}" in
       --all|--branches)
@@ -238,42 +239,54 @@ git_push() {
     shift
   done
 
+  # Check if remote exists
   if ! git remote get-url "${remote}" &>/dev/null; then
     log_error "Remote '${remote}' does not exist"
     return 1
   fi
 
+  # Stage all changes
   if ! git add -A; then
     log_error "Failed to stage changes"
     return 1
   fi
 
+  # Check if there are changes to commit
   if ! git status --porcelain | grep -q .; then
     log_info "No changes to commit"
     return 0
   fi
 
-  if ! git commit -m "${commit_msg}"; then
-    log_error "Commit failed"
+  # Create conventional commit
+  if ! git_conventional_commit \
+    "${type}" \
+    "${scope}" \
+    "${description}" \
+    "${body}" \
+    "${footer}" \
+    "${breaking}"; then
+    log_error "Failed to create commit"
     return 1
   fi
 
+  # Build push arguments based on configuration
   local -a push_args=()
-  if [[ "${all_branches}" == "true" ]]; then
+  if [[ "${branches}" == "true" ]]; then
     push_args+=("--all")
   else
     [[ -n "${branch}" ]] && push_args+=("--branch" "${branch}")
     [[ -n "${remote}" ]] && push_args+=("--remote" "${remote}")
   fi
+  [[ "${force}" == "true" ]] && push_args+=("--force")
+  [[ "${verbose}" == "true" ]] && push_args+=("--verbose")
+  [[ "${upstream}" == "true" ]] && push_args+=("-u")
 
-  "${force}" && push_args+=("--force")
-  "${verbose}" && push_args+=("--verbose")
-  "${upstream}" && push_args+=("-u")
-
-  if ! git push "${push_args[@]}"; then
+  # Execute git push operation
+  if ! git_push "${push_args[@]}"; then
     log_error "Failed to push to ${remote}:${branch} running 'git push ${push_args[*]}'"
     return 1
   fi
+
   log_success "Changes pushed successfully to '${remote}:${branch}' running 'git push ${push_args[*]}'"
   return 0
 }

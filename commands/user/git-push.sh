@@ -77,30 +77,6 @@ main() {
   local upstream="${ROOTINE_SCRIPT_ARG_UPSTREAM:-true}"
   local -a push_args=()
 
-  # Stage all changes
-  if ! git add -A; then
-    log_error "Failed to stage changes"
-    return 1
-  fi
-
-  # Check if there are changes to commit
-  if ! git status --porcelain | grep -q .; then
-    log_info "No changes to commit"
-    return 0
-  fi
-
-  # Create conventional commit
-  if ! git_conventional_commit \
-    "${type}" \
-    "${scope}" \
-    "${description}" \
-    "${body}" \
-    "${footer}" \
-    "${breaking}"; then
-    log_error "Failed to create commit"
-    return 1
-  fi
-
   # Build push arguments based on configuration
   if [[ "${branches}" == "true" ]]; then
     push_args+=("--all")
@@ -112,13 +88,11 @@ main() {
   [[ "${verbose}" == "true" ]] && push_args+=("--verbose")
   [[ "${upstream}" == "true" ]] && push_args+=("-u")
 
-  # Execute git push operation
+  # Execute git_push operation
   if ! git_push "${push_args[@]}"; then
-    log_error "Failed to push to ${remote}:${branch} running 'git push ${push_args[*]}'"
     return 1
   fi
 
-  log_success "Changes pushed successfully to '${remote}:${branch}' running 'git push ${push_args[*]}'"
   return 0
 }
 
