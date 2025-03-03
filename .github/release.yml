@@ -1,4 +1,5 @@
 # .github/release.yml
+# This file is used to configure the release notes generation process.
 
 changelog:
   categories:

@@ -1,4 +1,5 @@
-# Labels automatically applied based on content patterns
+# .github/labeler.yml
+# Configuration for the GitHub Issue Labeler action
 
 # Breaking Changes
 breaking-change:

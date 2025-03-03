@@ -1,4 +1,4 @@
-name: ShellCheck Validation
+name: ShellCheck
 
 on:
   push:
@@ -18,7 +18,7 @@ on:
 
 jobs:
   shellcheck:
-    name: ShellCheck Job
+    name: ShellCheck
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
