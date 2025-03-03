@@ -38,8 +38,10 @@ release (v1.0.0). See [Project Status](#project-status).
 
 ### Prerequisites
 
+- [Ubuntu](https://ubuntu.com/) 20.04 or higher
 - [Bash](https://www.gnu.org/software/bash/) v5.0.0 or higher
-- [Git](https://git-scm.com/) v2 or higher
+- [Git](https://git-scm.com/) v2.25.0 or higher
+- [ShellCheck](https://www.shellcheck.net/) v0.8.0 or higher
 - Root/sudo privileges
 - Required utilities:
 
