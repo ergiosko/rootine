@@ -62,7 +62,6 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  # Use parameter expansion to provide default empty values for optional arguments
   local type="${ROOTINE_SCRIPT_ARG_TYPE}"
   local scope="${ROOTINE_SCRIPT_ARG_SCOPE:-}"
   local description="${ROOTINE_SCRIPT_ARG_DESCRIPTION}"
@@ -77,18 +76,8 @@ main() {
   local upstream="${ROOTINE_SCRIPT_ARG_UPSTREAM:-true}"
   local -a push_args=()
 
-  # Build push arguments based on configuration
-  if [[ "${branches}" == "true" ]]; then
-    push_args+=("--all")
-  else
-    [[ -n "${branch}" ]] && push_args+=("--branch" "${branch}")
-    [[ -n "${remote}" ]] && push_args+=("--remote" "${remote}")
-  fi
-  [[ "${force}" == "true" ]] && push_args+=("--force")
-  [[ "${verbose}" == "true" ]] && push_args+=("--verbose")
-  [[ "${upstream}" == "true" ]] && push_args+=("-u")
+  push_args+=("${type}" "${scope}" "${description}" "${body}" "${footer}" "${breaking}" "${branches}" "${branch}" "${remote}" "${force}" "${verbose}" "${upstream}")
 
-  # Execute git_push operation
   if ! git_push "${push_args[@]}"; then
     return 1
   fi
