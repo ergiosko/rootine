@@ -16,14 +16,10 @@ jobs:
     permissions:
       issues: write
       pull-requests: write
-
     steps:
     - uses: actions/stale@v9
       with:
-        # Token for the repository. Can be passed in using secrets.GITHUB_TOKEN
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-
-        # Settings for stale issues
         days-before-issue-stale: 90
         days-before-issue-close: 7
         stale-issue-message: >
@@ -33,8 +29,6 @@ jobs:
         close-issue-message: >
           This issue has been automatically closed because it has not had
           recent activity. Feel free to reopen if you believe this is still relevant.
-
-        # Settings for stale PRs
         days-before-pr-stale: 30
         days-before-pr-close: 7
         stale-pr-message: >
@@ -44,17 +38,9 @@ jobs:
         close-pr-message: >
           This pull request has been automatically closed because it has not had
           recent activity. Feel free to reopen if you'd like to continue working on this.
-
-        # Labels
         stale-issue-label: 'stale'
         stale-pr-label: 'stale'
-
-        # Exempt certain labels from being marked as stale
         exempt-issue-labels: 'pinned,security,bug'
         exempt-pr-labels: 'pinned,security,work-in-progress'
-
-        # Only remove stale label if the issue/PR is updated or commented on
         remove-stale-when-updated: true
-
-        # Limit the number of operations per run to be kinder to the API
         operations-per-run: 100

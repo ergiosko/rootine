@@ -6,14 +6,14 @@ assignees: 'noskov'
 labels: []
 ---
 
-## PR Description
+## Description
 
 <!-- Provide a clear and concise description of what this PR does -->
 
-### Related Issue
+### Related Issue(s)
 
-<!-- Link to the issue that this PR addresses using #issue_number -->
-Fixes #
+<!-- Link to the issue(s) that this PR addresses using #issue_number -->
+- Fixes #
 
 ### Type of Change
 

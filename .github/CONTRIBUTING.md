@@ -71,7 +71,7 @@ unacceptable behavior to <contact@ergiosko.com>.
 
     ```bash
     git fetch upstream
-    git rebase upstream/main
+    git rebase upstream/develop
     ```
 
 ## Coding Standards
@@ -81,7 +81,6 @@ unacceptable behavior to <contact@ergiosko.com>.
 - Use Bash for all scripts
 - Start each script with appropriate shebang: `#!/usr/bin/env bash`
 - Include comprehensive file header documentation
-- Set strict mode: `set -euf -o pipefail`
 - Use `shellcheck` directives when necessary
 
 ### Naming Conventions
@@ -157,35 +156,6 @@ function_name() {
   # Implementation
 }
 ```
-
-#### Required Tags
-
-- `@description`: One-line summary
-- `@author`: Original author
-- `@copyright`: Copyright holder
-- `@version`: Current version
-- `@category`: Function category
-
-#### Security-Related Tags
-
-- `@security`: Security considerations
-- `@dependencies`: Required system commands
-- `@sideeffects`: System state changes
-- `@exitstatus`: Possible exit codes
-
-#### Documentation Tags
-
-- `@example`: Usage examples
-- `@param`: Parameter descriptions
-- `@return`: Return value details
-- `@see`: Related documentation
-
-#### Internal Use Tags
-
-- `@internal`: Private functions
-- `@public`: Public API
-- `@todo`: Future tasks
-- `@note`: Implementation notes
 
 All functions must be documented consistently using this schema. Comments
 should be clear, concise, and provide enough information for both users and
@@ -316,8 +286,8 @@ to automate version management:
 2. Release Please automatically:
     - Determines version bumps
     - Updates [CHANGELOG.md](CHANGELOG.md)
-    - Creates release PR
-    - Creates GitHub release
+    - Creates release pull request
+    - Creates GitHub tag and release
 
 #### Configuration
 
@@ -404,9 +374,8 @@ rootine command-name --option value
 2. Search [closed issues](https://github.com/ergiosko/rootine/issues?q=is%3Aissue%20state%3Aclosed)
 3. Ask in [GitHub Discussions](https://github.com/ergiosko/rootine/discussions)
 4. Contact maintainers:
-
-- Sergiy Noskov <sergiy@noskov.org>
-- Ergiosko <contact@ergiosko.com>
+    - Sergiy Noskov <sergiy@noskov.org>
+    - Ergiosko <contact@ergiosko.com>
 
 ---
 

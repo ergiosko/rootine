@@ -2,14 +2,14 @@
 # Configuration for the GitHub Pull Request Labeler action
 
 # Breaking Changes
-'breaking-change':
+breaking-change:
   - changed-files:
     - any-glob-to-any-file:
       - '**/BREAKING-CHANGE/**'
       - '**/breaking/**'
 
 # Bug fixes
-'bug':
+bug:
   - changed-files:
     - any-glob-to-any-file:
       - '**/*fix*.sh'
@@ -18,7 +18,7 @@
       - '**/hotfix/**'
 
 # Chores and maintenance
-'chore':
+chore:
   - changed-files:
     - any-glob-to-any-file:
       - '.gitattributes'
@@ -27,7 +27,7 @@
       - '**/maintenance/**'
 
 # Configuration files
-'configuration':
+configuration:
   - changed-files:
     - any-glob-to-any-file:
       - '**/*.cfg'
@@ -38,7 +38,7 @@
       - '**/*.yml'
 
 # Dependencies and environment
-'dependencies':
+dependencies:
   - changed-files:
     - any-glob-to-any-file:
       - '**/deps/**'
@@ -49,7 +49,7 @@
       - 'requirements.txt'
 
 # Documentation
-'documentation':
+documentation:
   - changed-files:
     - any-glob-to-any-file:
       - '**/*.md'
@@ -61,7 +61,7 @@
       - 'README*'
 
 # New features and improvements
-'enhancement':
+enhancement:
   - changed-files:
     - any-glob-to-any-file:
       - '**/enhance/**'
@@ -70,7 +70,7 @@
       - '**/improvement/**'
 
 # Performance improvements
-'performance':
+performance:
   - changed-files:
     - any-glob-to-any-file:
       - '**/optimize/**'
@@ -78,21 +78,21 @@
       - '**/performance/**'
 
 # Refactoring changes
-'refactor':
+refactor:
   - changed-files:
     - any-glob-to-any-file:
       - '**/redesign/**'
       - '**/refactor/**'
 
 # Reverts
-'revert':
+revert:
   - changed-files:
     - any-glob-to-any-file:
       - '**/revert/**'
       - '**/rollback/**'
 
 # Security-related changes
-'security':
+security:
   - changed-files:
     - any-glob-to-any-file:
       - '**/auth/**'
@@ -101,7 +101,7 @@
       - '**/ssl/**'
 
 # Shell scripts
-'shell':
+shell:
   - changed-files:
     - any-glob-to-any-file:
       - '**/*.bash'
@@ -109,7 +109,7 @@
       - '**/bin/*'
 
 # Style changes
-'style':
+style:
   - changed-files:
     - any-glob-to-any-file:
       - '**/.editorconfig'
@@ -118,7 +118,7 @@
       - '**/style/**'
 
 # Tests
-'tests':
+tests:
   - changed-files:
     - any-glob-to-any-file:
       - '**/__tests__/**'
@@ -129,7 +129,7 @@
       - '**/test/**'
 
 # Ubuntu-specific content
-'ubuntu':
+ubuntu:
   - changed-files:
     - any-glob-to-any-file:
       - '**/apt/**'
@@ -138,7 +138,7 @@
       - '**/ubuntu/**'
 
 # CI/CD and workflow files
-'workflow':
+workflow:
   - changed-files:
     - any-glob-to-any-file:
       - '.github/actions/**'

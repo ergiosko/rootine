@@ -10,7 +10,7 @@
 [![GitHub Discussions](https://img.shields.io/github/discussions/ergiosko/rootine?style=flat-square&color=087990)](https://github.com/ergiosko/rootine/discussions)
 [![Security Policy](https://img.shields.io/badge/security-policy-red?style=flat-square&color=842029)](https://github.com/ergiosko/rootine/security/policy)
 [![GitHub](https://img.shields.io/github/license/ergiosko/rootine?style=flat-square&color=432874)](https://github.com/ergiosko/rootine/blob/main/LICENSE)
-[![GitHub Sponsor](https://img.shields.io/github/sponsors/ergiosko?style=flat-square&color=801f4f&logo=github&label=Sponsor)](https://github.com/sponsors/ergiosko)
+[![GitHub Sponsor](https://img.shields.io/github/sponsors/ergiosko?style=flat-square&color=801f4f&logo=github&label=sponsor)](https://github.com/sponsors/ergiosko)
 
 ## Description
 
@@ -43,7 +43,6 @@ release (v1.0.0). See [Project Status](#project-status).
 - [Git](https://git-scm.com/) v2.25.0 or higher
 - [ShellCheck](https://www.shellcheck.net/) v0.8.0 or higher
 - Root/sudo privileges
-- Required utilities:
 
 ### Automatic Installation
 
@@ -128,7 +127,7 @@ Common installation issues and solutions:
     [ ERROR ] This script must be run as root
     ```
 
-    Solution: Run the installation script with `sudo`.
+    *Solution*: Run the installation script with `sudo`.
 
 2. **Bashrc Not Found**
 
@@ -136,7 +135,7 @@ Common installation issues and solutions:
     [ ERROR ] No global bashrc file found
     ```
 
-    Solution: Ensure either `/etc/bash.bashrc` or `/etc/bashrc` exists.
+    *Solution*: Ensure either `/etc/bash.bashrc` or `/etc/bashrc` exists.
 
 3. **Write Permission Error**
 
@@ -144,7 +143,7 @@ Common installation issues and solutions:
     [ ERROR ] No write permission for /etc/bash.bashrc
     ```
 
-    Solution: Check file permissions and ensure you're running with sudo.
+    *Solution*: Check file permissions and ensure you're running with sudo.
 
 4. **Backup Creation Failed**
 
@@ -152,7 +151,7 @@ Common installation issues and solutions:
     [ ERROR ] Unable to create /etc/bash.bashrc backup file
     ```
 
-    Solution: Ensure sufficient disk space and proper permissions in /etc.
+    *Solution*: Ensure sufficient disk space and proper permissions in /etc.
 
 ### Security Considerations
 
@@ -226,7 +225,6 @@ directory holds functions that are used by both root and user scripts. The
 level.
 
 3. `library/bootstrap.sh`: The core initialization component that:
-
     - Sets up error handling and cleanup procedures
     - Validates the environment and required dependencies
     - Initializes system-wide constants and configurations
@@ -237,7 +235,6 @@ level.
     - Establishes logging and debugging infrastructure
 
     The bootstrap process ensures:
-
     - Proper initialization of the framework
     - Secure execution environment
     - Clean error handling and resource cleanup
@@ -314,7 +311,7 @@ to:
 - Help maintain a positive environment
 
 Guidelines for contributing to the project, including how to submit bug
-reports, feature requests, and pull requests. Link to a
+reports, feature requests, and pull requests. Read
 [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for more detailed information.
 
 ## Tests
@@ -330,7 +327,7 @@ Bash scripts to ensure code quality and catch common errors.
 
     ```bash
     # Ubuntu/Debian
-    sudo apt install shellcheck
+    sudo apt-get -y install shellcheck
     ```
 
 2. **Run Tests**:
