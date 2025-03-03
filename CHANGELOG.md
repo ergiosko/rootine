@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 We use [Conventional Commits v1.0.0](https://www.conventionalcommits.org/)
 and [Release Please](https://github.com/googleapis/release-please).
 
+## [0.1.1](https://github.com/ergiosko/rootine/compare/v0.1.0...v0.1.1) (2025-03-03)
+
+
+### Bug Fixes
+
+* **core:** fix git_push() function ([cb582cf](https://github.com/ergiosko/rootine/commit/cb582cf0005dce898a29461b64eaf7c26a298c3d))
+* **core:** fix git_push() function ([5d1e957](https://github.com/ergiosko/rootine/commit/5d1e9572c049530cd5eda6de6868dd538e37b6f8))
+
 ## 0.1.0 (2025-03-03)
 
 ### Features
