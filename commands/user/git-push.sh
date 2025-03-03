@@ -113,7 +113,7 @@ main() {
   [[ "${upstream}" == "true" ]] && push_args+=("-u")
 
   # Execute git push operation
-  if ! git push "${push_args[@]}"; then
+  if ! git_push "${push_args[@]}"; then
     log_error "Failed to push to ${remote}:${branch} running 'git push ${push_args[*]}'"
     return 1
   fi
