@@ -1,37 +1,43 @@
 ---
 name: Pull Request
 about: Submit a pull request to contribute to the project
-title: ''
+title: '[PR] '
 assignees: 'noskov'
-labels: ''
+labels: []
 ---
 
 ## Description
+
 <!-- Provide a clear and concise description of what this PR does -->
 
-## Related Issue
-<!-- Link to the issue that this PR addresses using #issue_number -->
-Fixes #
+### Related Issue(s)
 
-## Type of Change
+<!-- Link to the issue(s) that this PR addresses using #issue_number -->
+- Fixes #
+
+### Type of Change
+
 <!-- Put an 'x' in all boxes that apply -->
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Breaking change (fix or feature that would cause existing functionality
+to not work as expected)
 - [ ] Documentation update
 - [ ] Refactoring (no functional changes)
 - [ ] Performance improvements
 - [ ] Tests
 
-## How Has This Been Tested?
+### How Has This Been Tested?
+
 <!-- Describe the tests you ran and how -->
 - [ ] Unit Tests
 - [ ] Integration Tests
 - [ ] Manual Testing (please describe)
 
-## Checklist
+### Checklist
+
 <!-- Put an 'x' in all boxes that apply -->
-- [ ] Shell script changes follow the repository's bash scripting best practices (see .github/bash_scripting_best_practices.md)
+- [ ] Shell script changes follow the repository's bash scripting best practices
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
@@ -40,8 +46,10 @@ Fixes #
 - [ ] New and existing unit tests pass locally with my changes
 - [ ] Any dependent changes have been merged and published
 
-## Screenshots (if applicable)
+### Screenshots (if applicable)
+
 <!-- Add screenshots to help explain your changes -->
 
-## Additional Notes
+### Additional Notes
+
 <!-- Add any other context about the PR here -->

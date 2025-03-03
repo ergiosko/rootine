@@ -10,7 +10,7 @@
 # @since            1.0.0
 # @category         System Information
 # @dependencies     Required:
-#                   - Bash 4.4.0 or higher
+#                   - Bash 5.0.0 or higher
 #                   - coreutils (hostname, uptime, df, etc.)
 #                   - procfs (/proc filesystem)
 #                   Optional:

@@ -1,16 +1,16 @@
 # Rootine — Bash Library for Lazy Ubuntoids
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/releases)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ergiosko/rootine/shellcheck.yml?branch=main&style=flat-square)](https://github.com/ergiosko/rootine/actions)
-[![Bash Version](https://img.shields.io/badge/bash-%3E%3D4.4.0-brightgreen?style=flat-square)](https://www.gnu.org/software/bash/)
-[![Ubuntu Version](https://img.shields.io/badge/ubuntu-%3E%3D20.04-orange?style=flat-square)](https://ubuntu.com/)
-[![Code Style](https://img.shields.io/badge/code%20style-shellcheck-blue?style=flat-square)](https://www.shellcheck.net/)
-[![GitHub issues](https://img.shields.io/github/issues/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/pulls)
-[![GitHub Discussions](https://img.shields.io/github/discussions/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/discussions)
-[![Security Policy](https://img.shields.io/badge/security-policy-red?style=flat-square)](https://github.com/ergiosko/rootine/security/policy)
-[![GitHub](https://img.shields.io/github/license/ergiosko/rootine?style=flat-square)](https://github.com/ergiosko/rootine/blob/main/LICENSE)
-[![GitHub Sponsor](https://img.shields.io/github/sponsors/ergiosko?style=flat-square&logo=github&label=Sponsor)](https://github.com/sponsors/ergiosko)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/ergiosko/rootine?style=flat-square&color=084298)](https://github.com/ergiosko/rootine/releases)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ergiosko/rootine/shellcheck.yml?branch=main&style=flat-square&color=0f5132)](https://github.com/ergiosko/rootine/actions)
+[![Bash Version](https://img.shields.io/badge/bash-%3E%3D5.0.0-brightgreen?style=flat-square&color=801f4f)](https://www.gnu.org/software/bash/)
+[![Ubuntu Version](https://img.shields.io/badge/ubuntu-%3E%3D20.04-orange?style=flat-square&color=984c0c)](https://ubuntu.com/)
+[![Code Style](https://img.shields.io/badge/code%20style-shellcheck-blue?style=flat-square&color=3d0a91)](https://www.shellcheck.net/)
+[![GitHub issues](https://img.shields.io/github/issues/ergiosko/rootine?style=flat-square&color=997404)](https://github.com/ergiosko/rootine/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/ergiosko/rootine?style=flat-square&color=13795b)](https://github.com/ergiosko/rootine/pulls)
+[![GitHub Discussions](https://img.shields.io/github/discussions/ergiosko/rootine?style=flat-square&color=087990)](https://github.com/ergiosko/rootine/discussions)
+[![Security Policy](https://img.shields.io/badge/security-policy-red?style=flat-square&color=842029)](https://github.com/ergiosko/rootine/security/policy)
+[![GitHub](https://img.shields.io/github/license/ergiosko/rootine?style=flat-square&color=432874)](https://github.com/ergiosko/rootine/blob/main/LICENSE)
+[![GitHub Sponsor](https://img.shields.io/github/sponsors/ergiosko?style=flat-square&color=801f4f&logo=github&label=sponsor)](https://github.com/sponsors/ergiosko)
 
 ## Description
 
@@ -38,9 +38,11 @@ release (v1.0.0). See [Project Status](#project-status).
 
 ### Prerequisites
 
-- Bash version 4.4.0 or higher
+- [Ubuntu](https://ubuntu.com/) 20.04 or higher
+- [Bash](https://www.gnu.org/software/bash/) v5.0.0 or higher
+- [Git](https://git-scm.com/) v2.25.0 or higher
+- [ShellCheck](https://www.shellcheck.net/) v0.8.0 or higher
 - Root/sudo privileges
-- Required utilities: `grep`, `realpath`, `sed`
 
 ### Automatic Installation
 
@@ -125,7 +127,7 @@ Common installation issues and solutions:
     [ ERROR ] This script must be run as root
     ```
 
-    Solution: Run the installation script with `sudo`.
+    *Solution*: Run the installation script with `sudo`.
 
 2. **Bashrc Not Found**
 
@@ -133,7 +135,7 @@ Common installation issues and solutions:
     [ ERROR ] No global bashrc file found
     ```
 
-    Solution: Ensure either `/etc/bash.bashrc` or `/etc/bashrc` exists.
+    *Solution*: Ensure either `/etc/bash.bashrc` or `/etc/bashrc` exists.
 
 3. **Write Permission Error**
 
@@ -141,7 +143,7 @@ Common installation issues and solutions:
     [ ERROR ] No write permission for /etc/bash.bashrc
     ```
 
-    Solution: Check file permissions and ensure you're running with sudo.
+    *Solution*: Check file permissions and ensure you're running with sudo.
 
 4. **Backup Creation Failed**
 
@@ -149,7 +151,7 @@ Common installation issues and solutions:
     [ ERROR ] Unable to create /etc/bash.bashrc backup file
     ```
 
-    Solution: Ensure sufficient disk space and proper permissions in /etc.
+    *Solution*: Ensure sufficient disk space and proper permissions in /etc.
 
 ### Security Considerations
 
@@ -196,7 +198,8 @@ rootine/
 ├── README.md           - Documentation
 ├── rootine             - Main executable
 ├── install.sh          - Installation script
-└── uninstall.sh        - Deinstallation script
+├── uninstall.sh        - Deinstallation script
+└── ...                 - Other files
 ```
 
 ### Naming Conventions
@@ -222,7 +225,6 @@ directory holds functions that are used by both root and user scripts. The
 level.
 
 3. `library/bootstrap.sh`: The core initialization component that:
-
     - Sets up error handling and cleanup procedures
     - Validates the environment and required dependencies
     - Initializes system-wide constants and configurations
@@ -233,7 +235,6 @@ level.
     - Establishes logging and debugging infrastructure
 
     The bootstrap process ensures:
-
     - Proper initialization of the framework
     - Secure execution environment
     - Clean error handling and resource cleanup
@@ -310,7 +311,7 @@ to:
 - Help maintain a positive environment
 
 Guidelines for contributing to the project, including how to submit bug
-reports, feature requests, and pull requests. Link to a
+reports, feature requests, and pull requests. Read
 [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for more detailed information.
 
 ## Tests
@@ -326,7 +327,7 @@ Bash scripts to ensure code quality and catch common errors.
 
     ```bash
     # Ubuntu/Debian
-    sudo apt install shellcheck
+    sudo apt-get -y install shellcheck
     ```
 
 2. **Run Tests**:
@@ -341,8 +342,9 @@ Bash scripts to ensure code quality and catch common errors.
 
 ### Continuous Integration
 
-ShellCheck runs automatically on all pull requests through our GitHub Actions
-workflow. PRs must pass ShellCheck validation before merging.
+[ShellCheck](https://www.shellcheck.net/) runs automatically on all pull
+requests through our [ShellCheck workflow](.github/workflows/shellcheck.yml)
+PRs must pass ShellCheck validation before merging.
 
 ### ShellCheck Configuration
 
@@ -463,7 +465,4 @@ Copyright (c) 2024-2025 Ergiosko <contact@ergiosko.com>
 Licensed under the MIT License
 ```
 
-For questions about licensing, contact:
-
-- Sergiy Noskov <sergiy@noskov.org>
-- Ergiosko <contact@ergiosko.com>
+For questions about licensing, contact [Maintainers](#maintainers).

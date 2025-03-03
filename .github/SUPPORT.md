@@ -4,8 +4,7 @@
 
 - **Discussions**: [GitHub Discussions](https://github.com/ergiosko/rootine/discussions)
 - **Bug Reports**: [Create Issue](https://github.com/ergiosko/rootine/issues/new?labels=bug)
-- **Security**: sergiy@noskov.org
-- **Business**: contact@ergiosko.com
+- **Security**: <sergiy@noskov.org>, <contact@ergiosko.com>
 
 ## Documentation
 
@@ -38,11 +37,13 @@
 ## Maintainers
 
 **Sergiy Noskov** (Lead)
+
 - GitHub: [@noskov](https://github.com/noskov)
 - Website: [noskov.org](https://noskov.org)
-- Email: sergiy@noskov.org
+- Email: <sergiy@noskov.org>
 
 **Ergiosko** (Organization)
+
 - GitHub: [@ergiosko](https://github.com/ergiosko)
 - Website: [ergiosko.com](https://ergiosko.com)
-- Email: contact@ergiosko.com
+- Email: <contact@ergiosko.com>

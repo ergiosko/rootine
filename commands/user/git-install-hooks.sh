@@ -9,7 +9,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         User Commands
-# @dependencies     - Bash 4.4.0 or higher
+# @dependencies     - Bash 5.0.0 or higher
 #                   - Git 2.0 or higher
 #                   - library/user/conventional-commits.sh
 #                   - library/user/git.sh

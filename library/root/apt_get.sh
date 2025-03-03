@@ -9,7 +9,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         System Administration
-# @dependencies     bash (>= 4.0), coreutils, apt-get, flock, timeout
+# @dependencies     bash (>= 5.0.0), coreutils, apt-get, flock, timeout
 # @configuration    Requires several environment variables to be set:
 #                   - ROOTINE_APT_KEYRINGS_DIR
 #                   - ROOTINE_APT_SOURCES_LIST_DIR
@@ -41,6 +41,7 @@ _create_apt_directories() {
   local -ar required_dirs=(
     "${ROOTINE_APT_KEYRINGS_DIR:?Error: ROOTINE_APT_KEYRINGS_DIR not set}"
     "${ROOTINE_APT_SOURCES_LIST_DIR:?Error: ROOTINE_APT_SOURCES_LIST_DIR not set}"
+    "${ROOTINE_RUNTIME_DIR:?Error: ROOTINE_RUNTIME_DIR not set}"
   )
   local -i status=0
 

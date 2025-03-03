@@ -12,7 +12,7 @@
 ### Quick Steps
 
 1. **DO NOT** create a public GitHub issue
-2. Email: sergiy@noskov.org starting with \[SECURITY\] in the subject line
+2. Email: <sergiy@noskov.org> starting with \[SECURITY\] in the subject line
 3. Include:
     - Detailed description
     - Steps to reproduce
@@ -44,18 +44,20 @@
 
 ## Security Contacts
 
-- Lead Maintainer: sergiy@noskov.org
-- Organization: contact@ergiosko.com
+- Lead Maintainer: <sergiy@noskov.org>
+- Organization: <contact@ergiosko.com>
 
 ## Scope
 
 ### Included
+
 - Rootine shell scripts
 - Configuration files
 - Official releases
 - Installation scripts
 
 ### Excluded
+
 - Third-party packages
 - User configuration errors
 - Modified scripts

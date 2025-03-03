@@ -8,7 +8,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Core
-# @dependencies     - Bash 4.4.0 or higher
+# @dependencies     - Bash 5.0.0 or higher
 # @see              https://www.conventionalcommits.org/
 #                   https://commitlint.js.org/
 # @security         - Validates commit message format
@@ -52,7 +52,6 @@ declare -ga ROOTINE_COMMIT_TYPES=(
 # Valid commit scopes for Rootine project
 declare -ga ROOTINE_COMMIT_SCOPES=(
   "commands"  # Command scripts in commands/ directory
-  "common"    # Common utilities in library/common/
   "core"      # Core functionality affecting entire system
   "docs"      # Documentation files (.md, man pages)
   "git"       # Git-related functionality
@@ -277,7 +276,7 @@ git_install_commit_msg_hook() {
 # @version          1.0.0
 # @since            1.0.0
 # @category         Version Control
-# @dependencies     - Bash 4.4.0 or higher
+# @dependencies     - Bash 5.0.0 or higher
 #                   - Git 2.0 or higher
 # @param            commit_msg_file Path to temporary file containing commit message
 # @exitstatus       0  Commit message is valid

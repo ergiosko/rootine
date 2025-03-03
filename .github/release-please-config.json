@@ -8,9 +8,8 @@
       "bump-patch-for-minor-pre-major": true,
       "include-v-in-tag": true,
       "initial-version": "0.1.0",
-      "force-release-version": "0.1.0",
       "extra-files": ["package.json"],
-      "release-as": "0.1.0",
+      "release-as": "",
       "versioning": {
         "always-bump-patch": true,
         "prerelease": false
@@ -31,9 +30,10 @@
     }
   },
   "separate-pull-requests": false,
-  "bootstrap-sha": "29f1199eaf0cb0c166fa44d85fcd311c164cde89",
-  "last-release-sha": "29f1199eaf0cb0c166fa44d85fcd311c164cde89",
-  "release-search-depth": 50,
+  "bootstrap-sha": "7184df20490526fae7e9aade08a2d5537d2bcb2b",
+  "last-release-sha": "7184df20490526fae7e9aade08a2d5537d2bcb2b",
+  "release-search-depth": 10,
+  "commit-search-depth": 100,
   "include-component-in-tag": false,
   "pull-request-title-pattern": "chore(release): ${component} ${version}",
   "pull-request-header": "🚀 New Release",

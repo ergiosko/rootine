@@ -10,7 +10,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Core Utilities
-# @dependencies     - Bash 4.4.0 or higher
+# @dependencies     - Bash 5.0.0 or higher
 #                   - Core utilities: declare, printf, grep, awk, sed
 #                   - Optional: mail (for email functionality)
 #                   - Optional: dpkg-query (for package management)

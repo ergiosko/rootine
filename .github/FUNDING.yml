@@ -1,4 +1,7 @@
-github: [ergiosko]
+# .github/FUNDING.yml
+# This file is used to enable sponsor buttons on your repository.
+
+github: [ergiosko, noskov]
 buy_me_a_coffee: ergiosko
 patreon: ergiosko
 ko_fi: ergiosko

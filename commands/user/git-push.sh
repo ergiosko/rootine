@@ -8,7 +8,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         User Commands
-# @dependencies     - Bash 4.4.0 or higher
+# @dependencies     - Bash 5.0.0 or higher
 #                   - Git 2.0 or higher
 # @configuration    ROOTINE_GIT_DEFAULT_BRANCH  Default git branch name
 #                   ROOTINE_GIT_DEFAULT_REMOTE  Default git remote name
@@ -62,7 +62,6 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
 main() {
   handle_args "$@"
 
-  # Use parameter expansion to provide default empty values for optional arguments
   local type="${ROOTINE_SCRIPT_ARG_TYPE}"
   local scope="${ROOTINE_SCRIPT_ARG_SCOPE:-}"
   local description="${ROOTINE_SCRIPT_ARG_DESCRIPTION}"
@@ -77,48 +76,12 @@ main() {
   local upstream="${ROOTINE_SCRIPT_ARG_UPSTREAM:-true}"
   local -a push_args=()
 
-  # Stage all changes
-  if ! git add -A; then
-    log_error "Failed to stage changes"
+  push_args+=("${type}" "${scope}" "${description}" "${body}" "${footer}" "${breaking}" "${branches}" "${branch}" "${remote}" "${force}" "${verbose}" "${upstream}")
+
+  if ! git_push "${push_args[@]}"; then
     return 1
   fi
 
-  # Check if there are changes to commit
-  if ! git status --porcelain | grep -q .; then
-    log_info "No changes to commit"
-    return 0
-  fi
-
-  # Create conventional commit
-  if ! git_conventional_commit \
-    "${type}" \
-    "${scope}" \
-    "${description}" \
-    "${body}" \
-    "${footer}" \
-    "${breaking}"; then
-    log_error "Failed to create commit"
-    return 1
-  fi
-
-  # Build push arguments based on configuration
-  if [[ "${branches}" == "true" ]]; then
-    push_args+=("--all")
-  else
-    [[ -n "${branch}" ]] && push_args+=("--branch" "${branch}")
-    [[ -n "${remote}" ]] && push_args+=("--remote" "${remote}")
-  fi
-  [[ "${force}" == "true" ]] && push_args+=("--force")
-  [[ "${verbose}" == "true" ]] && push_args+=("--verbose")
-  [[ "${upstream}" == "true" ]] && push_args+=("-u")
-
-  # Execute git push operation
-  if ! git push "${push_args[@]}"; then
-    log_error "Failed to push to ${remote}:${branch} running 'git push ${push_args[*]}'"
-    return 1
-  fi
-
-  log_success "Changes pushed successfully to '${remote}:${branch}' running 'git push ${push_args[*]}'"
   return 0
 }
 

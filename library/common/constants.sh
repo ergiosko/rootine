@@ -8,7 +8,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Configuration
-# @dependencies     Bash 4.4.0 or higher
+# @dependencies     Bash 5.0.0 or higher
 # @configuration    Constants can be overridden by setting them before sourcing this file
 # @global           Defines numerous global constants used throughout the framework
 # @security         - All constants are read-only (readonly or integer readonly)

@@ -8,7 +8,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Version Control
-# @dependencies     bash (>= 4.0), git (>= 2.0)
+# @dependencies     bash (>= 5.0.0), git (>= 2.0)
 # @envvar           ROOTINE_GIT_USER_EMAIL      User's email for git config
 # @envvar           ROOTINE_GIT_USER_NAME       User's name for git config
 # @envvar           ROOTINE_GIT_CORE_FILEMODE   Git filemode setting
@@ -185,95 +185,113 @@ git_reset() {
 }
 
 # --
-# @description      Commits and pushes changes to remote repository
-# @param            [commit_msg] Commit message (default: "Update")
-# @arguments        [-f|--force] Force push
-#                   [-v|--verbose] Verbose output
-#                   [-b|--branch BRANCH] Target branch
-#                   [-r|--remote REMOTE] Target remote
-# @return           0 on success, 1 on failure
-# @example          git_push "Fix bug" -b develop -v
+# @description      Creates a conventional commit and pushes changes to remote repository
+# @param {string}   type        Commit type (default: "chore")
+# @param {string}   scope       Optional commit scope
+# @param {string}   description Commit description (default: "update")
+# @param {string}   body        Optional commit body
+# @param {string}   footer      Optional commit footer
+# @param {boolean}  breaking    Whether this is a breaking change (default: false)
+# @param {boolean}  branches    Push all branches flag (default: true)
+# @param {string}   branch      Target branch (default: $ROOTINE_GIT_DEFAULT_BRANCH)
+# @param {string}   remote      Target remote (default: $ROOTINE_GIT_DEFAULT_REMOTE)
+# @param {boolean}  force       Force push flag (default: false)
+# @param {boolean}  verbose     Verbose output flag (default: false)
+# @param {boolean}  upstream    Set upstream tracking (default: true)
+# @dependencies     - Git 2.0 or higher
+# @envvar           ROOTINE_GIT_DEFAULT_BRANCH Default git branch
+# @envvar           ROOTINE_GIT_DEFAULT_REMOTE Default git remote
+# @exitstatus       0 Success
+#                   1 Various error conditions:
+#                     - Not a git repository
+#                     - Remote does not exist
+#                     - Failed to stage changes
+#                     - Failed to create commit
+#                     - Failed to push changes
+# @stdout           Status messages
+# @stderr           Error messages
+# @example          # Basic usage with defaults
+#                   git_push
+#
+#                   # Full example with all parameters
+#                   git_push "feat" "auth" "add login page" \
+#                     "Implements user authentication" \
+#                     "Closes #123" \
+#                     false true "develop" "origin" \
+#                     false true true
+#
+#                   # Create feature with breaking change
+#                   git_push "feat" "api" "new endpoint" "" "" true
+# @see              git_conventional_commit()
+# @security         - Validates git repository
+#                   - Checks remote existence
+#                   - Safe parameter handling
 # @public
 # --
 git_push() {
-  local commit_msg="${1:-Update}"
-  shift || true
-
-  local all_branches=false
-  local branch="${ROOTINE_GIT_DEFAULT_BRANCH:-develop}"
-  local remote="${ROOTINE_GIT_DEFAULT_REMOTE:-origin}"
-  local force=false
-  local verbose=false
-  local upstream=false
+  local -r type="${1:-chore}"
+  local -r scope="${2:-}"
+  local -r description="${3:-update}"
+  local -r body="${4:-}"
+  local -r footer="${5:-}"
+  local -r breaking="${6:-false}"
+  local -r branches="${7:-true}"
+  local -r branch="${8:-${ROOTINE_GIT_DEFAULT_BRANCH}}"
+  local -r remote="${9:-${ROOTINE_GIT_DEFAULT_REMOTE}}"
+  local -r force="${10:-false}"
+  local -r verbose="${11:-false}"
+  local -r upstream="${12:-true}"
+  local -a push_args=()
 
   _is_git_repo || return 1
 
-  while (( ${#} )); do
-    case "${1}" in
-      --all|--branches)
-        all_branches=true
-        ;;
-      -b|--branch)
-        branch="${2:?Branch name required for -b/--branch}"
-        shift
-        ;;
-      -r|--remote)
-        remote="${2:?Remote name required for -r/--remote}"
-        shift
-        ;;
-      -f|--force)
-        force=true
-        ;;
-      -v|--verbose)
-        verbose=true
-        ;;
-      -u|--set-upstream)
-        upstream=true
-        ;;
-      *)
-        log_error "Invalid argument '${1}'"
-        return 1
-        ;;
-    esac
-    shift
-  done
-
+  # Check if remote exists
   if ! git remote get-url "${remote}" &>/dev/null; then
     log_error "Remote '${remote}' does not exist"
     return 1
   fi
 
+  # Stage all changes
   if ! git add -A; then
     log_error "Failed to stage changes"
     return 1
   fi
 
+  # Check if there are changes to commit
   if ! git status --porcelain | grep -q .; then
     log_info "No changes to commit"
     return 0
   fi
 
-  if ! git commit -m "${commit_msg}"; then
-    log_error "Commit failed"
+  # Create conventional commit
+  if ! git_conventional_commit \
+    "${type}" \
+    "${scope}" \
+    "${description}" \
+    "${body}" \
+    "${footer}" \
+    "${breaking}"; then
+    log_error "Failed to create commit"
     return 1
   fi
 
-  local -a push_args=()
-  if [[ "${all_branches}" == "true" ]]; then
+  # Build push arguments based on configuration
+  if [[ "${branches}" == "true" ]]; then
     push_args+=("--all")
   else
     [[ -n "${branch}" ]] && push_args+=("--branch" "${branch}")
     [[ -n "${remote}" ]] && push_args+=("--remote" "${remote}")
   fi
+  [[ "${force}" == "true" ]] && push_args+=("--force")
+  [[ "${verbose}" == "true" ]] && push_args+=("--verbose")
+  [[ "${upstream}" == "true" ]] && push_args+=("-u")
 
-  "${force}" && push_args+=("--force")
-  "${verbose}" && push_args+=("--verbose")
-  "${upstream}" && push_args+=("-u")
-
+  # Execute git push operation
   if ! git push "${push_args[@]}"; then
     log_error "Failed to push to ${remote}:${branch} running 'git push ${push_args[*]}'"
     return 1
   fi
+
   log_success "Changes pushed successfully to '${remote}:${branch}' running 'git push ${push_args[*]}'"
   return 0
 }

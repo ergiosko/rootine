@@ -8,7 +8,7 @@
 # @version          1.0.0
 # @since            1.0.0
 # @category         Core
-# @dependencies     Bash 4.4.0 or higher
+# @dependencies     Bash 5.0.0 or higher
 # @configuration    Requires ROOTINE_COMMON_ARGS to be defined with valid argument definitions
 # @envvar           ROOTINE_COMMON_ARGS Associative array of common argument definitions
 # @envvar           ROOTINE_SCRIPT_ARGS Associative array of script-specific argument definitions

@@ -1,113 +1,148 @@
-# Labels automatically applied based on content patterns
+# .github/labeler.yml
+# Configuration for the GitHub Pull Request Labeler action
 
 # Breaking Changes
 breaking-change:
-  - '**/BREAKING-CHANGE/**'
-  - '**/breaking/**'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/BREAKING-CHANGE/**'
+      - '**/breaking/**'
 
 # Bug fixes
 bug:
-  - '**/bugfix/**'
-  - '**/fix/**'
-  - '**/hotfix/**'
-  - '**/*fix*.sh'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*fix*.sh'
+      - '**/bugfix/**'
+      - '**/fix/**'
+      - '**/hotfix/**'
 
 # Chores and maintenance
 chore:
-  - '**/chore/**'
-  - '**/maintenance/**'
-  - '.gitattributes'
-  - '.gitignore'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.gitattributes'
+      - '.gitignore'
+      - '**/chore/**'
+      - '**/maintenance/**'
 
 # Configuration files
 configuration:
-  - '**/*.cfg'
-  - '**/*.conf'
-  - '**/*.ini'
-  - '**/*.json'
-  - '**/*.yaml'
-  - '**/*.yml'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.cfg'
+      - '**/*.conf'
+      - '**/*.ini'
+      - '**/*.json'
+      - '**/*.yaml'
+      - '**/*.yml'
 
 # Dependencies and environment
 dependencies:
-  - '**/deps/**'
-  - '**/vendor/**'
-  - 'Dockerfile'
-  - 'package-lock.json'
-  - 'package.json'
-  - 'requirements.txt'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/deps/**'
+      - '**/vendor/**'
+      - 'Dockerfile'
+      - 'package-lock.json'
+      - 'package.json'
+      - 'requirements.txt'
 
 # Documentation
 documentation:
-  - '**/*.md'
-  - '**/*.txt'
-  - '**/doc/**'
-  - '**/docs/**'
-  - 'docs/**/*'
-  - 'LICENSE*'
-  - 'README*'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.md'
+      - '**/*.txt'
+      - '**/doc/**'
+      - '**/docs/**'
+      - 'docs/**/*'
+      - 'LICENSE*'
+      - 'README*'
 
 # New features and improvements
 enhancement:
-  - '**/enhance/**'
-  - '**/feat/**'
-  - '**/feature/**'
-  - '**/improvement/**'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/enhance/**'
+      - '**/feat/**'
+      - '**/feature/**'
+      - '**/improvement/**'
 
 # Performance improvements
 performance:
-  - '**/optimize/**'
-  - '**/perf/**'
-  - '**/performance/**'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/optimize/**'
+      - '**/perf/**'
+      - '**/performance/**'
 
 # Refactoring changes
 refactor:
-  - '**/redesign/**'
-  - '**/refactor/**'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/redesign/**'
+      - '**/refactor/**'
 
 # Reverts
 revert:
-  - '**/revert/**'
-  - '**/rollback/**'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/revert/**'
+      - '**/rollback/**'
 
 # Security-related changes
 security:
-  - '**/auth/**'
-  - '**/crypto/**'
-  - '**/security/**'
-  - '**/ssl/**'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/auth/**'
+      - '**/crypto/**'
+      - '**/security/**'
+      - '**/ssl/**'
 
 # Shell scripts
 shell:
-  - '**/*.bash'
-  - '**/*.sh'
-  - '**/bin/*'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.bash'
+      - '**/*.sh'
+      - '**/bin/*'
 
 # Style changes
 style:
-  - '**/.editorconfig'
-  - '**/.prettier*'
-  - '**/format/**'
-  - '**/style/**'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/.editorconfig'
+      - '**/.prettier*'
+      - '**/format/**'
+      - '**/style/**'
 
 # Tests
 tests:
-  - '**/*.spec.*'
-  - '**/*.test.*'
-  - '**/__tests__/**'
-  - '**/spec/**'
-  - '**/test/**'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/__tests__/**'
+      - '**/.shellcheckrc'
+      - '**/*.spec.*'
+      - '**/*.test.*'
+      - '**/spec/**'
+      - '**/test/**'
 
 # Ubuntu-specific content
 ubuntu:
-  - '**/apt/**'
-  - '**/debian/**'
-  - '**/dpkg/**'
-  - '**/ubuntu/**'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/apt/**'
+      - '**/debian/**'
+      - '**/dpkg/**'
+      - '**/ubuntu/**'
 
 # CI/CD and workflow files
 workflow:
-  - '.github/actions/**'
-  - '.github/workflows/**'
-  - '.gitlab-ci.yml'
-  - '**/pipeline/**'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/actions/**'
+      - '.github/workflows/**'
+      - '.gitlab-ci.yml'
+      - '**/.release-please-manifest.json'
+      - '**/pipeline/**'
