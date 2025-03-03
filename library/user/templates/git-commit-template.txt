@@ -25,8 +25,7 @@
 #   test      (adding missing tests or correcting existing tests)
 #
 # Scope should be one of:
-#   commands, common, core, docs, git,
-#   github, library, root, security, user
+#   commands, core, docs, git, github, library, root, security, user
 #
 # Breaking changes should start with "BREAKING CHANGE: "
 # ----------------------------------------------------------------------

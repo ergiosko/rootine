@@ -52,7 +52,6 @@ declare -ga ROOTINE_COMMIT_TYPES=(
 # Valid commit scopes for Rootine project
 declare -ga ROOTINE_COMMIT_SCOPES=(
   "commands"  # Command scripts in commands/ directory
-  "common"    # Common utilities in library/common/
   "core"      # Core functionality affecting entire system
   "docs"      # Documentation files (.md, man pages)
   "git"       # Git-related functionality
