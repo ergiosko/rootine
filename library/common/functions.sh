@@ -753,6 +753,12 @@ generate_ssh_key() {
   local password password_confirm
 
   # Verify dependencies
+  if ! is_package_installed "openssh-client"; then
+    log_error "Required package 'openssh-client' is not installed"
+    log_info "Install using: sudo apt-get install openssh-client"
+    return "${ROOTINE_STATUS_USAGE}"
+  fi
+
   if ! command -v ssh-keygen >/dev/null; then
     log_error "Required command 'ssh-keygen' not found"
     log_info "Install using: sudo apt-get install openssh-client"
@@ -786,6 +792,7 @@ generate_ssh_key() {
   # Check for existing key
   if [[ -f "${key_file}" ]]; then
     log_error "Key already exists: ${key_file}"
+    log_info "Please choose a different path or remove the existing key"
     return "${ROOTINE_STATUS_DATAERR}"
   fi
 
@@ -841,13 +848,38 @@ generate_ssh_key() {
     return "${ROOTINE_STATUS_NOPERM}"
   fi
 
-  # Display results
   log_success "SSH key generated: ${key_file}"
+
+  # Display results
   log_info "Public key contents:"
   if ! cat "${key_file}.pub"; then
     log_error "Failed to read public key"
     return "${ROOTINE_STATUS_NOINPUT}"
   fi
+
+  # Ensure ssh-agent is running
+  if ! pgrep -u "${USER}" ssh-agent >/dev/null; then
+    eval "$(ssh-agent -s)" &>/dev/null
+  fi
+
+  # Remove existing keys for this file from ssh-agent (if any)
+  ssh-add -d "${key_file}" &>/dev/null
+
+  # Add key to ssh-agent
+  if ! ssh-add "${key_file}"; then
+    log_error "Failed to add key to ssh-agent"
+    return "${ROOTINE_STATUS_CANTCREAT}"
+  fi
+
+  # Verify key is added to ssh-agent
+  local public_key
+  public_key=$(cat "${key_file}.pub")
+  if ! ssh-add -L | grep -qF "${public_key}"; then
+    log_error "Key not found in ssh-agent after addition"
+    return "${ROOTINE_STATUS_CANTCREAT}"
+  fi
+
+  log_success "Key added to ssh-agent"
   return 0
 }
 

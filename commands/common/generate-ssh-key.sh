@@ -9,9 +9,6 @@
 # @since            1.0.0
 # @category         Common Commands
 # @dependencies     - Bash 5.0.0 or higher
-#                   - ssh-keygen (openssh-client)
-#                   - chmod
-#                   - mkdir
 # @configuration    Arguments:
 #                   - file:    Path to SSH key (default: $HOME/.ssh/id_rsa)
 #                   - type:    Key type [dsa|ecdsa|ecdsa-sk|ed25519|ed25519-sk|rsa] (default: ed25519)
@@ -45,21 +42,6 @@ main() {
   local -r bits="${ROOTINE_SCRIPT_ARG_BITS}"
   local -r comment="${ROOTINE_SCRIPT_ARG_COMMENT}"
 
-  # Verify openssh-client is installed
-  if ! is_package_installed "openssh-client"; then
-    log_error "Required package 'openssh-client' is not installed"
-    log_info "Install using: sudo apt-get install openssh-client"
-    return "${ROOTINE_STATUS_USAGE}"
-  fi
-
-  # Check if key file already exists
-  if [[ -f "${file}" ]]; then
-    log_error "SSH key already exists: ${file}"
-    log_info "Please choose a different path or remove the existing key"
-    return "${ROOTINE_STATUS_DATAERR}"
-  fi
-
-  # Generate the SSH key
   log_info "Generating SSH key..."
   log_debug "Settings:"
   log_debug "- File: ${file}"
@@ -68,13 +50,10 @@ main() {
   log_debug "- Comment: ${comment}"
 
   if ! generate_ssh_key "${file}" "${type}" "${bits}" "${comment}"; then
-    log_error "Failed to generate SSH key"
-    return "${ROOTINE_STATUS_CANTCREAT}"
+    return 1
   fi
 
-  # Display public key location
-  log_info "Your public key is available at: ${file}.pub"
-  log_info "You can now add it to your GitHub account or other services"
+  log_success "You can now add public key to your GitHub account or other services"
   return 0
 }
 
