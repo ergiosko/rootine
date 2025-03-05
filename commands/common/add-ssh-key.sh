@@ -15,10 +15,10 @@
 #                   - bits:    Number of bits for the key (default: 4096)
 #                   - comment: Key comment (default: $USER@$HOSTNAME)
 # @example          # Generate default ED25519 key
-#                   generate-ssh-key.sh
+#                   rootine add-ssh-key
 #
 #                   # Generate RSA key with custom settings
-#                   generate-ssh-key.sh \
+#                   rootine add-ssh-key \
 #                     --file="/path/to/key" \
 #                     --type="rsa" \
 #                     --bits=4096 \
@@ -49,7 +49,7 @@ main() {
   log_debug "- Bits: ${bits}"
   log_debug "- Comment: ${comment}"
 
-  if ! generate_ssh_key "${file}" "${type}" "${bits}" "${comment}"; then
+  if ! add_ssh_key "${file}" "${type}" "${bits}" "${comment}"; then
     return 1
   fi
 

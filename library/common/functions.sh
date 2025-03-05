@@ -31,7 +31,7 @@
 #                   - is_package_installed(): Package installation verification
 #                   - check_disk_space(): Disk space availability check
 #                   - check_internet_connection(): Network connectivity test
-#                   - generate_ssh_key(): SSH key pair generation
+#                   - add_ssh_key(): SSH key pair generation
 #                   - send_email_message(): Email dispatch utility
 #                   - show_help_info(): Help documentation display
 #                   - git_config(): Git configuration utility
@@ -721,6 +721,7 @@ check_internet_connection() {
 
 # --
 # @description      Generates a secure SSH key pair with proper permissions
+#                   and adds it to the user's SSH agent
 # @param            $1 key_file     Path to SSH key (default: $HOME/.ssh/id_rsa)
 # @param            $2 key_type     Type of key [dsa|ecdsa|ecdsa-sk|ed25519|ed25519-sk|rsa]
 #                                   (default: ed25519)
@@ -739,13 +740,13 @@ check_internet_connection() {
 #                   - Validates key type and parameters
 #                   - Secure password handling
 # @example          # Generate default ED25519 key
-#                   generate_ssh_key
+#                   add_ssh_key
 #
 #                   # Generate RSA key with custom settings
-#                   generate_ssh_key "/path/to/key" "rsa" 4096 "user@host"
+#                   add_ssh_key "/path/to/key" "rsa" 4096 "user@host"
 # @public
 # --
-generate_ssh_key() {
+add_ssh_key() {
   local -r key_file="${1:-${HOME}/.ssh/id_rsa}"
   local -r key_type="${2:-ed25519}"
   local -r key_bits="${3:-4096}"
