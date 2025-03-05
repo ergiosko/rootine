@@ -117,6 +117,7 @@ git_conventional_commit() {
   local body="${4:-}"
   local footer="${5:-}"
   local breaking="${6:-false}"
+  local breaking_indicator=""
   local message
 
   # Validate commit type against allowed types
@@ -143,7 +144,11 @@ git_conventional_commit() {
   # <type>[(scope)][!]: <description>
   message="${type}"
   [[ -n "${scope}" ]] && message+="(${scope})"
-  [[ "${breaking}" == "true" ]] && message+="!"
+
+  if [[ "${breaking}" == "true" ]]; then
+    breaking_indicator="!"
+    message+="${breaking_indicator}"
+  fi
   message+=": ${description}"
 
   # Add optional body after blank line
@@ -164,7 +169,7 @@ git_conventional_commit() {
     return 1
   fi
 
-  log_success "Created conventional commit: ${type}${scope:+"(${scope})"}${breaking=="true" && echo "!"}: ${description}"
+  log_success "Created conventional commit: ${type}${scope:+(${scope})}${breaking_indicator:+${breaking_indicator}}: ${description}"
   return 0
 }
 

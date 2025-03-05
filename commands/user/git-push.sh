@@ -11,9 +11,9 @@
 # @category         User Commands
 # @dependencies     - Bash 5.0.0 or higher
 #                   - Git 2.0 or higher
-# @configuration    ROOTINE_GIT_DEFAULT_BRANCH  Default git branch name
+# @configuration    ROOTINE_GIT_WORKING_BRANCH  Default git branch name
 #                   ROOTINE_GIT_DEFAULT_REMOTE  Default git remote name
-# @envvar           ROOTINE_GIT_DEFAULT_BRANCH  Default branch for pushing
+# @envvar           ROOTINE_GIT_WORKING_BRANCH  Default branch for pushing
 #                   ROOTINE_GIT_DEFAULT_REMOTE  Default remote repository
 # @stderr           Error messages for invalid arguments and git operations
 # @exitstatus       0  Success
@@ -41,7 +41,7 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
   [footer]="Commit footer (optional):0:${5:-}:"
   [breaking]="Mark as breaking change:0:${6:-false}:^(true|false)$"
   [branches]="Push all branches:0:${7:-true}:^(true|false)$"
-  [branch]="Target branch:0:${8:-${ROOTINE_GIT_DEFAULT_BRANCH}}:"
+  [branch]="Target branch:0:${8:-${ROOTINE_GIT_WORKING_BRANCH}}:"
   [remote]="Remote repository:0:${9:-${ROOTINE_GIT_DEFAULT_REMOTE}}:"
   [force]="Force push:0:${10:-false}:^(true|false)$"
   [verbose]="Show verbose output:0:${11:-false}:^(true|false)$"
@@ -70,7 +70,7 @@ main() {
   local footer="${ROOTINE_SCRIPT_ARG_FOOTER:-}"
   local breaking="${ROOTINE_SCRIPT_ARG_BREAKING:-false}"
   local branches="${ROOTINE_SCRIPT_ARG_BRANCHES:-true}"
-  local branch="${ROOTINE_SCRIPT_ARG_BRANCH:-${ROOTINE_GIT_DEFAULT_BRANCH}}"
+  local branch="${ROOTINE_SCRIPT_ARG_BRANCH:-${ROOTINE_GIT_WORKING_BRANCH}}"
   local remote="${ROOTINE_SCRIPT_ARG_REMOTE:-${ROOTINE_GIT_DEFAULT_REMOTE}}"
   local force="${ROOTINE_SCRIPT_ARG_FORCE:-false}"
   local verbose="${ROOTINE_SCRIPT_ARG_VERBOSE:-false}"

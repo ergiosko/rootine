@@ -201,7 +201,8 @@ declare -gr ROOTINE_GIT_USER_EMAIL=""
 declare -gr ROOTINE_GIT_USER_NAME=""
 declare -gr ROOTINE_GIT_CORE_FILEMODE="false"
 declare -gr ROOTINE_GIT_DEFAULT_REMOTE="origin"
-declare -gr ROOTINE_GIT_DEFAULT_BRANCH="develop" # Default branch name [develop|main]
+declare -gr ROOTINE_GIT_DEFAULT_BRANCH="main"     # Default branch name [develop|main]
+declare -gr ROOTINE_GIT_WORKING_BRANCH="develop"  # Working branch name [develop|main]
 
 # --
 # @description      Documentation style definitions and tags
