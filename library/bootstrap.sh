@@ -326,7 +326,7 @@ _source_user_level_files() {
 
   local -ar common_files=(
     "${lib_path}/common/constants.sh"
-    "${lib_path}/common/log_messages.sh"
+    "${lib_path}/common/logging.sh"
     "${lib_path}/common/functions.sh"
     "${lib_path}/common/arg_parser.sh"
   )

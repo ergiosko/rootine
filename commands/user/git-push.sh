@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # ---
-# @description      Script for committing and pushing Git changes using Conventional Commits
+# @description      Script for committing and pushing Git changes using
+#                   Conventional Commits standard
 # @author           Sergiy Noskov <sergiy@noskov.org>
 # @copyright        Ergiosko <contact@ergiosko.com>
 # @license          MIT
@@ -76,7 +77,10 @@ main() {
   local upstream="${ROOTINE_SCRIPT_ARG_UPSTREAM:-true}"
   local -a push_args=()
 
-  push_args+=("${type}" "${scope}" "${description}" "${body}" "${footer}" "${breaking}" "${branches}" "${branch}" "${remote}" "${force}" "${verbose}" "${upstream}")
+  push_args+=("${type}" "${scope}" "${description}" "${body}"
+    "${footer}" "${breaking}" "${branches}" "${branch}"
+    "${remote}" "${force}" "${verbose}" "${upstream}"
+  )
 
   if ! git_push "${push_args[@]}"; then
     return 1

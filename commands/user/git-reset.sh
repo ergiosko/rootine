@@ -54,7 +54,6 @@ main() {
   local commit="${ROOTINE_SCRIPT_ARG_COMMIT}"
   local force="${ROOTINE_SCRIPT_ARG_FORCE}"
 
-  # Execute git reset operation
   if ! git_reset "${commit}" ${force:+--force}; then
     log_error "Failed to reset to commit: ${commit}"
     return 1

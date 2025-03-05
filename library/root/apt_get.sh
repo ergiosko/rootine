@@ -73,7 +73,7 @@ _create_apt_directories() {
 #                   1 Process running or lock file held
 # @dependencies     - is_process_running()
 #                   - is_lock_file_held()
-#                   - log_messages.sh
+#                   - library/common/logging.sh
 # @example          # Check if package manager is available
 #                   if check_package_manager_status; then
 #                     log_info "Package manager is available for use"

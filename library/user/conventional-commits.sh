@@ -164,7 +164,7 @@ git_conventional_commit() {
     return 1
   fi
 
-  log_success "Created conventional commit: ${type}${scope:+"(${scope})"}${breaking:+"!"}: ${description}"
+  log_success "Created conventional commit: ${type}${scope:+"(${scope})"}${breaking=="true" && echo "!"}: ${description}"
   return 0
 }
 
