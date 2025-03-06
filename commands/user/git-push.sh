@@ -11,9 +11,9 @@
 # @category         User Commands
 # @dependencies     - Bash 5.0.0 or higher
 #                   - Git 2.0 or higher
-# @configuration    ROOTINE_GIT_WORKING_BRANCH  Default git branch name
+# @configuration    ROOTINE_GIT_WORKING_BRANCH  Working git branch name
 #                   ROOTINE_GIT_DEFAULT_REMOTE  Default git remote name
-# @envvar           ROOTINE_GIT_WORKING_BRANCH  Default branch for pushing
+# @envvar           ROOTINE_GIT_WORKING_BRANCH  Working branch for pushing
 #                   ROOTINE_GIT_DEFAULT_REMOTE  Default remote repository
 # @stderr           Error messages for invalid arguments and git operations
 # @exitstatus       0  Success
@@ -41,8 +41,8 @@ declare -gA ROOTINE_SCRIPT_ARGS=(
   [footer]="Commit footer (optional):0:${5:-}:"
   [breaking]="Mark as breaking change:0:${6:-false}:^(true|false)$"
   [branches]="Push all branches:0:${7:-true}:^(true|false)$"
-  [branch]="Target branch:0:${8:-${ROOTINE_GIT_WORKING_BRANCH}}:"
-  [remote]="Remote repository:0:${9:-${ROOTINE_GIT_DEFAULT_REMOTE}}:"
+  [remote]="Remote repository:0:${8:-${ROOTINE_GIT_DEFAULT_REMOTE}}:"
+  [branch]="Target branch:0:${9:-${ROOTINE_GIT_WORKING_BRANCH}}:"
   [force]="Force push:0:${10:-false}:^(true|false)$"
   [verbose]="Show verbose output:0:${11:-false}:^(true|false)$"
   [upstream]="Upstream (tracking) reference:0:${12:-true}:^(true|false)$"
@@ -70,16 +70,16 @@ main() {
   local footer="${ROOTINE_SCRIPT_ARG_FOOTER:-}"
   local breaking="${ROOTINE_SCRIPT_ARG_BREAKING:-false}"
   local branches="${ROOTINE_SCRIPT_ARG_BRANCHES:-true}"
-  local branch="${ROOTINE_SCRIPT_ARG_BRANCH:-${ROOTINE_GIT_WORKING_BRANCH}}"
   local remote="${ROOTINE_SCRIPT_ARG_REMOTE:-${ROOTINE_GIT_DEFAULT_REMOTE}}"
+  local branch="${ROOTINE_SCRIPT_ARG_BRANCH:-${ROOTINE_GIT_WORKING_BRANCH}}"
   local force="${ROOTINE_SCRIPT_ARG_FORCE:-false}"
   local verbose="${ROOTINE_SCRIPT_ARG_VERBOSE:-false}"
   local upstream="${ROOTINE_SCRIPT_ARG_UPSTREAM:-true}"
   local -a push_args=()
 
   push_args+=("${type}" "${scope}" "${description}" "${body}"
-    "${footer}" "${breaking}" "${branches}" "${branch}"
-    "${remote}" "${force}" "${verbose}" "${upstream}"
+    "${footer}" "${breaking}" "${branches}" "${remote}"
+    "${branch}" "${force}" "${verbose}" "${upstream}"
   )
 
   if ! git_push "${push_args[@]}"; then

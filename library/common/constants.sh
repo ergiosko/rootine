@@ -105,6 +105,7 @@ declare -gir ROOTINE_LOG_LEVEL_DEBUG=7    # Debug-level messages
 # Log Level Configuration
 declare -gi ROOTINE_LOG_LEVEL_DEFAULT="${ROOTINE_LOG_LEVEL_DEFAULT:-${ROOTINE_LOG_LEVEL_DEBUG}}"
 declare -gir ROOTINE_LOG_LEVEL_MAX="${ROOTINE_LOG_LEVEL_DEBUG}"
+declare -gir ROOTINE_LOG_LEVEL_APPEND="${ROOTINE_LOG_LEVEL_DEFAULT:-${ROOTINE_LOG_LEVEL_DEBUG}}" # Append log level
 
 # --
 # @description      ANSI color and style definitions for terminal output

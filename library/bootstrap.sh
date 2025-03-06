@@ -37,7 +37,7 @@
 #                   is_command                Checks for required system commands
 #                   _populate_ubuntu_info     Gathers system information
 #                   _get_user_level           Determines user execution level
-#                   _source_user_level_files  Loads appropriate library files
+#                   _source_library_files  Loads appropriate library files
 #                   _create_utility_dirs      Creates required directories
 #                   _find_library_function    Locates library functions
 #                   _route_command            Routes and executes commands
@@ -131,7 +131,6 @@ _cleanup_handler() {
     printf "%s[ DEBUG ]%s Cleaning up temporary files...\n" \
       $'\e[0;37m' $'\e[0m' >&2
     printf "  Total files: %d\n" "${#ROOTINE_TEMPORARY_FILES[@]}" >&2
-
     for file in "${ROOTINE_TEMPORARY_FILES[@]}"; do
       if ! _safe_remove "${file}" "false"; then
         failed_cleanups+=("${file}")
@@ -144,7 +143,6 @@ _cleanup_handler() {
     printf "%s[ DEBUG ]%s Cleaning up temporary directories...\n" \
       $'\e[0;37m' $'\e[0m' >&2
     printf "  Total directories: %d\n" "${#ROOTINE_CLEANUP_DIRS[@]}" >&2
-
     for dir in "${ROOTINE_CLEANUP_DIRS[@]}"; do
       if ! _safe_remove "${dir}" "true"; then
         failed_cleanups+=("${dir}")
@@ -201,13 +199,11 @@ _error_handler() {
   if ((stack_size > 0)); then
     printf "\n%s[ DEBUG ]%s Call stack (most recent call first):\n" \
       $'\e[0;37m' $'\e[0m' >&2
-
     for ((i = 1; i <= stack_size; i += 1)); do
       local -r func="${FUNCNAME[i]}"
       local -r line="${BASH_LINENO[i - 1]}"
       local -r src="${BASH_SOURCE[i]:-unknown}"
       local -r display_func="${func/#main/<main>}"
-
       printf "  %2d: %s()\n" "${i}" "${display_func}" >&2
       printf "    File: %s\n" "${src}" >&2
       printf "    Line: %s\n" "${line}" >&2
@@ -216,7 +212,6 @@ _error_handler() {
 
   printf "\n%s[ DEBUG ]%s Error handler triggered with exit code: %s\n" \
     $'\e[0;37m' $'\e[0m' "${error_code}" >&2
-
   exit "${error_code}"
 }
 
@@ -284,7 +279,6 @@ _populate_ubuntu_info() {
     release="${ROOTINE_UNKNOWN}"
     codename="${ROOTINE_UNKNOWN}"
   fi
-
   kernel="$(is_command "uname" && uname -r &>/dev/null ||
     echo "${ROOTINE_UNKNOWN}")"
 
@@ -309,35 +303,32 @@ _get_user_level() {
 
 # --
 # @description      Sources appropriate library files based on user level
-# @param {string}   level User level ("root" or "user")
+# @param {string}   level User level ("common", "root" or "user")
 # @stdout           None
 # @stderr           Error messages if files cannot be accessed
 # @exitstatus       0 All required files sourced successfully
 #                   1 Failed to source one or more files
 # @global           ROOTINE_LIBRARY_DIR  Base directory for library files
 # @sideeffects      Sources multiple shell script files into current environment
-# @example          _source_user_level_files "root"
+# @example          _source_library_files "root"
 # @internal
 # --
-_source_user_level_files() {
+_source_library_files() {
   local -r level="${1}"
   local -a level_files=()
   local -r lib_path="${ROOTINE_LIBRARY_DIR}"
-
   local -ar common_files=(
     "${lib_path}/common/constants.sh"
     "${lib_path}/common/logging.sh"
     "${lib_path}/common/functions.sh"
     "${lib_path}/common/arg_parser.sh"
   )
-
   local -ar root_files=(
     "${lib_path}/root/constants.sh"
     "${lib_path}/root/sys_info.sh"
     "${lib_path}/root/snap.sh"
     "${lib_path}/root/apt_get.sh"
   )
-
   local -ar user_files=(
     "${lib_path}/user/constants.sh"
     "${lib_path}/user/conventional-commits.sh"
@@ -619,11 +610,10 @@ _init_environment() {
 
   printf "%s[ DEBUG ]%s Initializing environment\n" \
     $'\e[0;37m' $'\e[0m' >&2
-
   _populate_ubuntu_info
 
   local -r user_level="$(_get_user_level)"
-  if ! _source_user_level_files "${user_level}"; then
+  if ! _source_library_files "${user_level}"; then
     printf "%s[ ERROR ]%s Failed to source user level files\n" \
       $'\e[0;31m' $'\e[0m' >&2
     return 1

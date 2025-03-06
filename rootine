@@ -105,16 +105,21 @@ check_bash_version() {
 #                   - Sets IFS
 #                   - Sets locale variables
 #                   - Defines version and installation status
+# @internal         This function is called at the beginning of the script
 # --
 _set_app_env() {
   printf "%s[ DEBUG ]%s Setting up application environment...\n" \
     $'\e[0;37m' $'\e[0m' >&2
+
   set -euf -o pipefail
+
   declare -g IFS=$' \n\t'
   declare -gr ROOTINE_VERSION="0.1.0"
   declare -gix IS_ROOTINE_INSTALLED="${IS_ROOTINE_INSTALLED:-0}"
+
   printf "%s[ DEBUG ]%s Environment variables set successfully\n" \
     $'\e[0;37m' $'\e[0m' >&2
+  return 0
 }
 
 # --
@@ -151,6 +156,7 @@ get_app_path() {
   printf "%s[ DEBUG ]%s Application path resolved: %s\n" \
     $'\e[0;37m' $'\e[0m' "${path}" >&2
   printf "%s\n" "${path}"
+  return 0
 }
 
 # --
@@ -159,6 +165,7 @@ get_app_path() {
 #                   1 Failed to get application path
 # @global           Sets ROOTINE_PATH, ROOTINE_LIBRARY_DIR, and ROOTINE_COMMANDS_DIR,
 #                   global variables
+# @internal         This function is called after _set_app_env
 # --
 _set_app_paths() {
   local path
@@ -183,6 +190,7 @@ _set_app_paths() {
 # @exitstatus       0 All required paths exist and are accessible
 #                   1 Missing or inaccessible required path
 # @global           Reads ROOTINE_* directory paths
+# @internal         This function is called after _set_app_paths
 # --
 _validate_app_paths() {
   local -ar required_dirs=(
@@ -228,11 +236,13 @@ _validate_app_paths() {
 # @sideeffects      - Initializes environment
 #                   - Loads bootstrap component
 #                   - Executes specified command
+# @internal         This function is called at the end of the script
 # --
-main() {
+_main() {
   local start_time end_time
 
   start_time=$(date +%s)
+
   check_bash_version || return 1
   _set_app_env
   _set_app_paths || return 1
@@ -282,7 +292,9 @@ main() {
     $'\e[0;37m' $'\e[0m' "${cmd}" >&2
   _route_command "${cmd}" "$@"
   local status=$?
+
   end_time=$(date +%s)
+
   printf "%s[ DEBUG ]%s Command execution completed\n" \
     $'\e[0;37m' $'\e[0m' >&2
   printf "  Status: %s\n" "$([[ ${status} -eq 0 ]] && echo "Success" || echo "Failed")" >&2
@@ -291,4 +303,4 @@ main() {
 }
 
 # Execute main only if script is being run directly
-[[ "${BASH_SOURCE[0]}" == "$0" ]] && main "$@"
+[[ "${BASH_SOURCE[0]}" == "$0" ]] && _main "$@"

@@ -193,8 +193,8 @@ git_reset() {
 # @param {string}   footer      Optional commit footer
 # @param {boolean}  breaking    Whether this is a breaking change (default: false)
 # @param {boolean}  branches    Push all branches flag (default: true)
+# @param {string}   remote      Remote repository (default: $ROOTINE_GIT_DEFAULT_REMOTE)
 # @param {string}   branch      Target branch (default: $ROOTINE_GIT_WORKING_BRANCH)
-# @param {string}   remote      Target remote (default: $ROOTINE_GIT_DEFAULT_REMOTE)
 # @param {boolean}  force       Force push flag (default: false)
 # @param {boolean}  verbose     Verbose output flag (default: false)
 # @param {boolean}  upstream    Set upstream tracking (default: true)
@@ -236,8 +236,8 @@ git_push() {
   local -r footer="${5:-}"
   local -r breaking="${6:-false}"
   local -r branches="${7:-true}"
-  local -r branch="${8:-${ROOTINE_GIT_WORKING_BRANCH}}"
-  local -r remote="${9:-${ROOTINE_GIT_DEFAULT_REMOTE}}"
+  local -r remote="${8:-${ROOTINE_GIT_DEFAULT_REMOTE}}"
+  local -r branch="${9:-${ROOTINE_GIT_WORKING_BRANCH}}"
   local -r force="${10:-false}"
   local -r verbose="${11:-false}"
   local -r upstream="${12:-true}"
@@ -279,8 +279,8 @@ git_push() {
   if [[ "${branches}" == "true" ]]; then
     push_args+=("--all")
   else
-    [[ -n "${branch}" ]] && push_args+=("--branch" "${branch}")
     [[ -n "${remote}" ]] && push_args+=("--remote" "${remote}")
+    [[ -n "${branch}" ]] && push_args+=("--branch" "${branch}")
   fi
   [[ "${force}" == "true" ]] && push_args+=("--force")
   [[ "${verbose}" == "true" ]] && push_args+=("--verbose")
