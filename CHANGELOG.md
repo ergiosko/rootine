@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 We use [Conventional Commits v1.0.0](https://www.conventionalcommits.org/)
 and [Release Please](https://github.com/googleapis/release-please).
 
+## [0.2.0](https://github.com/ergiosko/rootine/compare/v0.1.1...v0.2.0) (2025-03-07)
+
+
+### Features
+
+* **core:** add log_append() function, other minor improvements ([4f33e1e](https://github.com/ergiosko/rootine/commit/4f33e1e44b5eb7a0320b713659be63e55cfc14cd))
+* **docs:** add /docs directory ([df0b19e](https://github.com/ergiosko/rootine/commit/df0b19e763236549e61ff79ba5cbe6c78911b1c6))
+
+
+### Bug Fixes
+
+* **core:** fix generate_ssh_key() function ([498a736](https://github.com/ergiosko/rootine/commit/498a736878f62bf98b3fa8cd6be6bda1b00237e2))
+* **core:** fix incorrect display of default values in _show_script_args_help() function ([03f717c](https://github.com/ergiosko/rootine/commit/03f717ccbe72353d760528b910968fe6c7c06a34))
+
 ## [0.1.1](https://github.com/ergiosko/rootine/compare/v0.1.0...v0.1.1) (2025-03-03)
 
 ### Bug Fixes
