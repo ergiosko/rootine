@@ -206,38 +206,65 @@ declare -gr ROOTINE_GIT_DEFAULT_BRANCH="main"     # Default branch name [develop
 declare -gr ROOTINE_GIT_WORKING_BRANCH="develop"  # Working branch name [develop|main]
 
 # --
-# @description      Documentation style definitions and tags
+# @description      Documentation style definitions and comment styles
 # --
 declare -gar ROOTINE_COMMENT_STYLES=("//" "#" ";" "--" "!" "%")
+
+# --
+# @description      Documentation style definitions and tags
+# @format           ["@tag"]="Display Name" # Description and usage guidelines
+# --
 declare -gAr ROOTINE_COMMENT_TAGS=(
-  ["@description"]="Description"      # Provides a brief, one-line summary of the script/function (essential).
-  ["@author"]="Author"                # Specifies the author(s) of the script/function.
-  ["@copyright"]="Copyright"          # Provides copyright information.
-  ["@license"]="License"              # Specifies the license under which the code is released (e.g., MIT, GPL).
-  ["@version"]="Version"              # Specifies the version of the script/function (use semantic versioning).
-  ["@since"]="Since"                  # Indicates when a function/feature was added.
-  ["@deprecated"]="Deprecated"        # Marks a function/feature as deprecated, with optional reason and alternative.
-  ["@category"]="Category"            # Groups related scripts/functions within a larger project (use sparingly).
-  ["@dependencies"]="Dependencies"    # Lists external dependencies (e.g., specific Bash version, external commands).
-  ["@configuration"]="Configuration"  # Describes how to configure the script (if applicable).
-  ["@arguments"]="Arguments"          # Describes the expected arguments (positional parameters) of the script/function.
-  ["@param"]="Parameter"              # Describes a positional parameter (number, type, and description).
-  ["@envvar"]="Environment Variable"  # Documents an environment variable that the script *reads*.
-  ["@stdin"]="STDIN"                  # Describes what the script/function expects as input on standard input.
-  ["@stdout"]="STDOUT"                # Describes the output printed to standard output.
-  ["@stderr"]="STDERR"                # Describes the output that might be written to standard error.
-  ["@file"]="File"                    # Describes a file that the script reads from or writes to (beyond standard I/O).
-  ["@exitstatus"]="Exit Status"       # Describes the possible exit status codes and their meanings.
-  ["@return"]="Return"                # Describes the return value (usually exit status, but can describe output).
-  ["@global"]="Global"                # Documents global variables used or modified by the function.
-  ["@sideeffects"]="Side Effects"     # Describes any side effects of the script/function (beyond global variables).
-  ["@example"]="Example"              # Provides usage examples (should include runnable code).
-  ["@see"]="See"                      # References related scripts, functions, or external resources (URLs).
-  ["@functions"]="Functions"          # Lists the functions defined in the script (useful for script-level comments).
-  ["@security"]="Security"            # Documents security considerations.
-  ["@todo"]="Todo"                    # Notes for future development or improvements.
-  ["@note"]="Note"                    # Adds additional notes or clarifications (use sparingly).
-  ["@internal"]="Internal"            # Marks something as internal and not intended for external use.
-  ["@public"]="Public"                # Marks something as public and intended for external use.
-  ["@ignore"]="Ignore"                # Indicates that a section of code should be ignored by documentation tools.
+  # Essential Documentation (Required)
+  ["@description"]="Description"        # Brief, one-line summary of the component (required)
+  ["@version"]="Version"                # Current version using semantic versioning (required)
+  ["@since"]="Since"                    # Version when component was first introduced (required)
+
+  # Authorship and License (Required)
+  ["@author"]="Author"                  # Primary author/maintainer with contact (required)
+  ["@copyright"]="Copyright"            # Copyright holder information (required)
+  ["@license"]="License"                # License type (e.g., MIT, GPL) (required)
+
+  # Classification and Status
+  ["@category"]="Category"              # Component category (Core|User|System|Network)
+  ["@public"]="Public"                  # Marks as intended for external use
+  ["@internal"]="Internal"              # Marks as internal implementation detail
+  ["@deprecated"]="Deprecated"          # Marks as deprecated with reason and alternative
+
+  # Input/Output Specification
+  ["@param"]="Parameter"                # Describes positional parameter: {type} name description
+  ["@arguments"]="Arguments"            # Lists expected command-line arguments
+  ["@stdin"]="Standard Input"           # Describes expected standard input format
+  ["@stdout"]="Standard Output"         # Describes standard output format
+  ["@stderr"]="Standard Error"          # Describes error output format
+  ["@return"]="Return"                  # Describes return value or output format
+  ["@exitstatus"]="Exit Status"         # Lists possible exit status codes and meanings
+
+  # Data Format and Validation
+  ["@format"]="Format"                  # Defines data structure or format specification
+  ["@validation"]="Validation"          # Lists validation rules and constraints
+
+  # Dependencies and Environment
+  ["@dependencies"]="Dependencies"      # Lists required dependencies and versions
+  ["@envvar"]="Environment"             # Documents environment variables used
+  ["@global"]="Global"                  # Documents global variables used/modified
+  ["@configuration"]="Configuration"    # Describes configuration requirements
+
+  # File Operations and Side Effects
+  ["@file"]="File"                      # Documents file operations and permissions
+  ["@sideeffects"]="Side Effects"       # Lists side effects beyond return values
+
+  # References and Examples
+  ["@usage"]="Usage"                    # Command syntax and invocation patterns
+  ["@example"]="Example"                # Provides usage examples with code
+  ["@see"]="See Also"                   # References related components or docs
+  ["@functions"]="Functions"            # Lists available functions in script
+
+  # Security and Implementation Notes
+  ["@security"]="Security"              # Documents security considerations
+  ["@note"]="Note"                      # Additional implementation notes
+  ["@todo"]="Todo"                      # Planned improvements or changes
+
+  # Documentation Control
+  ["@ignore"]="Ignore"                  # Excludes section from documentation
 )
