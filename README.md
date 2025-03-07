@@ -189,6 +189,7 @@ rootine/
 ├── library/            - Core library functions
 │   ├── common/         - Common utility functions
 │   ├── root/           - Root-level functions
+│   ├── templates/      - Utility templates folder
 │   ├── user/           - User-level functions
 │   └── bootstrap.sh    - Initialization script
 ├── .github/            - GitHub-specific configurations

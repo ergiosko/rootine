@@ -8,7 +8,15 @@
       "bump-patch-for-minor-pre-major": true,
       "include-v-in-tag": true,
       "initial-version": "0.1.0",
-      "extra-files": ["package.json"],
+      "extra-files": [
+        {
+          "type": "shell",
+          "path": "rootine",
+          "language": "bash",
+          "marker": "declare -gr ROOTINE_VERSION=\"${version}\"",
+          "version-template": "declare -gr ROOTINE_VERSION=\"${version}\""
+        }
+      ],
       "release-as": "",
       "versioning": {
         "always-bump-patch": true,
