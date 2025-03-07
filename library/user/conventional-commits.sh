@@ -239,12 +239,10 @@ git_validate_commit_message() {
 # --
 git_install_commit_msg_hook() {
   local force="${1:-false}"
-  local hooks_dir commit_msg_hook
+  local hooks_dir commit_msg_hook template_path
 
   # Verify we're in a Git repository
-  if ! _is_git_repo; then
-    return 1
-  fi
+  _is_git_repo || return 1
 
   # Get Git hooks directory
   if ! hooks_dir="$(git rev-parse --git-path hooks)"; then
@@ -252,8 +250,15 @@ git_install_commit_msg_hook() {
     return 1
   fi
 
-  # Set commit-msg hook path
+  # Set paths for commit-msg hook and template
   commit_msg_hook="${hooks_dir}/commit-msg"
+  template_path="${ROOTINE_LIBRARY_DIR}/templates/git-commit-msg.hook.sh"
+
+  # Verify template exists
+  if [[ ! -f "${template_path}" ]]; then
+    log_error "Hook template not found: ${template_path}"
+    return 1
+  fi
 
   # Check if hook already exists
   if [[ -f "${commit_msg_hook}" ]] && [[ "${force}" != "true" ]]; then
@@ -269,59 +274,11 @@ git_install_commit_msg_hook() {
     fi
   fi
 
-  # Create new hook
-  cat > "${commit_msg_hook}" <<'EOF'
-#!/usr/bin/env bash
-
-# ---
-# @description      Git commit-msg hook for conventional commits validation
-# @author           Sergiy Noskov <sergiy@noskov.org>
-# @copyright        Ergiosko <contact@ergiosko.com>
-# @license          MIT
-# @version          1.0.0
-# @since            1.0.0
-# @category         Version Control
-# @dependencies     - Bash 5.0.0 or higher
-#                   - Git 2.0 or higher
-# @param            commit_msg_file Path to temporary file containing commit message
-# @exitstatus       0  Commit message is valid
-#                   1  Commit message is invalid or error occurred
-# @sideeffects      None
-# @security         - Uses full paths
-#                   - No shell expansions in commit message
-#                   - Safe repository root detection
-# ---
-
-# Get commit message from temporary file
-commit_msg_file="${1}"
-commit_msg="$(cat "${commit_msg_file}")"
-
-# Skip validation for merge commits
-if [[ "${commit_msg}" =~ ^Merge\ branch ]]; then
-  exit 0
-fi
-
-# Get repository root path for locating rootine executable
-repo_root="$(git rev-parse --show-toplevel)"
-if [[ ! -d "${repo_root}" ]]; then
-  echo "ERROR: Failed to determine repository root" >&2
-  exit 1
-fi
-
-# Validate commit message using rootine
-if [[ -x "${repo_root}/rootine" ]]; then
-  ROOTINE_COMMAND="${repo_root}/rootine"
-  if ! "${ROOTINE_COMMAND}" lib::user::git_validate_commit_message "${commit_msg}"; then
-    echo "ERROR: Invalid commit message format" >&2
-    exit 1
+  # Copy template to hook location
+  if ! cp "${template_path}" "${commit_msg_hook}"; then
+    log_error "Failed to install commit-msg hook"
+    return 1
   fi
-else
-  echo "ERROR: Rootine library not found in ${repo_root}/library" >&2
-  exit 1
-fi
-
-exit 0
-EOF
 
   # Make hook executable
   if ! chmod 0755 "${commit_msg_hook}"; then
@@ -347,7 +304,7 @@ git_install_commit_template() {
   local force="${1:-false}"
 
   if ! git config --get commit.template &>/dev/null || [[ "${force}" == "true" ]]; then
-    if ! git config --local commit.template "${ROOTINE_LIBRARY_DIR}/user/templates/git-commit-template.txt"; then
+    if ! git config --local commit.template "${ROOTINE_LIBRARY_DIR}/templates/git-commit-template.txt"; then
       log_error "Failed to set commit template"
       return 1
     fi
