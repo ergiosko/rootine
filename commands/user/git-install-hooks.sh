@@ -13,12 +13,14 @@
 #                   - Git 2.0 or higher
 #                   - library/user/conventional-commits.sh
 #                   - library/user/git.sh
+# @example          rootine git-install-hooks [--force true|false]
 # ---
 
 is_sourced || exit 1
 
 declare -gA ROOTINE_SCRIPT_ARGS=(
-  [force]="Force installation (overwrite existing):0:${1:-false}:^(true|false)$"
+  # Format: "description:requires_value:default_value: pattern (if any)"
+  [force]="Force installation (overwrite existing):1:false:^(true|false)$"
 )
 
 main() {
