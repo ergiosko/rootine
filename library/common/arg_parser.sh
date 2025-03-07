@@ -384,13 +384,17 @@ _show_script_args_help() {
     requires_value=$(cut -d';' -f2 <<<"${components}")
     default_value=$(cut -d';' -f3 <<<"${components}")
 
-    local arg_string="--${arg}"
-    [[ "${requires_value}" == "1" ]] && arg_string+=" <value>"
-
-    local default_string=""
-    [[ -n "${default_value}" ]] && default_string=" (default: ${default_value})"
-
-    printf "  %-26s %s%s\n" "${arg_string}" "${description}" "${default_string}"
+    # Only show default value if it's a literal value (not a variable reference)
+    if [[ -n "${default_value}" ]] && ! [[ "${default_value}" =~ ^\$\{.*\}$ ]]; then
+      local arg_string="--${arg}"
+      [[ "${requires_value}" == "1" ]] && arg_string+=" <value>"
+      printf "  %-26s %s (default: %s)\n" \
+        "${arg_string}" "${description}" "${default_value}"
+    else
+      local arg_string="--${arg}"
+      [[ "${requires_value}" == "1" ]] && arg_string+=" <value>"
+      printf "  %-26s %s\n" "${arg_string}" "${description}"
+    fi
   done
 
   return 0
