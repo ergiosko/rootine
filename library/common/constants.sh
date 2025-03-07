@@ -105,6 +105,7 @@ declare -gir ROOTINE_LOG_LEVEL_DEBUG=7    # Debug-level messages
 # Log Level Configuration
 declare -gi ROOTINE_LOG_LEVEL_DEFAULT="${ROOTINE_LOG_LEVEL_DEFAULT:-${ROOTINE_LOG_LEVEL_DEBUG}}"
 declare -gir ROOTINE_LOG_LEVEL_MAX="${ROOTINE_LOG_LEVEL_DEBUG}"
+declare -gir ROOTINE_LOG_LEVEL_APPEND="${ROOTINE_LOG_LEVEL_DEFAULT:-${ROOTINE_LOG_LEVEL_DEBUG}}" # Append log level
 
 # --
 # @description      ANSI color and style definitions for terminal output
@@ -201,7 +202,8 @@ declare -gr ROOTINE_GIT_USER_EMAIL=""
 declare -gr ROOTINE_GIT_USER_NAME=""
 declare -gr ROOTINE_GIT_CORE_FILEMODE="false"
 declare -gr ROOTINE_GIT_DEFAULT_REMOTE="origin"
-declare -gr ROOTINE_GIT_DEFAULT_BRANCH="develop" # Default branch name [develop|main]
+declare -gr ROOTINE_GIT_DEFAULT_BRANCH="main"     # Default branch name [develop|main]
+declare -gr ROOTINE_GIT_WORKING_BRANCH="develop"  # Working branch name [develop|main]
 
 # --
 # @description      Documentation style definitions and tags

@@ -31,7 +31,7 @@
 #                   - is_package_installed(): Package installation verification
 #                   - check_disk_space(): Disk space availability check
 #                   - check_internet_connection(): Network connectivity test
-#                   - generate_ssh_key(): SSH key pair generation
+#                   - add_ssh_key(): SSH key pair generation
 #                   - send_email_message(): Email dispatch utility
 #                   - show_help_info(): Help documentation display
 #                   - git_config(): Git configuration utility
@@ -721,6 +721,7 @@ check_internet_connection() {
 
 # --
 # @description      Generates a secure SSH key pair with proper permissions
+#                   and adds it to the user's SSH agent
 # @param            $1 key_file     Path to SSH key (default: $HOME/.ssh/id_rsa)
 # @param            $2 key_type     Type of key [dsa|ecdsa|ecdsa-sk|ed25519|ed25519-sk|rsa]
 #                                   (default: ed25519)
@@ -739,13 +740,13 @@ check_internet_connection() {
 #                   - Validates key type and parameters
 #                   - Secure password handling
 # @example          # Generate default ED25519 key
-#                   generate_ssh_key
+#                   add_ssh_key
 #
 #                   # Generate RSA key with custom settings
-#                   generate_ssh_key "/path/to/key" "rsa" 4096 "user@host"
+#                   add_ssh_key "/path/to/key" "rsa" 4096 "user@host"
 # @public
 # --
-generate_ssh_key() {
+add_ssh_key() {
   local -r key_file="${1:-${HOME}/.ssh/id_rsa}"
   local -r key_type="${2:-ed25519}"
   local -r key_bits="${3:-4096}"
@@ -753,6 +754,12 @@ generate_ssh_key() {
   local password password_confirm
 
   # Verify dependencies
+  if ! is_package_installed "openssh-client"; then
+    log_error "Required package 'openssh-client' is not installed"
+    log_info "Install using: sudo apt-get install openssh-client"
+    return "${ROOTINE_STATUS_USAGE}"
+  fi
+
   if ! command -v ssh-keygen >/dev/null; then
     log_error "Required command 'ssh-keygen' not found"
     log_info "Install using: sudo apt-get install openssh-client"
@@ -786,6 +793,7 @@ generate_ssh_key() {
   # Check for existing key
   if [[ -f "${key_file}" ]]; then
     log_error "Key already exists: ${key_file}"
+    log_info "Please choose a different path or remove the existing key"
     return "${ROOTINE_STATUS_DATAERR}"
   fi
 
@@ -841,13 +849,38 @@ generate_ssh_key() {
     return "${ROOTINE_STATUS_NOPERM}"
   fi
 
-  # Display results
   log_success "SSH key generated: ${key_file}"
+
+  # Display results
   log_info "Public key contents:"
   if ! cat "${key_file}.pub"; then
     log_error "Failed to read public key"
     return "${ROOTINE_STATUS_NOINPUT}"
   fi
+
+  # Ensure ssh-agent is running
+  if ! pgrep -u "${USER}" ssh-agent >/dev/null; then
+    eval "$(ssh-agent -s)" &>/dev/null
+  fi
+
+  # Remove existing keys for this file from ssh-agent (if any)
+  ssh-add -d "${key_file}" &>/dev/null
+
+  # Add key to ssh-agent
+  if ! ssh-add "${key_file}"; then
+    log_error "Failed to add key to ssh-agent"
+    return "${ROOTINE_STATUS_CANTCREAT}"
+  fi
+
+  # Verify key is added to ssh-agent
+  local public_key
+  public_key=$(cat "${key_file}.pub")
+  if ! ssh-add -L | grep -qF "${public_key}"; then
+    log_error "Key not found in ssh-agent after addition"
+    return "${ROOTINE_STATUS_CANTCREAT}"
+  fi
+
+  log_success "Key added to ssh-agent"
   return 0
 }
 

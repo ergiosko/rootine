@@ -20,16 +20,16 @@
 #                   1 Invalid log level provided
 # @functions        _get_syslog_priority  Maps log levels to syslog priorities
 #                   _get_centered_label   Formats log level labels with consistent width
-#                   _log_message          Core logging function
-#                   log_debug             Wrapper for DEBUG level messages
-#                   log_info              Wrapper for INFO level messages
-#                   log_notice            Wrapper for NOTICE level messages
-#                   log_success           Wrapper for SUCCESS level messages
-#                   log_warning           Wrapper for WARNING level messages
-#                   log_error             Wrapper for ERROR level messages
-#                   log_crit              Wrapper for CRIT level messages
-#                   log_alert             Wrapper for ALERT level messages
-#                   log_emerg             Wrapper for EMERG level messages
+#                   _log_str    Core logging function
+#                   log_debug   Wrapper for DEBUG level messages
+#                   log_info    Wrapper for INFO level messages
+#                   log_notice  Wrapper for NOTICE level messages
+#                   log_success Wrapper for SUCCESS level messages
+#                   log_warning Wrapper for WARNING level messages
+#                   log_error   Wrapper for ERROR level messages
+#                   log_crit    Wrapper for CRIT level messages
+#                   log_alert   Wrapper for ALERT level messages
+#                   log_emerg   Wrapper for EMERG level messages
 # @security         No security considerations as this is an internal logging utility
 # ---
 
@@ -48,15 +48,16 @@ _get_syslog_priority() {
   local -r level="${1:?Log level parameter is required}"
 
   case "${level^^}" in
-    DEBUG)          echo "debug" ;;
-    INFO)           echo "info" ;;
-    NOTICE)         echo "notice" ;;
-    WARN | WARNING) echo "warning" ;;
-    ERR | ERROR)    echo "err" ;;
-    CRIT)           echo "crit" ;;
-    ALERT)          echo "alert" ;;
-    EMERG | PANIC)  echo "emerg" ;;
-    *)              echo "debug" ;;
+    DEBUG)        echo "debug" ;;
+    INFO)         echo "info" ;;
+    NOTICE)       echo "notice" ;;
+    WARN|WARNING) echo "warning" ;;
+    ERR|ERROR)    echo "err" ;;
+    CRIT)         echo "crit" ;;
+    ALERT)        echo "alert" ;;
+    EMERG|PANIC)  echo "emerg" ;;
+    APPEND)       echo "append" ;;
+    *)            echo "debug" ;;
   esac
 
   return 0
@@ -92,11 +93,11 @@ _get_centered_label() {
 # @sideeffects      May write to syslog if logger command is available
 # @exitstatus       0 Success
 #                   1 Invalid log level provided
-# @example          _log_message "INFO" "System initialized"
+# @example          _log_str "INFO" "System initialized"
 #                   [ INFO  ] System initialized
 # @internal
 # --
-_log_message() {
+_log_str() {
   local -r level="${1:?Log level parameter is required}"
   local -r message="${2:?Message parameter is required}"
   local log_level_num color syslog_priority timestamp syslog_message styled_message label
@@ -110,15 +111,15 @@ _log_message() {
       log_level_num="${ROOTINE_LOG_LEVEL_INFO}"
       color="${ROOTINE_COLOR_CYAN}"
       ;;
-    NOTICE | SUCCESS)
+    NOTICE|SUCCESS)
       log_level_num="${ROOTINE_LOG_LEVEL_NOTICE}"
       color="${ROOTINE_COLOR_GREEN}"
       ;;
-    WARN | WARNING)
+    WARN|WARNING)
       log_level_num="${ROOTINE_LOG_LEVEL_WARNING}"
       color="${ROOTINE_COLOR_YELLOW}"
       ;;
-    ERR | ERROR)
+    ERR|ERROR)
       log_level_num="${ROOTINE_LOG_LEVEL_ERROR}"
       color="${ROOTINE_COLOR_RED}"
       ;;
@@ -130,9 +131,13 @@ _log_message() {
       log_level_num="${ROOTINE_LOG_LEVEL_ALERT}"
       color="${ROOTINE_BOLD_RED}"
       ;;
-    EMERG | PANIC)
+    EMERG|PANIC)
       log_level_num="${ROOTINE_LOG_LEVEL_EMERG}"
       color="${ROOTINE_BG_RED}"
+      ;;
+    APPEND)
+      log_level_num="${ROOTINE_LOG_LEVEL_APPEND}"
+      color="${ROOTINE_COLOR_DEFAULT}"
       ;;
     *)
       printf "[ ERROR ] Invalid log level: %s\n" "${level}" >&2
@@ -146,6 +151,11 @@ _log_message() {
     label="$(_get_centered_label "${level}")"
     syslog_message="${label} ${message}"
     styled_message="${color}${label}${ROOTINE_COLOR_RESET} ${message}"
+
+    if [[ "${level^^}" == "APPEND" ]]; then
+      printf '%s\n' "          ${message}" >&2
+      return 0
+    fi
 
     if command -v logger &>/dev/null; then
       logger -t "${0##*/}" -p "${syslog_priority}" "${syslog_message}" || return 0
@@ -163,12 +173,13 @@ _log_message() {
 # @stderr           Formatted log message
 # @example          log_info "Starting initialization..."
 # --
-log_debug()   { _log_message "DEBUG"    "${1:?Message parameter is required}"; }
-log_info()    { _log_message "INFO"     "${1:?Message parameter is required}"; }
-log_notice()  { _log_message "NOTICE"   "${1:?Message parameter is required}"; }
-log_success() { _log_message "SUCCESS"  "${1:?Message parameter is required}"; }
-log_warning() { _log_message "WARNING"  "${1:?Message parameter is required}"; }
-log_error()   { _log_message "ERROR"    "${1:?Message parameter is required}"; }
-log_crit()    { _log_message "CRIT"     "${1:?Message parameter is required}"; }
-log_alert()   { _log_message "ALERT"    "${1:?Message parameter is required}"; }
-log_emerg()   { _log_message "EMERG"    "${1:?Message parameter is required}"; }
+log_debug()   { _log_str "DEBUG"    "${1:?Message parameter is required}"; }
+log_info()    { _log_str "INFO"     "${1:?Message parameter is required}"; }
+log_notice()  { _log_str "NOTICE"   "${1:?Message parameter is required}"; }
+log_success() { _log_str "SUCCESS"  "${1:?Message parameter is required}"; }
+log_warning() { _log_str "WARNING"  "${1:?Message parameter is required}"; }
+log_error()   { _log_str "ERROR"    "${1:?Message parameter is required}"; }
+log_crit()    { _log_str "CRIT"     "${1:?Message parameter is required}"; }
+log_alert()   { _log_str "ALERT"    "${1:?Message parameter is required}"; }
+log_emerg()   { _log_str "EMERG"    "${1:?Message parameter is required}"; }
+log_append()  { _log_str "APPEND"   "${1:?Message parameter is required}"; }

@@ -10,7 +10,6 @@ and [Release Please](https://github.com/googleapis/release-please).
 
 ## [0.1.1](https://github.com/ergiosko/rootine/compare/v0.1.0...v0.1.1) (2025-03-03)
 
-
 ### Bug Fixes
 
 * **core:** fix git_push() function ([cb582cf](https://github.com/ergiosko/rootine/commit/cb582cf0005dce898a29461b64eaf7c26a298c3d))
